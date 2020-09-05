@@ -1,4 +1,4 @@
-const finRecController = require('../controllers/finrec-controller.js');
+const finRecController = require('../controllers/finrec_controller.js');
 const {check} = require('express-validator');
 const Security = require('../services/security/security.js');
 
