@@ -3,7 +3,7 @@
     <div class="jumbotron">
         <div class="container">
             <h1 class="display-3 text-center mt-4">Fin-Rec System</h1>
-            <form action="/searchAll" method="POST">
+            <form action="/search" method="POST">
                 <div class="form-row justify-content-center">
                     <div class="col-12 col-md-6 mb-2 mb-md-0">
                         <select id="searchBy" class="form-control mb-2" name="searchBy">
@@ -60,8 +60,8 @@
                                     <td>{{amountPaid}}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">POS Debited Amount:</th>
-                                    <td>{{posDebitedAmount}}</td>
+                                    <th scope="row">POS Charge:</th>
+                                    <td>{{posCharge}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Agent Name:</th>
@@ -91,4 +91,6 @@
     <!-- this will show our spinner -->
     <div hidden id="spinner"></div>
     </div> <!-- /container -->
+
 </main>
+

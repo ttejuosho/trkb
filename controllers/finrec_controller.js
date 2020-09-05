@@ -17,13 +17,8 @@ exports.GetSelectTransactionTypePage = (req, res) => {
     return res.render("transactionType");
 }
 
-exports.GetTransactionForm = (req,res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()){
-        errors.transactionType = req.body.transactionType;
-        return res.render('transactionType', errors);
-    }
-    res.render("newTransaction", { transactionType: req.body.transactionType});
+exports.GetNewTransactionForm = (req,res) => {
+    return res.render("newTransaction");
 }
 
 exports.GetHomePage = (req,res) => {
@@ -39,49 +34,15 @@ exports.GetTransactionDetails = (req,res) => {
     })
 }
 
-exports.SaveDepositTransaction = (req,res) => {
+exports.SaveNewTransaction = (req,res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         errors.transactionTerminal = req.body.transactionTerminal;
         errors.transactionType = req.body.transactionType;
         errors.amountReceived = req.body.amountReceived;
-        errors.posDebitedAmount = req.body.posDebitedAmount;
-        errors.transactionType = "Deposit";
-        errors.customerName = req.body.customerName;
-        errors.customerPhone = req.body.customerPhone;
-        errors.customerEmail = req.body.customerEmail;
-        return res.render('newTransaction', errors);
-    }
-
-    db.Transaction.create({
-        transactionUID: (Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5)).toUpperCase(),
-        preparedBy: res.locals.name,
-        companyUID: res.locals.companyUID,
-        UserUserId: res.locals.userId,
-        transactionTerminal: req.body.transactionTerminal,
-        transactionType: req.body.transactionType,
-        amountReceived: parseFloat(req.body.amountReceived),
-        posDebitedAmount: parseFloat(req.body.posDebitedAmount),
-        customerName: req.body.customerName,
-        customerPhone: req.body.customerPhone,
-        customerEmail: req.body.customerEmail
-    }).then((dbTransaction) => {
-        console.log(dbTransaction.dataValues);
-        return res.render("newTransaction", { transactionSaved: true, transactionUID: dbTransaction.dataValues.transactionUID });
-    }).catch((err) => {
-        console.log(err.errors[0].message);
-        return res.render('error', err.errors[0]);
-    });
-}
-
-exports.SaveWithdrawalTransaction = (req,res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        errors.transactionTerminal = req.body.transactionTerminal;
-        errors.transactionType = req.body.transactionType;
         errors.amountPaid = req.body.amountPaid;
-        errors.posDebitedAmount = req.body.posDebitedAmount;
-        errors.transactionType = "Withdrawal";
+        errors.transactionCharge = req.body.transactionCharge;
+        errors.posCharge = req.body.posCharge;
         errors.customerName = req.body.customerName;
         errors.customerPhone = req.body.customerPhone;
         errors.customerEmail = req.body.customerEmail;
@@ -96,55 +57,21 @@ exports.SaveWithdrawalTransaction = (req,res) => {
         transactionTerminal: req.body.transactionTerminal,
         transactionType: req.body.transactionType,
         amountPaid: parseFloat(req.body.amountPaid),
-        posDebitedAmount: parseFloat(req.body.posDebitedAmount),
-        customerName: req.body.customerName,
-        customerPhone: req.body.customerPhone,
-        customerEmail: req.body.customerEmail,
-    }).then((dbTransaction) => {
-        console.log(dbTransaction.dataValues);
-        return res.render("newTransaction", { transactionSaved: true, transactionUID: dbTransaction.dataValues.transactionUID });
-    }).catch((err) => {
-        console.log(err.original);
-        return res.render('error', err);
-    });
-}
-
-exports.SaveTransferTransaction = (req,res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        errors.transactionTerminal = req.body.transactionTerminal;
-        errors.transactionType = req.body.transactionType;
-        errors.amountReceived = req.body.amountReceived;
-        errors.posDebitedAmount = req.body.posDebitedAmount;
-        errors.transactionType = "Transfer";
-        errors.customerName = req.body.customerName;
-        errors.customerPhone = req.body.customerPhone;
-        errors.customerEmail = req.body.customerEmail;
-        return res.render('newTransaction', errors);
-    }
-
-    db.Transaction.create({
-        transactionUID: (Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5)).toUpperCase(),
-        preparedBy: res.locals.name,
-        companyUID: res.locals.companyUID,
-        UserUserId: res.locals.userId,
-        transactionTerminal: req.body.transactionTerminal,
-        transactionType: req.body.transactionType,
         amountReceived: parseFloat(req.body.amountReceived),
-        posDebitedAmount: parseFloat(req.body.posDebitedAmount),
+        posCharge: parseFloat(req.body.posCharge),
+        transactionCharge: parseFloat(req.body.transactionCharge),
         customerName: req.body.customerName,
         customerPhone: req.body.customerPhone,
         customerEmail: req.body.customerEmail
     }).then((dbTransaction) => {
-        console.log(dbTransaction.dataValues);
         return res.render("newTransaction", { transactionSaved: true, transactionUID: dbTransaction.dataValues.transactionUID });
     }).catch((err) => {
-        console.log(err);
-        return res.render('error', err);
+        console.log(err.errors[0].message);
+        return res.render('error', err.errors[0]);
     });
 }
 
-exports.searchAll = (req, res) => {
+exports.search = (req, res) => {
     const Op = Sequelize.Op;
     const searchQuery = req.body.searchQuery;
     const searchBy = req.body.searchBy;
@@ -180,7 +107,7 @@ exports.searchAll = (req, res) => {
                     transactionType: dbTransaction[i].transactionType,
                     amountReceived: dbTransaction[i].amountReceived,
                     amountPaid: dbTransaction[i].amountPaid,
-                    posDebitedAmount: dbTransaction[i].posDebitedAmount,
+                    posCharge: dbTransaction[i].posCharge,
                     customerName: dbTransaction[i].customerName,
                     customerEmail: dbTransaction[i].customerEmail,
                     customerPhone: dbTransaction[i].customerPhone,
@@ -193,6 +120,6 @@ exports.searchAll = (req, res) => {
         }
 
     }).catch(function (err) {
-        res.render("error", err.errors);
+        res.status(500).send({ message: err.message });
     });
 }

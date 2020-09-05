@@ -29,7 +29,15 @@ module.exports = function(sequelize, DataTypes){
             type: DataTypes.INTEGER,
             defaultValue: 0
           },
-          posDebitedAmount: {
+          posCharge: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+          },
+          estimatedCharge: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+          },
+          transactionCharge: {
             type: DataTypes.INTEGER,
             defaultValue: 0
           },

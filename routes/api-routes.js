@@ -83,4 +83,41 @@ module.exports = (app) => {
         });
     });
 
+    app.get('/api/getAgents', (req, res)=>{
+        if(req.isAuthenticated()){
+            db.User.findAll({
+                where: {
+                    companyUID: res.locals.companyUID
+                }
+            }).then((dbAgents)=>{
+                res.json(dbAgents);
+            }).catch((err)=>{
+                res.json(err);
+            });
+        } else {
+            res.json({ error:  "Unauthorized" });
+        }
+    });
+
+    app.get('/api/getTransactionTypes', (req, res)=>{
+        //Gets Distinct Transaction Types in the DB
+        db.Transaction.findAll(
+            { attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('transactionType')), 'transactionType']] }
+        ).then((dbTransactionTypes)=>{
+            res.json(dbTransactionTypes);
+        }).catch((err)=>{
+            res.json(err);
+        });
+    });
+
+    app.get('/api/getTransactionTerminals', (req, res)=>{
+        //Gets Distinct Transaction Terminal in the DB
+        db.Transaction.findAll(
+            { attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('transactionTerminal')), 'transactionTerminal']] }
+        ).then((dbTransactionTerminals)=>{
+            res.json(dbTransactionTerminals);
+        }).catch((err)=>{
+            res.json(err);
+        });
+    });
 };
