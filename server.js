@@ -78,6 +78,14 @@ const hbs = exphbs.create({
           return value; // moment plugin is not available, value does not have a truthy value, or value is not a valid date
         }
       },
+      eachProperty: function(context, options) {
+        var ret = "";
+        for(var prop in context)
+        {
+            ret = ret + options.fn({property:prop,value:context[prop]});
+        }
+        return ret;
+      }
     },
     defaultLayout: 'main',
   });
@@ -97,7 +105,6 @@ app.use((req, res, next) => {
       res.locals.emailAddress = req.user.emailAddress;
       res.locals.phoneNumber = req.user.phoneNumber;
       res.locals.companyUID = req.user.companyUID;
-      res.locals.companyId = req.user.CompanyCompanyId;
     }
   }
   next();

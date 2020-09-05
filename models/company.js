@@ -53,11 +53,5 @@ module.exports = function(sequelize, DataTypes){
         },
     });
 
-    Company.associate = models => {        
-        Company.hasMany(models.Transaction, {
-            onDelete: 'cascade'
-        });
-    }
-
     return Company;
 }

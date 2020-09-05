@@ -55,16 +55,16 @@ exports.SaveDepositTransaction = (req,res) => {
 
     db.Transaction.create({
         transactionUID: (Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5)).toUpperCase(),
+        preparedBy: res.locals.name,
+        companyUID: res.locals.companyUID,
+        UserUserId: res.locals.userId,
         transactionTerminal: req.body.transactionTerminal,
         transactionType: req.body.transactionType,
         amountReceived: parseFloat(req.body.amountReceived),
         posDebitedAmount: parseFloat(req.body.posDebitedAmount),
         customerName: req.body.customerName,
         customerPhone: req.body.customerPhone,
-        customerEmail: req.body.customerEmail,
-        preparedBy: res.locals.name,
-        CompanyCompanyId: res.locals.companyUID,
-        UserUserId: res.locals.userId
+        customerEmail: req.body.customerEmail
     }).then((dbTransaction) => {
         console.log(dbTransaction.dataValues);
         return res.render("newTransaction", { transactionSaved: true, transactionUID: dbTransaction.dataValues.transactionUID });
@@ -90,6 +90,9 @@ exports.SaveWithdrawalTransaction = (req,res) => {
 
     db.Transaction.create({
         transactionUID: (Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5)).toUpperCase(),
+        preparedBy: res.locals.name,
+        companyUID: res.locals.companyUID,
+        UserUserId: res.locals.userId,
         transactionTerminal: req.body.transactionTerminal,
         transactionType: req.body.transactionType,
         amountPaid: parseFloat(req.body.amountPaid),
@@ -97,9 +100,6 @@ exports.SaveWithdrawalTransaction = (req,res) => {
         customerName: req.body.customerName,
         customerPhone: req.body.customerPhone,
         customerEmail: req.body.customerEmail,
-        preparedBy: res.locals.name,
-        CompanyCompanyId: res.locals.companyUID,
-        UserUserId: res.locals.userId
     }).then((dbTransaction) => {
         console.log(dbTransaction.dataValues);
         return res.render("newTransaction", { transactionSaved: true, transactionUID: dbTransaction.dataValues.transactionUID });
@@ -125,16 +125,16 @@ exports.SaveTransferTransaction = (req,res) => {
 
     db.Transaction.create({
         transactionUID: (Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5)).toUpperCase(),
+        preparedBy: res.locals.name,
+        companyUID: res.locals.companyUID,
+        UserUserId: res.locals.userId,
         transactionTerminal: req.body.transactionTerminal,
         transactionType: req.body.transactionType,
         amountReceived: parseFloat(req.body.amountReceived),
         posDebitedAmount: parseFloat(req.body.posDebitedAmount),
         customerName: req.body.customerName,
         customerPhone: req.body.customerPhone,
-        customerEmail: req.body.customerEmail,
-        preparedBy: res.locals.name,
-        CompanyCompanyId: res.locals.companyUID,
-        UserUserId: res.locals.userId
+        customerEmail: req.body.customerEmail
     }).then((dbTransaction) => {
         console.log(dbTransaction.dataValues);
         return res.render("newTransaction", { transactionSaved: true, transactionUID: dbTransaction.dataValues.transactionUID });

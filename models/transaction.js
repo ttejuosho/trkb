@@ -9,6 +9,10 @@ module.exports = function(sequelize, DataTypes){
             type: DataTypes.STRING,
             allowNull: false,
           },
+          companyUID: {
+            type: DataTypes.BIGINT,
+            allowNull: false
+          },
           transactionTerminal: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -46,12 +50,6 @@ module.exports = function(sequelize, DataTypes){
             allowNull: false,
           }
     });
-
-    Transaction.associate = models => {
-      Transaction.belongsTo(models.Company, {
-        onDelete: "cascade"
-      });
-    }
     
     return Transaction;
 }

@@ -4,13 +4,13 @@ const Security = require('../services/security/security.js');
 
 module.exports = function(app) {
     app.get('/api/health', finRecController.CheckApi);
-    app.get('/', finRecController.GetHomePage);
+    app.get('/', Security.isLoggedIn, finRecController.GetHomePage);
 
     app.get('/transactionType', Security.isLoggedIn, finRecController.GetSelectTransactionTypePage);
     app.get('/transaction/select', Security.isLoggedIn, finRecController.GetSelectTransactionTypePage);
     
     app.post("/transactionType", [ check('transactionType').not().isEmpty().escape().withMessage('Please choose a transaction type') ], Security.isLoggedIn, finRecController.GetTransactionForm);
-    app.get('/transaction/detail/:transactionUID', Security.isLoggedIn, finRecController.GetTransactionDetails);
+    app.get('/transaction/detail/:transactionUID', finRecController.GetTransactionDetails);
 
     app.post('/transaction/deposit', 
     [
