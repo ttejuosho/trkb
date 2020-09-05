@@ -110,9 +110,9 @@ app.use((req, res, next) => {
   next();
 });
 
-require("./routes/api-routes")(app);
-require("./routes/finrec-routes")(app);
-require("./routes/auth-routes")(app);
+require("./routes/api-routes.js")(app);
+require("./routes/finrec-routes.js")(app);
+require("./routes/auth-routes.js")(app);
 
 
 // load passport strategies
