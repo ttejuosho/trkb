@@ -1,0 +1,172 @@
+<main role="main">
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3 text-center">ToroKobo</h1>
+
+            {{#if signin}}
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-6">
+                        {{#if error}}
+                            <p class="text-danger mb-1">{{error}}</p>
+                        {{/if}}
+                        <form id="signinForm" action="/signin" method="POST">
+                            <div class="form-group">
+                                <label for="emailAddress">Email Address</label>
+                                <input type="email" class="form-control" id="emailAddress" name="emailAddress" aria-describedby="emailHelp">
+                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                            <div class="form-group text-center">
+                                <a href="/iforgot" class="text-dark">iForgot</a>
+                            </div>
+                            <button type="submit" class="btn btn-block btn-lg btn-dark">Sign In</button>
+                        </form>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if companyRegistration}}
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-6">
+                        <form id="newCompanyForm" action="/register" method="POST">
+                            <div class="form-group mb-2">
+                                <label for="name">Company Name</label>
+                                <input type="text" class="form-control" id="companyName" name="companyName" value="{{companyName}}">
+                                {{#if errors}}
+                                {{#each errors}}
+                                {{#ifEquals param "companyName"}}
+                                <div class="messages text-danger mb-2">{{msg}}</div>
+                                {{/ifEquals}}
+                                {{/each}}
+                                {{/if}}
+                            </div>
+
+                            <div class="form-group text-center">
+                                <p>Already have an account ? <a href="/signin" class="text-dark">Sign In</a></p>
+                            </div>
+                            <button type="submit" class="btn btn-block btn-lg btn-dark">Register</button>
+                        </form>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if signup}}
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-6">
+                        {{#if error}}
+                            <p class="text-danger mb-1">{{error}}</p>
+                        {{/if}}
+                        <form id="signupForm" action="/signup" method="POST">
+                            <div class="form-group mb-2">
+                                <label for="companyUID">Company Id</label>
+                                <input type="text" class="form-control" id="companyUID" name="companyUID" value="{{companyUID}}" {{#if newCompany}} readonly {{/if}}>
+                                <small id="companyUIDHelp" class="form-text text-danger">If you dont know your company Id, contact your Admin.</small>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{name}}">
+                                {{#if errors}}
+                                {{#each errors}}
+                                {{#ifEquals param "name"}}
+                                <div class="messages text-danger mb-2">{{msg}}</div>
+                                {{/ifEquals}}
+                                {{/each}}
+                                {{/if}}
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="emailAddress">Email Address</label>
+                                <input type="email" class="form-control" id="emailAddress" name="emailAddress" value="{{emailAddress}}">
+                                {{#if errors}}
+                                {{#each errors}}
+                                {{#ifEquals param "emailAddress"}}
+                                <div class="messages text-danger mb-2">{{msg}}</div>
+                                {{/ifEquals}}
+                                {{/each}}
+                                {{/if}}
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="phoneNumber">Phone Number</label>
+                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="{{phoneNumber}}">
+                                {{#if errors}}
+                                {{#each errors}}
+                                {{#ifEquals param "phoneNumber"}}
+                                <div class="messages text-danger mb-2">{{msg}}</div>
+                                {{/ifEquals}}
+                                {{/each}}
+                                {{/if}}
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                            </div>
+                            <div class="form-group text-center">
+                                <p>Already have an account ? <a href="/signin" class="text-dark">Sign In</a></p>
+                            </div>
+                            <button type="submit" class="btn btn-block btn-lg btn-dark">Sign Up</button>
+                        </form>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if iForgot}}
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-6">
+                        {{#if error}}
+                            <p class="text-danger mb-1">{{error}}</p>
+                        {{/if}}
+                        <form id="iForgotForm" action="/iForgot" method="POST">
+
+                            <div class="form-group">
+                                <label for="emailAddress">Email Address</label>
+                                <input type="email" class="form-control" id="emailAddress" name="emailAddress" value="{{emailAddress}}" aria-describedby="emailHelp">
+                                <small id="emailHelp" class="form-text text-muted">Please enter your login email address.</small>
+                            </div>
+
+                            <div class="form-group text-center">
+                                <p>Already have an account ? <a href="/signin" class="text-dark">Sign In</a></p>
+                            </div>
+                            <button type="submit" class="btn btn-block btn-lg btn-dark">Send Password Reset Email</button>
+                        </form>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if resetPassword}}
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-6">
+                        <form id="passwordResetForm" action="/passwordReset/{{token}}" method="POST">
+
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <input type="password" class="form-control" id="newPassword" name="newPassword">
+                                <small id="newPasswordHelp" class="form-text text-muted">Please enter your new password</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                            </div>
+
+                            <div class="form-group text-center">
+                              
+                                <a href="/signin" type="button" class="btn btn-danger float-left">Cancel</a>
+                               
+                                <button type="submit" class="btn btn-dark float-right">Reset Password</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+
+</main>

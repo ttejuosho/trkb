@@ -1,0 +1,42 @@
+<main role="main">
+   <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3 text-center">Fin-Rec System</h1>
+            <p>Create new record</p>
+            {{#if transactionSaved}}
+            <p class="text-success">Transaction has been saved !! <a href="/transaction/detail/{{transactionId}}"> View transaction details</a></p>
+            {{/if}}
+            <form id="transactionTypeForm" action="/transactionType" method="POST">
+                <div class="form-row">
+                    <div class="col-12 col-md-6 mb-2 mb-md-0">
+
+                        <fieldset class="form-group mb-0">
+                            <div class="row ml-0">
+                                <legend class="col-form-label pt-0 font-weight-bold">Select Transaction Type</legend>
+                                <div class="col-sm-12 pl-0">
+                                    <select id="transactionType" class="form-control mb-2" name="transactionType">
+                                        <option value="">Choose Transaction Type</option>
+                                        <option value="Transfer">Transfer</option>
+                                        <option value="Withdrawal">Withdrawal</option>
+                                        <option value="Deposit">Deposit</option>
+                                    </select>
+                                </div>
+                                {{#if errors}}
+                                {{#each errors}}
+                                {{#ifEquals param "transactionType"}}
+                                <div class="messages text-danger mb-2">{{msg}}</div>
+                                {{/ifEquals}}
+                                {{/each}}
+                                {{/if}}
+                            </div>
+                        </fieldset>
+
+                        <button type="submit" class="btn btn-block btn-lg btn-dark" id="continue">Continue</button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+    </main>

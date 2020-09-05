@@ -1,0 +1,279 @@
+<main role="main">
+   <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3 text-center">Fin-Rec System</h1>
+            
+            {{#if transactionSaved}}
+                <p class="text-success">Transaction has been saved !!</p>
+                <p><a href="/transaction/detail/{{transactionUID}}"> View transaction details</a></p>
+                <p><a href="/transaction/select">Enter new transaction</a> </p>
+            {{else}}
+                <p>Create new record</p>
+                <p><a href="/transaction/select">Change Transaction Type</a></p>
+            {{/if}}
+            
+            {{#ifEquals transactionType "Deposit"}}
+                <form id="depositTransactionForm" action="/transaction/deposit" method="POST">
+                    <div class="form-row">
+                        <div class="col-12 col-md-6 mb-2 mb-md-0">
+                            <input type="hidden" id="transactionType" name="transactionType" value="{{transactionType}}" />
+
+                            <fieldset class="form-group mb-0">
+                                <div class="row ml-0">
+                                    <legend class="col-form-label pt-0 font-weight-bold">Deposit Transaction Information</legend>
+                                    <div class="col-sm-12 pl-0">
+                                        <select id="transactionTerminal" class="form-control mb-2"
+                                            name="transactionTerminal">
+                                            {{#if transactionTerminal}}
+                                            <option value="{{transactionTerminal}}">{{transactionTerminal}}</option>
+                                            {{else}}
+                                            <option value="">Choose Transaction Terminal</option>
+                                            {{/if}}
+                                            <option value="Pay Center">Pay Center</option>
+                                            <option value="OPay">OPay</option>
+                                            <option value="Kolo Money">Kolo Money</option>
+                                        </select>
+                                    </div>
+                                    {{#if errors}}
+                                    {{#each errors}}
+                                    {{#ifEquals param "transactionTerminal"}}
+                                    <div class="messages text-danger">{{msg}}</div>
+                                    {{/ifEquals}}
+                                    {{/each}}
+                                    {{/if}}
+                                </div>
+                            </fieldset>
+
+                            <div class="mb-2">
+                            <label class="sr-only" for="amountReceived">Amount Received</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                <div class="input-group-text">&#8358</div>
+                                </div>
+                                <input type="text" class="form-control" id="amountReceived" name="amountReceived" placeholder="Amount Received" value="{{amountReceived}}">
+                            </div>
+                            {{#if errors}}
+                            {{#each errors}}
+                            {{#ifEquals param "amountReceived"}}
+                            <div class="messages text-danger mb-2">{{msg}}</div>
+                            {{/ifEquals}}
+                            {{/each}}
+                            {{/if}}
+                            </div>
+
+                            <div class="mb-2">
+                            <label class="sr-only" for="posDebitedAmount">POS Debited Amount</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                <div class="input-group-text">&#8358</div>
+                                </div>
+                                <input type="text" class="form-control" id="posDebitedAmount" name="posDebitedAmount" placeholder="POS Debited Amount" value="{{posDebitedAmount}}">
+                            </div>
+                                {{#if errors}}
+                                {{#each errors}}
+                                {{#ifEquals param "posDebitedAmount"}}
+                                <div class="messages text-danger mb-2">{{msg}}</div>
+                                {{/ifEquals}}
+                                {{/each}}
+                                {{/if}}
+                            </div>
+
+                            <legend class="col-form-label pt-0 font-weight-bold">Customer Information</legend>
+
+                            <div class="mb-2">
+                                <input type="text" class="form-control" id="customerName" name="customerName"
+                                    placeholder="Customer Name" value="{{customerName}}" />
+                            </div>
+                            <div class="mb-2">
+                                <input type="text" class="form-control" id="customerPhone" name="customerPhone"
+                                    placeholder="Customer Phone" value="{{customerPhone}}" />
+                            </div>
+                            <div class="mb-2">
+                                <input type="text" class="form-control" id="customerEmail" name="customerEmail"
+                                    placeholder="Customer Email" value="{{customerEmail}}" />
+                            </div>
+
+                            <button type="submit" class="btn btn-block btn-lg btn-dark" id="saveRecord">Save</button>
+                        </div>
+
+                    </div>
+                </form>
+            {{/ifEquals}}
+
+            {{#ifEquals transactionType "Withdrawal"}}
+                <form id="withdrawalTransactionForm" action="/transaction/withdrawal" method="POST">
+                    <div class="form-row">
+                        <div class="col-12 col-md-6 mb-2 mb-md-0">
+                            <input type="hidden" id="transactionType" name="transactionType" value="{{transactionType}}" />
+                            <fieldset class="form-group mb-0">
+                                <div class="row ml-0">
+                                    <legend class="col-form-label pt-0 font-weight-bold">Withdrawal Transaction Information</legend>
+                                    <div class="col-sm-12 pl-0">
+                                        <select id="transactionTerminal" class="form-control mb-2"
+                                            name="transactionTerminal">
+                                            {{#if transactionTerminal}}
+                                            <option value="{{transactionTerminal}}">{{transactionTerminal}}</option>
+                                            {{else}}
+                                            <option value="">Choose Transaction Terminal</option>
+                                            {{/if}}
+                                            <option value="Pay Center">Pay Center</option>
+                                            <option value="OPay">OPay</option>
+                                            <option value="Kolo Money">Kolo Money</option>
+                                        </select>
+                                    </div>
+                                    {{#if errors}}
+                                    {{#each errors}}
+                                    {{#ifEquals param "transactionTerminal"}}
+                                    <div class="messages text-danger">{{msg}}</div>
+                                    {{/ifEquals}}
+                                    {{/each}}
+                                    {{/if}}
+                                </div>
+                            </fieldset>
+
+                            <div class="mb-2">
+                            <label class="sr-only" for="amountPaid">Amount Paid</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                <div class="input-group-text">&#8358</div>
+                                </div>
+                                <input type="text" class="form-control" id="amountPaid" name="amountPaid" placeholder="Amount Paid" value="{{amountPaid}}">
+                             </div>
+                                {{#if errors}}
+                                {{#each errors}}
+                                {{#ifEquals param "amountPaid"}}
+                                <div class="messages text-danger mb-2">{{msg}}</div>
+                                {{/ifEquals}}
+                                {{/each}}
+                                {{/if}}
+                            </div>
+
+                            <div class="mb-2">
+                            <label class="sr-only" for="posDebitedAmount">POS Debited Amount</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                <div class="input-group-text">&#8358</div>
+                                </div>
+                                <input type="text" class="form-control" id="posDebitedAmount" name="posDebitedAmount" placeholder="POS Debited Amount" value="{{posDebitedAmount}}">
+                            </div>
+                                {{#if errors}}
+                                {{#each errors}}
+                                {{#ifEquals param "posDebitedAmount"}}
+                                <div class="messages text-danger mb-2">{{msg}}</div>
+                                {{/ifEquals}}
+                                {{/each}}
+                                {{/if}}
+                            </div>
+
+                            <legend class="col-form-label pt-0 font-weight-bold">Customer Information</legend>
+                            <div class="mb-2">
+                                <input type="text" class="form-control" id="customerName" name="customerName"
+                                    placeholder="Customer Name" value="{{customerName}}" />
+                            </div>
+                            <div class="mb-2">
+                                <input type="text" class="form-control" id="customerPhone" name="customerPhone"
+                                    placeholder="Customer Phone" value="{{customerPhone}}" />
+                            </div>
+                            <div class="mb-2">
+                                <input type="text" class="form-control" id="customerEmail" name="customerEmail"
+                                    placeholder="Customer Email" value="{{customerEmail}}" />
+                            </div>
+
+                            <button type="submit" class="btn btn-block btn-lg btn-dark" id="saveRecord">Save</button>
+                        </div>
+
+                    </div>
+                </form>
+            {{/ifEquals}}
+
+            {{#ifEquals transactionType "Transfer"}}
+                <form id="transferTransactionForm" action="/transaction/transfer" method="POST">
+                    <div class="form-row">
+                        <div class="col-12 col-md-6 mb-2 mb-md-0">
+                            <input type="hidden" id="transactionType" name="transactionType" value="{{transactionType}}" />
+                            <fieldset class="form-group mb-0">
+                                <div class="row ml-0">
+                                    <legend class="col-form-label pt-0 font-weight-bold">Transfer Transaction Information</legend>
+                                    <div class="col-sm-12 pl-0">
+                                        <select id="transactionTerminal" class="form-control mb-2"
+                                            name="transactionTerminal">
+                                            {{#if transactionTerminal}}
+                                            <option value="{{transactionTerminal}}">{{transactionTerminal}}</option>
+                                            {{else}}
+                                            <option value="">Choose Transaction Terminal</option>
+                                            {{/if}}
+                                            <option value="Pay Center">Pay Center</option>
+                                            <option value="OPay">OPay</option>
+                                            <option value="Kolo Money">Kolo Money</option>
+                                        </select>
+                                    </div>
+                                    {{#if errors}}
+                                    {{#each errors}}
+                                    {{#ifEquals param "transactionTerminal"}}
+                                    <div class="messages text-danger">{{msg}}</div>
+                                    {{/ifEquals}}
+                                    {{/each}}
+                                    {{/if}}
+                                </div>
+                            </fieldset>
+
+                            <div class="mb-2">
+                            <label class="sr-only" for="amountReceived">Amount Received</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                <div class="input-group-text">&#8358</div>
+                                </div>
+                                <input type="text" class="form-control" id="amountReceived" name="amountReceived" placeholder="Amount Received" value="{{amountReceived}}">
+                            </div>
+                            {{#if errors}}
+                            {{#each errors}}
+                            {{#ifEquals param "amountReceived"}}
+                            <div class="messages text-danger mb-2">{{msg}}</div>
+                            {{/ifEquals}}
+                            {{/each}}
+                            {{/if}}
+                            </div>
+
+                            <div class="mb-2">
+                            <label class="sr-only" for="posDebitedAmount">POS Debited Amount</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                <div class="input-group-text">&#8358</div>
+                                </div>
+                                <input type="text" class="form-control" id="posDebitedAmount" name="posDebitedAmount" placeholder="POS Debited Amount" value="{{posDebitedAmount}}">
+                            </div>
+                                {{#if errors}}
+                                {{#each errors}}
+                                {{#ifEquals param "posDebitedAmount"}}
+                                <div class="messages text-danger mb-2">{{msg}}</div>
+                                {{/ifEquals}}
+                                {{/each}}
+                                {{/if}}
+                            </div>
+
+                            <legend class="col-form-label pt-0 font-weight-bold">Customer Information</legend>
+                            <div class="mb-2">
+                                <input type="text" class="form-control" id="customerName" name="customerName"
+                                    placeholder="Customer Name" value="{{customerName}}" />
+                            </div>
+                            <div class="mb-2">
+                                <input type="text" class="form-control" id="customerPhone" name="customerPhone"
+                                    placeholder="Customer Phone" value="{{customerPhone}}" />
+                            </div>
+                            <div class="mb-2">
+                                <input type="text" class="form-control" id="customerEmail" name="customerEmail"
+                                    placeholder="Customer Email" value="{{customerEmail}}" />
+                            </div>
+
+                            <button type="submit" class="btn btn-block btn-lg btn-dark" id="saveRecord">Save</button>
+                        </div>
+
+                    </div>
+                </form>
+
+            {{/ifEquals}}
+
+
+        </div>
+    </div>
+    </main>

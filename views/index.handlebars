@@ -1,0 +1,95 @@
+<main role="main">
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3 text-center">Fin-Rec System</h1>
+            <form action="/searchAll" method="POST">
+                <div class="form-row justify-content-center">
+                    <div class="col-12 col-md-6 mb-2 mb-md-0">
+                        <select id="searchBy" class="form-control mb-2" name="searchBy">
+                            <option value="All">All</option>
+                            <option value="transactionUID">Transaction Id</option>
+                            <option value="preparedBy">Agent Name</option>
+                            <option value="transactionTerminal">Terminal</option>
+                            <option value="transactionType">Transaction Type</option>
+                            <option value="customerName">Customer Name</option>
+                            <option value="customerPhone">Customer Phone</option>
+                            <option value="customerEmail">Customer Email</option>
+                        </select>
+                        <input type="text" id="searchQuery" name="searchQuery" class="form-control mb-2" placeholder="Search">
+                        <button type="submit" class="btn btn-block btn-lg btn-dark" id="goSearch">Search</button>
+                        <p id="searchInfo" class="mt-3"></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row" id="resultsDiv">
+            {{#each results}}
+                <div class="container">
+                    {{!-- <h1 class="display-3 text-center">Transaction Details</h1> --}}
+                    <div class="form-row justify-content-center">
+                        <div class="col-12 col-md-6 p-4 border mb-3">
+                            <div class="row mb-1">
+                                <div class="col-md-6"><p class="font-weight-bold mb-0">Transaction Id:</p></div>
+                                <div class="col-md-6">{{transactionId}}</div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-md-6"><p class="font-weight-bold mb-0">Date:</p></div>
+                                <div class="col-md-6">{{#formatDateTime transactionDate}}{{/formatDateTime}}</div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-md-6"><p class="font-weight-bold mb-0">Type:</p></div>
+                                <div class="col-md-6">{{transactionType}}</div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-md-6"><p class="font-weight-bold mb-0">Terminal:</p></div>
+                                <div class="col-md-6">{{transactionTerminal}}</div>
+                            </div>
+                            
+                            <div class="row mb-1">
+                                <div class="col-md-6"><p class="font-weight-bold mb-0">Received:</p></div>
+                                <div class="col-md-6">{{amountReceived}}</div>
+                            </div>
+                            
+                            <div class="row mb-1">
+                                <div class="col-md-6"><p class="font-weight-bold mb-0">Paid:</p></div>
+                                <div class="col-md-6">{{amountPaid}}</div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="col-md-6"><p class="font-weight-bold mb-0">POS Debited Amount:</p></div>
+                                <div class="col-md-6">{{posDebitedAmount}}</div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-md-6"><p class="font-weight-bold mb-0">Prepared By:</p></div>
+                                <div class="col-md-6">{{preparedBy}}</div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="col-md-6"><p class="font-weight-bold mb-0">Customer Name:</p></div>
+                                <div class="col-md-6">{{customerName}}</div>
+                            </div>
+                            
+                            <div class="row mb-1">
+                                <div class="col-md-6"><p class="font-weight-bold mb-0">Customer Phone:</p></div>
+                                <div class="col-md-6">{{customerPhone}}</div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="col-md-6"><p class="font-weight-bold mb-0">Customer Email:</p></div>
+                                <div class="col-md-6">{{customerEmail}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            {{/each}}
+        </div>
+        </div>
+        <!-- this will show our spinner -->
+        <div hidden id="spinner"></div>
+    </div> <!-- /container -->
+</main>

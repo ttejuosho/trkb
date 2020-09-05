@@ -1,0 +1,128 @@
+.main-panel>.partial-content {
+    padding: 140px 78px 30px 78px;
+    min-height: calc(100vh - 70px);
+}
+
+.card-register .card-header img {
+    position: absolute;
+    margin-left: -50px;
+    margin-top: -150px;
+    border-radius: 20%;
+    width: 350px;
+}
+
+.tab-content {
+    min-height: 300px;
+}
+
+.card-register .card-img {
+    left: 0;
+    top: -15%;
+}
+
+img {
+    max-width: 100%;
+    vertical-align: middle;
+    border-style: none;
+}
+
+.card-register {
+    text-align: left;
+}
+
+.card-register .card-header .card-title {
+    position: relative;
+    font-size: 5em;
+    font-weight: 900;
+    color: #222a42;
+    text-transform: lowercase;
+    margin-left: -5px;
+    z-index: 1;
+}
+
+.card .card-title {
+    margin-bottom: .75rem;
+}
+
+.card .card-header:not([data-background-color]) {
+    background-color: transparent;
+}
+
+.card-register .card-header {
+    padding: 0 0 40px;
+    overflow: hidden;
+}
+
+.card .card-header {
+    border: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.card-header:first-child {
+    border-radius: calc(0.2857rem - 0.0625rem) calc(0.2857rem - 0.0625rem) 0 0;
+}
+
+.responseCount {
+    background: #cf51de;
+    padding: 0.1em 0.4em;
+    color: black;
+    font-weight: 700;
+}
+
+.required:before{
+    content:"*";
+    font-weight:bold;
+    color: red;
+    margin-right: 0.2em;
+}
+
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+
+@media (max-width: 800px) {
+    .main-panel>.partial-content {
+        padding: 70px 10px 0px 20px;
+        min-height: calc(100vh - 70px);
+    }
+}
+
+@media (max-width: 450px) {
+    .card-register .card-header {
+        padding: 0 0 15px;
+        overflow: hidden;
+    }
+}
