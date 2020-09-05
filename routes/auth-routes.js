@@ -1,4 +1,4 @@
-const authController = require('../controllers/auth-controller');
+const authController = require('../controllers/auth-controller.js');
 const {check} = require('express-validator');
 
 module.exports = function(app) {
