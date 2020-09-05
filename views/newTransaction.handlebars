@@ -4,13 +4,13 @@
             <h1 class="display-3 text-center">Fin-Rec System</h1>
             
             {{#if transactionSaved}}
-                <p class="text-success">Transaction has been saved !!</p>
-                <p><a href="/transaction/detail/{{transactionUID}}"> View transaction details</a></p>
-                <p><a href="/transaction/new">Enter new transaction</a> </p>
+                <p class="text-success text-center">Transaction has been saved !!</p>
+                <p class="text-center"><a href="/transaction/detail/{{transactionUID}}"> View transaction details</a></p>
+                <p class="text-center"><a href="/transaction/new">Enter new transaction</a> </p>
             {{/if}}
             
             <form id="newTransactionForm" action="/transaction/new" method="POST">
-                <div class="form-row form-row justify-content-center">
+                <div class="form-row justify-content-center">
                     <div class="col-12 col-md-6 mb-2 mb-md-0">
                         <legend class="col-form-label pt-0 font-weight-bold required">New Transaction Information</legend>
                         <fieldset class="form-group mb-0">
@@ -63,7 +63,7 @@
                         <label class="sr-only" for="amountReceived">Amount Received</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                            <div class="input-group-text">&#8358</div>
+                            <div class="input-group-text">&#8358;</div>
                             </div>
                             <input type="text" class="form-control" id="amountReceived" name="amountReceived" placeholder="Amount Received" value="{{amountReceived}}">
                         </div>
@@ -80,7 +80,7 @@
                         <label class="sr-only" for="amountPaid">Amount Paid</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                            <div class="input-group-text">&#8358</div>
+                            <div class="input-group-text">&#8358;</div>
                             </div>
                             <input type="text" class="form-control" id="amountPaid" name="amountPaid" placeholder="Amount Paid" value="{{amountPaid}}">
                             </div>
@@ -97,7 +97,7 @@
                         <label class="sr-only" for="transactionCharge">Amount Charged</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                            <div class="input-group-text">&#8358</div>
+                            <div class="input-group-text">&#8358;</div>
                             </div>
                             <input type="text" class="form-control" id="transactionCharge" name="transactionCharge" placeholder="Amount Charged" value="{{transactionCharge}}">
                         </div>
@@ -114,7 +114,7 @@
                         <label class="sr-only" for="posCharge">POS Charge</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                            <div class="input-group-text">&#8358</div>
+                            <div class="input-group-text">&#8358;</div>
                             </div>
                             <input type="text" class="form-control" id="posCharge" name="posCharge" placeholder="POS Charge" value="{{posCharge}}">
                         </div>

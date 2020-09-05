@@ -37,7 +37,7 @@
                             <tbody>
                                 <tr>
                                     <th scope="row">Transaction Id:</th>
-                                    <td>{{transactionId}}</td>
+                                    <td><a class="text-dark" href="/transaction/detail/{{transactionUID}}">{{transactionUID}}</a></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Transaction Date:</th>
@@ -52,36 +52,13 @@
                                     <td>{{transactionTerminal}}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Amount Received:</th>
-                                    <td>{{amountReceived}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Amount Paid:</th>
-                                    <td>{{amountPaid}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">POS Charge:</th>
-                                    <td>{{posCharge}}</td>
-                                </tr>
-                                <tr>
                                     <th scope="row">Agent Name:</th>
                                     <td>{{preparedBy}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Customer Name:</th>
-                                    <td>{{customerName}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Customer Email:</th>
-                                    <td>{{customerEmail}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Customer Phone:</th>
-                                    <td>{{customerPhone}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                    <div class="text-right"><a href="/transaction/detail/{{transactionUID}}">More Info</a></div>
                 </div>
             </div>
             {{/each}}

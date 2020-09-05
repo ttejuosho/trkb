@@ -159,14 +159,15 @@ exports.getSigninPage = (req, res) => {
                                 };
                                 return res.render("auth/auth", msg);
                               }
+                              return res.redirect('/');
                     
-                              return res.render("newTransaction", {
-                                name: user.dataValues.name,
-                                emailAddress: user.dataValues.emailAddress,
-                                companyUID: user.dataValues.companyUID,
-                                userId: user.dataValues.userId,
-                                phoneNumber: user.dataValues.phoneNumber
-                              });
+                              // return res.render("newTransaction", {
+                              //   name: user.dataValues.name,
+                              //   emailAddress: user.dataValues.emailAddress,
+                              //   companyUID: user.dataValues.companyUID,
+                              //   userId: user.dataValues.userId,
+                              //   phoneNumber: user.dataValues.phoneNumber
+                              // });
                             });
                           })(req, res, next);
                     }
