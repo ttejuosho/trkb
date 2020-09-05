@@ -19,7 +19,7 @@ module.exports = function(app) {
     Security.isLoggedIn, 
     finRecController.SaveNewTransaction);
 
-    app.get('/transaction/detail/:transactionUID', finRecController.GetTransactionDetails);
+    app.get('/transaction/detail/:transactionUID', Security.isLoggedIn, finRecController.GetTransactionDetails);
 
     app.post('/search', Security.isLoggedIn, finRecController.search);
 }
