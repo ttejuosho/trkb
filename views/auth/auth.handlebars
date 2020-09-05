@@ -3,7 +3,7 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
         <div class="container">
-            <h1 class="display-3 text-center">ToroKobo</h1>
+            <h1 class="display-3 text-center mt-4">ToroKobo</h1>
 
             {{#if signin}}
                 <div class="row justify-content-center">
@@ -13,12 +13,12 @@
                         {{/if}}
                         <form id="signinForm" action="/signin" method="POST">
                             <div class="form-group">
-                                <label for="emailAddress">Email Address</label>
+                                <label class="required" for="emailAddress">Email Address</label>
                                 <input type="email" class="form-control" id="emailAddress" name="emailAddress" aria-describedby="emailHelp">
                                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                             </div>
                             <div class="form-group">
-                                <label for="password">Password</label>
+                                <label class="required" for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password">
                             </div>
                             <div class="form-group text-center">
@@ -35,7 +35,7 @@
                     <div class="col-12 col-md-6">
                         <form id="newCompanyForm" action="/register" method="POST">
                             <div class="form-group mb-2">
-                                <label for="name">Company Name</label>
+                                <label class="required" for="name">Company Name</label>
                                 <input type="text" class="form-control" id="companyName" name="companyName" value="{{companyName}}">
                                 {{#if errors}}
                                 {{#each errors}}
@@ -63,12 +63,12 @@
                         {{/if}}
                         <form id="signupForm" action="/signup" method="POST">
                             <div class="form-group mb-2">
-                                <label for="companyUID">Company Id</label>
+                                <label class="required" for="companyUID">Company Id</label>
                                 <input type="text" class="form-control" id="companyUID" name="companyUID" value="{{companyUID}}" {{#if newCompany}} readonly {{/if}}>
                                 <small id="companyUIDHelp" class="form-text text-danger">If you dont know your company Id, contact your Admin.</small>
                             </div>
                             <div class="form-group mb-2">
-                                <label for="name">Name</label>
+                                <label class="required" for="name">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" value="{{name}}">
                                 {{#if errors}}
                                 {{#each errors}}
@@ -79,7 +79,7 @@
                                 {{/if}}
                             </div>
                             <div class="form-group mb-2">
-                                <label for="emailAddress">Email Address</label>
+                                <label class="required" for="emailAddress">Email Address</label>
                                 <input type="email" class="form-control" id="emailAddress" name="emailAddress" value="{{emailAddress}}">
                                 {{#if errors}}
                                 {{#each errors}}
@@ -90,7 +90,7 @@
                                 {{/if}}
                             </div>
                             <div class="form-group mb-2">
-                                <label for="phoneNumber">Phone Number</label>
+                                <label class="required" for="phoneNumber">Phone Number</label>
                                 <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="{{phoneNumber}}">
                                 {{#if errors}}
                                 {{#each errors}}
@@ -101,11 +101,11 @@
                                 {{/if}}
                             </div>
                             <div class="form-group mb-2">
-                                <label for="password">Password</label>
+                                <label class="required" for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password">
                             </div>
                             <div class="form-group mb-2">
-                                <label for="confirmPassword">Confirm Password</label>
+                                <label class="required" for="confirmPassword">Confirm Password</label>
                                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
                             </div>
                             <div class="form-group text-center">
@@ -126,7 +126,7 @@
                         <form id="iForgotForm" action="/iForgot" method="POST">
 
                             <div class="form-group">
-                                <label for="emailAddress">Email Address</label>
+                                <label class="required" for="emailAddress">Email Address</label>
                                 <input type="email" class="form-control" id="emailAddress" name="emailAddress" value="{{emailAddress}}" aria-describedby="emailHelp">
                                 <small id="emailHelp" class="form-text text-muted">Please enter your login email address.</small>
                             </div>
@@ -146,12 +146,12 @@
                         <form id="passwordResetForm" action="/passwordReset/{{token}}" method="POST">
 
                             <div class="form-group">
-                                <label for="newPassword">New Password</label>
+                                <label class="required" for="newPassword">New Password</label>
                                 <input type="password" class="form-control" id="newPassword" name="newPassword">
                                 <small id="newPasswordHelp" class="form-text text-muted">Please enter your new password</small>
                             </div>
                             <div class="form-group">
-                                <label for="confirmPassword">Confirm Password</label>
+                                <label class="required" for="confirmPassword">Confirm Password</label>
                                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
                             </div>
 
