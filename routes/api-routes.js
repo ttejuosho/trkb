@@ -120,4 +120,20 @@ module.exports = (app) => {
             res.json(err);
         });
     });
+
+    app.get('/api/getUsers', (req,res)=>{
+        db.User.findAll().then((dbUser)=>{
+            res.json(dbUser);
+        }).catch((err)=>{
+            res.json(err);
+        });
+    });
+
+    app.get('/api/getUser/:userId', (req,res)=>{
+        db.User.findByPk(req.params.userId).then((dbUser)=>{
+            res.json(dbUser);
+        }).catch((err)=>{
+            res.json(err);
+        });
+    });
 };

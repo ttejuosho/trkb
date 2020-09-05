@@ -17,7 +17,11 @@
                             <div class="row ml-0">
                                 <div class="col-sm-12 pl-0">
                                     <select id="transactionType" class="form-control mb-2" name="transactionType">
-                                        <option value="">Choose Transaction Type</option>
+                                        {{#if transactionType}}
+                                            <option value="{{transactionType}}">{{transactionType}}</option>
+                                        {{else}}
+                                            <option value="">Choose Transaction Type</option>
+                                        {{/if}}
                                         <option value="Transfer">Transfer</option>
                                         <option value="Withdrawal">Withdrawal</option>
                                         <option value="Deposit">Deposit</option>

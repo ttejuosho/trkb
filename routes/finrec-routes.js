@@ -11,8 +11,8 @@ module.exports = function(app) {
     [
         check('transactionTerminal').not().isEmpty().escape().withMessage('Please choose a transaction terminal'),
         check('transactionType').not().isEmpty().escape().withMessage('Please choose a transaction type'),
-        check('amountReceived').not().isEmpty().isNumeric().escape().withMessage('Amount received error'),
-        check('amountPaid').not().isEmpty().isNumeric().escape().withMessage('Please enter amount paid'),
+        check('amountReceived').not().isEmpty().escape().isNumeric().withMessage('Amount received error'),
+        check('amountPaid').not().isEmpty().escape().isNumeric().withMessage('Please enter amount paid'),
         check('transactionCharge').not().isEmpty().isNumeric().escape().withMessage('Please enter amount charged'),
         check('posCharge').not().isEmpty().isNumeric().escape().withMessage('POS Charge error')
     ],
