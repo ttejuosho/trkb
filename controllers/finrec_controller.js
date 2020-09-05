@@ -72,6 +72,12 @@ exports.SaveNewTransaction = (req,res) => {
 }
 
 exports.search = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        errors.searchQuery = req.body.searchQuery;
+        return res.render('index', errors);
+    }
+    
     const Op = Sequelize.Op;
     const searchQuery = req.body.searchQuery;
     const searchBy = req.body.searchBy;

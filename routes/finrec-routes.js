@@ -21,5 +21,7 @@ module.exports = function(app) {
 
     app.get('/transaction/detail/:transactionUID', Security.isLoggedIn, finRecController.GetTransactionDetails);
 
-    app.post('/search', Security.isLoggedIn, finRecController.search);
+    app.post('/search', 
+    [ check('searchQuery').not().isEmpty().escape().withMessage('Enter a valid search term') ],
+    Security.isLoggedIn, finRecController.search);
 }
