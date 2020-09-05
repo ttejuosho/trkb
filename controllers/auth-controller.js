@@ -109,8 +109,7 @@ exports.getSigninPage = (req, res) => {
             where: {
                 companyUID: req.body.companyUID
             }
-        }).then((dbCompany) => {
-          res.locals.companyId = dbCompany.dataValues.CompanyCompanyId;
+        }).then((dbCompany) => {  
             if(dbCompany == null){
                 return res.render("auth/auth", {
                     signup: true,
@@ -122,6 +121,7 @@ exports.getSigninPage = (req, res) => {
                     phoneNumber: req.body.phoneNumber
                 });
             } else {
+              res.locals.companyUID = dbCompany.dataValues.companyUID;
                 // check if Email address exists
                 db.User.findOne({
                     where: {
@@ -161,7 +161,6 @@ exports.getSigninPage = (req, res) => {
                               }
                     
                               return res.render("newTransaction", {
-                                //layout: "partials/prelogin",
                                 name: user.dataValues.name,
                                 emailAddress: user.dataValues.emailAddress,
                                 companyUID: user.dataValues.companyUID,
