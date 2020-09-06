@@ -88,7 +88,8 @@ module.exports = (app) => {
             db.User.findAll({
                 where: {
                     companyUID: res.locals.companyUID
-                }
+                },
+                attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('name')), 'value']]
             }).then((dbAgents)=>{
                 res.json(dbAgents);
             }).catch((err)=>{
@@ -102,7 +103,7 @@ module.exports = (app) => {
     app.get('/api/getTransactionTypes', (req, res)=>{
         //Gets Distinct Transaction Types in the DB
         db.Transaction.findAll(
-            { attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('transactionType')), 'transactionType']] }
+            { attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('transactionType')), 'value']] }
         ).then((dbTransactionTypes)=>{
             res.json(dbTransactionTypes);
         }).catch((err)=>{
@@ -113,7 +114,7 @@ module.exports = (app) => {
     app.get('/api/getTransactionTerminals', (req, res)=>{
         //Gets Distinct Transaction Terminal in the DB
         db.Transaction.findAll(
-            { attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('transactionTerminal')), 'transactionTerminal']] }
+            { attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('transactionTerminal')), 'value']] }
         ).then((dbTransactionTerminals)=>{
             res.json(dbTransactionTerminals);
         }).catch((err)=>{
@@ -134,6 +135,18 @@ module.exports = (app) => {
             res.json(dbUser);
         }).catch((err)=>{
             res.json(err);
+        });
+    });
+
+    app.get('/api/getTransactions/:searchBy/:searchQuery', (req, res)=>{
+        var searchObject = {};
+        searchObject[ req.params.searchBy ] = req.params.searchQuery;
+
+        db.Transaction.findAll({
+            where: searchObject,
+            attributes: ['transactionUID', 'companyUID', 'transactionTerminal', 'transactionType', 'amountReceived', 'amountPaid', 'posCharge', 'estimatedCharge', 'transactionCharge', 'customerName', 'customerPhone', 'customerEmail', 'preparedBy', 'createdAt']
+        }).then((dbTransaction)=>{
+            res.json(dbTransaction);
         });
     });
 };
