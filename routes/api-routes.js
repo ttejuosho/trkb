@@ -83,43 +83,21 @@ module.exports = (app) => {
         });
     });
 
-    app.get('/api/getAgents', (req, res)=>{
+    app.get('/api/getDistinct/:columnName', (req, res)=>{
         if(req.isAuthenticated()){
-            db.User.findAll({
+            db.Transaction.findAll({
                 where: {
                     companyUID: res.locals.companyUID
                 },
-                attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('name')), 'value']]
-            }).then((dbAgents)=>{
-                res.json(dbAgents);
+                attributes: [[Sequelize.fn('DISTINCT', Sequelize.col(req.params.columnName)), 'value']]
+            }).then((dbData)=>{
+                res.json(dbData);
             }).catch((err)=>{
                 res.json(err);
             });
         } else {
-            res.json({ error:  "Unauthorized" });
+            res.json({ Error: "Unauthorized" });
         }
-    });
-
-    app.get('/api/getTransactionTypes', (req, res)=>{
-        //Gets Distinct Transaction Types in the DB
-        db.Transaction.findAll(
-            { attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('transactionType')), 'value']] }
-        ).then((dbTransactionTypes)=>{
-            res.json(dbTransactionTypes);
-        }).catch((err)=>{
-            res.json(err);
-        });
-    });
-
-    app.get('/api/getTransactionTerminals', (req, res)=>{
-        //Gets Distinct Transaction Terminal in the DB
-        db.Transaction.findAll(
-            { attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('transactionTerminal')), 'value']] }
-        ).then((dbTransactionTerminals)=>{
-            res.json(dbTransactionTerminals);
-        }).catch((err)=>{
-            res.json(err);
-        });
     });
 
     app.get('/api/getUsers', (req,res)=>{
@@ -141,12 +119,68 @@ module.exports = (app) => {
     app.get('/api/getTransactions/:searchBy/:searchQuery', (req, res)=>{
         var searchObject = {};
         searchObject[ req.params.searchBy ] = req.params.searchQuery;
-
         db.Transaction.findAll({
             where: searchObject,
             attributes: ['transactionUID', 'companyUID', 'transactionTerminal', 'transactionType', 'amountReceived', 'amountPaid', 'posCharge', 'estimatedCharge', 'transactionCharge', 'customerName', 'customerPhone', 'customerEmail', 'preparedBy', 'createdAt']
         }).then((dbTransaction)=>{
             res.json(dbTransaction);
         });
+    });
+
+    app.get('/api/search/:searchBy/:searchQuery', (req,res)=>{
+        const searchQuery = req.params.searchQuery;
+        const searchBy = req.params.searchBy;
+        let queryObj = {};
+        const requestStart = Date.now();
+
+        if (searchBy !== "All"){
+            queryObj[searchBy] = { [Op.like]: "%" + searchQuery + "%" };
+        } else {
+            queryObj = 
+            {
+                transactionUID: { [Op.like]: "%" + searchQuery + "%" },
+                transactionTerminal: { [Op.like]: "%" + searchQuery + "%" },
+                transactionType: { [Op.like]: "%" + searchQuery + "%" },
+                customerName: { [Op.like]: "%" + searchQuery + "%" },
+                customerEmail: { [Op.like]: "%" + searchQuery + "%" },
+                customerPhone: { [Op.like]: "%" + searchQuery + "%" },
+                preparedBy: { [Op.like]: "%" + searchQuery + "%" }
+            };
+        }
+
+        db.Transaction.findAll({
+            where: { [Op.or]: queryObj } 
+        }).then((dbTransaction)=>{
+            if(dbTransaction.length > 0){
+                const processingTime = Date.now() - requestStart;
+                var data = {
+                    processingTime: processingTime / 1000 + " seconds",
+                    count: dbTransaction.length,
+                    results: []
+                }
+                for(var i = 0; i < dbTransaction.length; i++){
+                    var temp = {
+                        transactionUID: dbTransaction[i].transactionUID,
+                        transactionTerminal: dbTransaction[i].transactionTerminal,
+                        transactionType: dbTransaction[i].transactionType,
+                        amountReceived: dbTransaction[i].amountReceived,
+                        amountPaid: dbTransaction[i].amountPaid,
+                        posCharge: dbTransaction[i].posCharge,
+                        customerName: dbTransaction[i].customerName,
+                        customerEmail: dbTransaction[i].customerEmail,
+                        customerPhone: dbTransaction[i].customerPhone,
+                        preparedBy: dbTransaction[i].preparedBy,
+                        transactionDate: dbTransaction[i].createdAt
+                    }
+                    data.results.push(temp);
+                }
+
+                res.json(data);
+            }
+    
+        }).catch(function (err) {
+            res.status(500).send({ message: err.message });
+        });
+
     });
 };

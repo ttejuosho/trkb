@@ -2,13 +2,13 @@
     <div class="jumbotron">
         <div class="container">
             {{#if transactionSaved}}
-            <h3 class="display-4 text-center text-success">Success !!</h3>
+            <h3 class="display-4 text-center text-success mt-4">Success !!</h3>
             <p class="text-success text-center">Transaction has been saved !!</p>
             <p class="text-center"><a class="btn btn-outline-secondary" href="/transaction/detail/{{transactionUID}}">
                     View transaction details</a></p>
             <p class="text-center"><a class="btn btn-outline-primary" href="/transaction/new">New transaction</a></p>
             {{else}}
-            <h4 class="display-4 text-center">New Transaction</h4>
+            <h4 class="display-4 text-center mt-4">New Transaction</h4>
             <form id="newTransactionForm" action="/transaction/new" method="POST">
                 <div class="form-row justify-content-center">
                     <div class="col-12 col-md-6 mb-2 mb-md-0">
