@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false
       },
+      locationUID: {
+        type: DataTypes.BIGINT,
+        allowNull: false
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,

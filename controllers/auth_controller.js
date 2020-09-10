@@ -96,9 +96,7 @@ exports.newCompany = (req, res) => {
     errors.companyRegistration = true;
     return res.render("auth/auth", errors);
   }
-
   var companyUID = Math.floor(Math.random() * 90000) + 10000;
-
   db.Company.create({
     companyName: req.body.companyName,
     companyUID: companyUID,
@@ -106,13 +104,34 @@ exports.newCompany = (req, res) => {
     return res.render("auth/auth", {
       title: "Sign Up",
       layout: "partials/prelogin",
-      signup: true,
-      newCompany: true,
+      newLocation: true,
       companyUID: companyUID,
       companyName: req.body.companyName,
     });
   });
 };
+
+exports.newLocation = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errors.locationName = req.body.locationName;
+    errors.newLocation = true;
+    return res.render("auth/auth", errors);
+  }
+  var locationUID = Math.floor(Math.random() * 90000) + 10000;
+  db.Location.create({
+    locationUID: locationUID,
+    companyUID: req.body.companyUID,
+    locationName: req.body.locationName
+  }).then((dbLocation)=>{
+    return res.render("auth/auth", {
+      layout: "partials/prelogin",
+      signup: true,
+      locationUID: locationUID,
+      companyUID: req.body.companyUID
+    });
+  })
+}
 
 exports.signup = (req, res, next) => {
   //Validate Company Id

@@ -38,4 +38,5 @@ module.exports = function(app) {
     authController.signup);
     app.post("/signin", authController.signin);
     app.post("/register", [ check('companyName').not().isEmpty().escape().withMessage('Company Name is required')], authController.newCompany);
+    app.post("/newLocation", [ check('locationName').not().isEmpty().escape().withMessage('Location Name is required')], authController.newLocation);
 }

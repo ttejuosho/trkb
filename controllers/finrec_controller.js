@@ -53,6 +53,7 @@ exports.SaveNewTransaction = (req,res) => {
         transactionUID: (Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5)).toUpperCase(),
         preparedBy: res.locals.name,
         companyUID: res.locals.companyUID,
+        locationUID: res.locals.locationUID,
         UserUserId: res.locals.userId,
         transactionTerminal: req.body.transactionTerminal,
         transactionType: req.body.transactionType,

@@ -5,7 +5,9 @@ const Op = Sequelize.Op;
 
 module.exports = (app) => {
     app.get('/api/getTransactions', (req,res) => {
-        db.Transaction.findAll()
+        db.Transaction.findAll({
+            attributes: { exclude: ['transactionId', 'createdAt', 'updatedAt'] }
+        })
         .then((dbTransaction) => {
             res.json(dbTransaction);
         })
@@ -101,7 +103,9 @@ module.exports = (app) => {
     });
 
     app.get('/api/getUsers', (req,res)=>{
-        db.User.findAll().then((dbUser)=>{
+        db.User.findAll({
+            attributes: {exclude: ['password']}
+        }).then((dbUser)=>{
             res.json(dbUser);
         }).catch((err)=>{
             res.json(err);
@@ -123,7 +127,9 @@ module.exports = (app) => {
             where: searchObject,
             attributes: ['transactionUID', 'companyUID', 'transactionTerminal', 'transactionType', 'amountReceived', 'amountPaid', 'posCharge', 'estimatedCharge', 'transactionCharge', 'customerName', 'customerPhone', 'customerEmail', 'preparedBy', 'createdAt']
         }).then((dbTransaction)=>{
-            res.json(dbTransaction);
+            return res.json(dbTransaction);
+        }).catch((err)=>{
+            res.json(err);
         });
     });
 
@@ -182,5 +188,45 @@ module.exports = (app) => {
             res.status(500).send({ message: err.message });
         });
 
+    });
+
+    app.post('/api/saveTransactions', (req, res)=>{
+        var data = req.body;
+        console.log(data);
+        db.Transaction.bulkCreate(data).then((dbTransaction)=>{
+            res.json(dbTransaction);
+        });
+    });
+
+    app.get('/api/getLocations', (req, res) => {
+        db.Location.findAll({
+            where: {
+                companyUID: res.locals.companyUID
+            }
+        }).then((dbLocation)=>{
+            res.json(dbLocation);
+        }).catch((err)=>{
+            res.json(err);
+        });
+    });
+
+    app.post('/api/saveNewLocation', (req, res)=>{
+        db.Location.create({
+            locationUID: (Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5)).toUpperCase(),
+            locationName: req.body.locationName,
+            companyUID: res.locals.companyUID,
+            locationEmail: req.body.locationEmail,
+            locationAddress: req.body.locationAddress,
+            locationCity: req.body.locationCity,
+            locationState: req.body.locationState,
+            locationPhone: req.body.locationPhone,
+            locationContactName: req.body.locationContactName,
+            locationContactEmail: req.body.locationContactEmail,
+            locationContactPhone: req.body.locationContactPhone
+        }).then((dbLocation)=>{
+            res.json(dbLocation);
+        }).catch((err)=>{
+            res.json(err);
+        });
     });
 };

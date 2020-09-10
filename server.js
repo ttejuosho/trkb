@@ -105,6 +105,7 @@ app.use((req, res, next) => {
       res.locals.emailAddress = req.user.emailAddress;
       res.locals.phoneNumber = req.user.phoneNumber;
       res.locals.companyUID = req.user.companyUID;
+      res.locals.locationUID = req.user.locationUID;
     }
   }
   next();

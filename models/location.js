@@ -1,63 +1,63 @@
 module.exports = function(sequelize, DataTypes){
-    const Company = sequelize.define("Company", {
-        companyId: {
+    const Location = sequelize.define("Location", {
+        locationId: {
             type: DataTypes.UUID,
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4,
+        },
+        locationUID: {
+            type: DataTypes.BIGINT,
+            allowNull: false
         },
         companyUID: {
             type: DataTypes.BIGINT,
             allowNull: false
         },
-        companyName: {
+        locationName: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        companyEmail: {
+        locationEmail: {
             type: DataTypes.STRING,
             allowNull: true,
             isEmail: true,
         },
-        companyAddress: {
+        locationAddress: {
             type: DataTypes.STRING,
             allowNull: true
         },
-        companyCity: {
+        locationCity: {
             type: DataTypes.STRING,
             allowNull: true
         },
-        companyState: {
+        locationState: {
             type: DataTypes.STRING,
             allowNull: true
         },
-        companyPhone: {
+        locationPhone: {
             type: DataTypes.STRING,
             allowNull: true
         },
-        companyWebsite: {
+        locationContactName: {
             type: DataTypes.STRING,
             allowNull: true
         },
-        contactName: {
+        locationContactPhone: {
             type: DataTypes.STRING,
             allowNull: true
         },
-        contactPhone: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        contactEmail: {
+        locationContactEmail: {
             type: DataTypes.STRING,
             isEmail: true,
             allowNull: true
-        },
+        }
     });
 
-    Company.associate = (models) => {
-        Company.hasMany(models.Location, {
-            onDelete: 'cascade',
+    Location.associate = (models) => {
+        Location.belongsTo(models.Company, {
+          onDelete: 'cascade',
         });
     }
 
-    return Company;
-}
+    return Location;
+};
