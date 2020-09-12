@@ -112,6 +112,22 @@ img {
     color: #c59b08;
 }
 
+input.checkbox-lg { 
+    width: 20px; 
+    height: 20px; 
+}
+
+.checkbox-label{
+    margin-left: 2rem;
+    vertical-align: sub;
+}
+
+.btn span.glyphicon {    			
+	opacity: 0;				
+}
+.btn.active span.glyphicon {				
+	opacity: 1;				
+}
 
 @media (max-width: 800px) {
     .main-panel>.partial-content {

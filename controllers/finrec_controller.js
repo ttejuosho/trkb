@@ -1,6 +1,8 @@
 const db = require("../models");
 const Sequelize = require("sequelize");
 const {validationResult} = require('express-validator');
+const sendEmail = require("../services/email/email.js");
+const security = require("../services/security/security.js");
 
 exports.CheckApi = (req,res) => {
     return res.json({
@@ -65,7 +67,27 @@ exports.SaveNewTransaction = (req,res) => {
         customerPhone: req.body.customerPhone,
         customerEmail: req.body.customerEmail
     }).then((dbTransaction) => {
-        return res.render("newTransaction", { transactionSaved: true, transactionUID: dbTransaction.dataValues.transactionUID });
+        if(security.validateEmail(req.body.customerEmail) && req.body.emailReceipt === "on"){
+            const subject = "TrKB Transaction Confirmation";
+            const emailBody = `
+                  <p>Ogbeni ${req.body.customerName},</p>
+                  <p style="color: black;">Enle o, Eyin onibara wa. Atunwa l'oruko yin. Ayun lo Ayun bo lowo n yun enu. Aatun ma riyin later.</p>
+                  <p>Your ${req.body.transactionType.toLowerCase()} transaction is complete. Your transaction Id is 
+                  <span><strong>${dbTransaction.dataValues.transactionUID}</strong></span>.
+                  Please use this to reference this transaction in future communications with us regarding this transaction. </p>    
+                  <p>If you lost it, dont even call us o, infat dont even come to awa shop again.</p>
+                  <p>Click <a href="https://trkb.herokuapp.com/">here</a> to see fisit us online.</p>
+
+                  <p>If you did not do any transaction with us, sombori haf hack you be that, we don collect awa chargis, OYO lo wa. Kama pade mo.</p>
+                  <span style="font-size: 1rem;color: black;"><strong>Kowope Enterprises.</strong></span>
+                  `;
+        
+            return new Promise((resolve, reject) => {
+              sendEmail(emailBody, subject, req.body.customerEmail);
+              return res.render("newTransaction", { transactionSaved: true, transactionUID: dbTransaction.dataValues.transactionUID });
+            });
+        }
+        
     }).catch((err) => {
         console.log(err.errors[0].message);
         return res.render('error', err.errors[0]);
