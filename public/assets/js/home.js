@@ -110,6 +110,10 @@ function appendDataTable(dataObject){
                             <td><a class="text-dark" href="/transaction/detail/${dataObject.transactionUID}">${dataObject.transactionUID}</a></td>
                         </tr>
                         <tr>
+                            <th scope="row">Location Id:</th>
+                            <td>${dataObject.locationUID}</td>
+                        </tr>
+                        <tr>
                             <th scope="row">Transaction Date:</th>
                             <td>${moment(dataObject.transactionDate).format('MMMM Do YYYY, h:mm:ss a')}</td>
                         </tr>
@@ -127,7 +131,10 @@ function appendDataTable(dataObject){
                         </tr>
                     </tbody>
                 </table>
-                <div class="text-right"><a href="/transaction/detail/${dataObject.transactionUID}">More Info</a></div>
+                <div class="text-right">
+                <a href="/transaction/detail/${dataObject.transactionUID}">More Info</a>
+                <a href="/transaction/detail/${dataObject.transactionUID}" class="ml-2 text-right" target="_blank"><i class="fas fa-external-link-square-alt fa-2x"></i></a>
+                </div>
             </div>
         </div>
     </div>`;

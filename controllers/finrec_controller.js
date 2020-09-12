@@ -6,7 +6,7 @@ exports.CheckApi = (req,res) => {
     return res.json({
         "productName": "Financial Record System",
         "productVersion": "1.0.0",
-        "productRelease": "Yet to be announced",
+        "productRelease": "Future.DateTime()",
         "hostName": "finrec.herokuapp.com/api",
         "runtimeFrameworkVersion": "v14.7.0",
         "totalResponseTime": 0.0025

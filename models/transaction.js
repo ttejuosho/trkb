@@ -13,6 +13,10 @@ module.exports = function(sequelize, DataTypes){
             type: DataTypes.BIGINT,
             allowNull: false
           },
+          locationUID: {
+            type: DataTypes.BIGINT,
+            allowNull: false
+          },
           transactionTerminal: {
             type: DataTypes.STRING,
             allowNull: false,

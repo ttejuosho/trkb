@@ -85,6 +85,16 @@ module.exports = (app) => {
         });
     });
 
+    app.get('/api/getTransactionsByLocation/:locationUID', (req, res)=>{
+        db.Transaction.findAll({
+            where: {
+                locationUID: req.params.locationUID
+            }
+        }).then((dbTransaction)=>{
+            res.json(dbTransaction);
+        })
+    });
+
     app.get('/api/getDistinct/:columnName', (req, res)=>{
         if(req.isAuthenticated()){
             db.Transaction.findAll({
@@ -121,8 +131,12 @@ module.exports = (app) => {
     });
 
     app.get('/api/getTransactions/:searchBy/:searchQuery', (req, res)=>{
+        if(!req.isAuthenticated()){
+            return res.status(401).send({ Error: "Please sign in" });
+        }
         var searchObject = {};
         searchObject[ req.params.searchBy ] = req.params.searchQuery;
+        searchObject['companyUID'] = res.locals.companyUID;
         db.Transaction.findAll({
             where: searchObject,
             attributes: ['transactionUID', 'companyUID', 'transactionTerminal', 'transactionType', 'amountReceived', 'amountPaid', 'posCharge', 'estimatedCharge', 'transactionCharge', 'customerName', 'customerPhone', 'customerEmail', 'preparedBy', 'createdAt']
@@ -134,13 +148,16 @@ module.exports = (app) => {
     });
 
     app.get('/api/search/:searchBy/:searchQuery', (req,res)=>{
+        if(!req.isAuthenticated()){
+            return res.status(401).send({ Error: "Please sign in" });
+        }
         const searchQuery = req.params.searchQuery;
         const searchBy = req.params.searchBy;
         let queryObj = {};
         const requestStart = Date.now();
 
         if (searchBy !== "All"){
-            queryObj[searchBy] = { [Op.like]: "%" + searchQuery + "%" };
+            queryObj[searchBy] = { companyUID: res.locals.companyUID, [Op.like]: "%" + searchQuery + "%" };
         } else {
             queryObj = 
             {
@@ -155,7 +172,7 @@ module.exports = (app) => {
         }
 
         db.Transaction.findAll({
-            where: { [Op.or]: queryObj } 
+            where: { companyUID: res.locals.companyUID, [Op.or]: queryObj } 
         }).then((dbTransaction)=>{
             if(dbTransaction.length > 0){
                 const processingTime = Date.now() - requestStart;
@@ -167,6 +184,7 @@ module.exports = (app) => {
                 for(var i = 0; i < dbTransaction.length; i++){
                     var temp = {
                         transactionUID: dbTransaction[i].transactionUID,
+                        locationUID: dbTransaction[i].locationUID,
                         transactionTerminal: dbTransaction[i].transactionTerminal,
                         transactionType: dbTransaction[i].transactionType,
                         amountReceived: dbTransaction[i].amountReceived,
@@ -191,9 +209,7 @@ module.exports = (app) => {
     });
 
     app.post('/api/saveTransactions', (req, res)=>{
-        var data = req.body;
-        console.log(data);
-        db.Transaction.bulkCreate(data).then((dbTransaction)=>{
+        db.Transaction.bulkCreate(req.body).then((dbTransaction)=>{
             res.json(dbTransaction);
         });
     });
@@ -201,7 +217,41 @@ module.exports = (app) => {
     app.get('/api/getLocations', (req, res) => {
         db.Location.findAll({
             where: {
-                companyUID: res.locals.companyUID
+                companyUID: companyUID
+            }
+        }).then((dbLocation)=>{
+            res.json(dbLocation);
+        }).catch((err)=>{
+            res.json(err);
+        });
+    });
+
+    app.get('/api/getLocationsByCompany/:companyUID', (req, res) => {
+        db.Company.findOne({
+            where: {
+                companyUID: req.params.companyUID
+            }
+        }).then((dbCompany)=>{
+            if(dbCompany !== null){
+                db.Location.findAll({
+                    where: {
+                        companyUID: req.params.companyUID
+                    }
+                }).then((dbLocation)=>{
+                    res.json(dbLocation);
+                }).catch((err)=>{
+                    res.json(err);
+                });
+            } else {
+                res.json({ message: "Company Id is invalid."});
+            }
+        })
+    });
+
+    app.get('/api/getLocationById/:locationUID', (req, res) => {
+        db.Location.findOne({
+            where: {
+                locationUID: req.params.locationUID
             }
         }).then((dbLocation)=>{
             res.json(dbLocation);

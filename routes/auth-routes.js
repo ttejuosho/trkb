@@ -1,5 +1,6 @@
 const authController = require('../controllers/auth_controller.js');
 const {check} = require('express-validator');
+const Security = require('../services/security/security.js');
 
 module.exports = function(app) {
     app.get("/register", authController.getCompanyRegistrationPage);
@@ -33,10 +34,12 @@ module.exports = function(app) {
     [
         check('name').not().isEmpty().escape().withMessage('Name is required'),
         check('emailAddress').not().isEmpty().escape().withMessage('Email is required'),
-        check('phoneNumber').not().isEmpty().escape().withMessage('Phone number is required')
+        check('phoneNumber').not().isEmpty().escape().withMessage('Phone number is required'),
+        check('locationUID').not().isEmpty().escape().withMessage('Location is required')
     ],
     authController.signup);
     app.post("/signin", authController.signin);
     app.post("/register", [ check('companyName').not().isEmpty().escape().withMessage('Company Name is required')], authController.newCompany);
+    app.get("/newLocation", Security.isLoggedIn ,authController.getNewLocationPage);
     app.post("/newLocation", [ check('locationName').not().isEmpty().escape().withMessage('Location Name is required')], authController.newLocation);
 }

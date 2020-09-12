@@ -2,6 +2,7 @@
   {
     "transactionUID": "TMPOOA",
     "companyUID": 95113,
+    "locationUID" : 10182,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Transfer",
     "amountReceived": 93200,
@@ -13,11 +14,12 @@
     "customerPhone": "4128003565",
     "customerEmail": "werinoso@michigan.edu",
     "preparedBy": "James Kusack",
-    "UserUserId": null
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "4A38JW",
     "companyUID": 95113,
+    "locationUID" : 10182,
     "transactionTerminal": "OPay",
     "transactionType": "Transfer",
     "amountReceived": 9870,
@@ -29,11 +31,12 @@
     "customerPhone": "09021984435",
     "customerEmail": "asambari@aol.com",
     "preparedBy": "Aliyah Tejuosho",
-    "UserUserId": "f8bb18e7-6c8b-4f30-a6d3-e91dfff3115d"
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "K3NTYB",
     "companyUID": 95113,
+    "locationUID" : 10182,
     "transactionTerminal": "OPay",
     "transactionType": "Deposit",
     "amountReceived": 9100,
@@ -45,11 +48,12 @@
     "customerPhone": "3129008876",
     "customerEmail": "musman@wasim.com",
     "preparedBy": "Aliyah Tejuosho",
-    "UserUserId": "f8bb18e7-6c8b-4f30-a6d3-e91dfff3115d"
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "4BFVT9",
     "companyUID": 95113,
+    "locationUID" : 32968,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 1200,
@@ -61,11 +65,12 @@
     "customerPhone": "8108872273",
     "customerEmail": "hgood@open.ai",
     "preparedBy": "Aliyah Tejuosho",
-    "UserUserId": "f8bb18e7-6c8b-4f30-a6d3-e91dfff3115d"
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "6EBY7G",
     "companyUID": 95113,
+    "locationUID" : 32968,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 9100,
@@ -77,11 +82,12 @@
     "customerPhone": "4109908875",
     "customerEmail": "skumar@invoiceit.com",
     "preparedBy": "Aliyah Tejuosho",
-    "UserUserId": "f8bb18e7-6c8b-4f30-a6d3-e91dfff3115d"
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "7JUHT9",
     "companyUID": 95113,
+    "locationUID" : 32968,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 1200,
@@ -93,11 +99,12 @@
     "customerPhone": "8108872273",
     "customerEmail": "hgood@open.ai",
     "preparedBy": "Lillian Awe",
-    "UserUserId": null
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "GVRTKB",
     "companyUID": 95113,
+    "locationUID" : 32968,
     "transactionTerminal": "OPay",
     "transactionType": "Deposit",
     "amountReceived": 9100,
@@ -109,11 +116,12 @@
     "customerPhone": "3129783876",
     "customerEmail": "dres@freet.com",
     "preparedBy": "Simbi Ganzu",
-    "UserUserId": null
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "VO1LET",
     "companyUID": 95113,
+    "locationUID" : 32968,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Withdrawal",
     "amountReceived": 3100,
@@ -125,11 +133,12 @@
     "customerPhone": "080777888726",
     "customerEmail": "dadani@yahoo.com",
     "preparedBy": "Aliyah Tejuosho",
-    "UserUserId": null
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "TMKNOA",
     "companyUID": 95113,
+    "locationUID" : 20599,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Transfer",
     "amountReceived": 93200,
@@ -141,11 +150,12 @@
     "customerPhone": "4128003565",
     "customerEmail": "werinoso@michigan.edu",
     "preparedBy": "Aliyah Tejuosho",
-    "UserUserId": "f8bb18e7-6c8b-4f30-a6d3-e91dfff3115d"
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "JX4A38",
     "companyUID": 95113,
+    "locationUID" : 20599,
     "transactionTerminal": "OPay",
     "transactionType": "Transfer",
     "amountReceived": 9870,
@@ -157,11 +167,12 @@
     "customerPhone": "09044567435",
     "customerEmail": "dfreddy@aol.com",
     "preparedBy": "Rahimi Fahimi",
-    "UserUserId": null
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "DE4R5T",
     "companyUID": 95113,
+    "locationUID" : 20599,
     "transactionTerminal": "Pay Center",
     "transactionType": "Withdrawal",
     "amountReceived": 12000,
@@ -173,11 +184,12 @@
     "customerPhone": "3401129983",
     "customerEmail": "awwalmawalla@maiko.edu",
     "preparedBy": "Aliyah Tejuosho",
-    "UserUserId": null
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "ONTI1E",
     "companyUID": 95113,
+    "locationUID" : 20599,
     "transactionTerminal": "Pay Center",
     "transactionType": "Withdrawal",
     "amountReceived": 12000,
@@ -189,11 +201,12 @@
     "customerPhone": "3401129983",
     "customerEmail": "awwalmawalla@maiko.edu",
     "preparedBy": "Aliyah Tejuosho",
-    "UserUserId": "f8bb18e7-6c8b-4f30-a6d3-e91dfff3115d"
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "VC1LET",
     "companyUID": 95113,
+    "locationUID" : 20599,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Withdrawal",
     "amountReceived": 3100,
@@ -205,11 +218,12 @@
     "customerPhone": "09038389888",
     "customerEmail": "mnew@kiki.com",
     "preparedBy": "Aliyah Tejuosho",
-    "UserUserId": "f8bb18e7-6c8b-4f30-a6d3-e91dfff3115d"
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   },
   {
     "transactionUID": "QAW34X",
     "companyUID": 95113,
+    "locationUID" : 20599,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 9100,
@@ -221,6 +235,6 @@
     "customerPhone": "4109908875",
     "customerEmail": "skumar@invoiceit.com",
     "preparedBy": "Wale Arogun",
-    "UserUserId": null
+    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
   }
 ]

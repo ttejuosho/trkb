@@ -5,14 +5,6 @@ const bCrypt = require("bcrypt-nodejs");
 const crypto = require("crypto");
 const sendEmail = require("../services/email/email.js");
 
-exports.getCompanyRegistrationPage = (req, res) => {
-  return res.render("auth/auth", {
-    title: "Register",
-    layout: "partials/prelogin",
-    companyRegistration: true,
-  });
-};
-
 // Render Signin page
 exports.getSigninPage = (req, res) => {
   return res.render("auth/auth", {
@@ -28,8 +20,18 @@ exports.getSignupPage = (req, res) => {
     title: "Sign Up",
     layout: "partials/prelogin",
     signup: true,
+    newRegistration: true
   });
 };
+
+exports.getNewLocationPage = (req, res) => {
+  return res.render("auth/auth", {
+    title: "New Location",
+    layout: "partials/prelogin",
+    newLocation: true,
+    companyUID: res.locals.companyUID
+  });
+}
 
 // Render Forgot Password page
 exports.getiForgotPage = (req, res) => {
@@ -89,6 +91,14 @@ exports.getResetPasswordPage = (req, res) => {
   });
 };
 
+exports.getCompanyRegistrationPage = (req, res) => {
+  return res.render("auth/auth", {
+    title: "Register",
+    layout: "partials/prelogin",
+    companyRegistration: true,
+  });
+};
+
 exports.newCompany = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -119,22 +129,60 @@ exports.newLocation = (req, res) => {
     return res.render("auth/auth", errors);
   }
   var locationUID = Math.floor(Math.random() * 90000) + 10000;
-  db.Location.create({
-    locationUID: locationUID,
-    companyUID: req.body.companyUID,
-    locationName: req.body.locationName
+  db.Location.findOne({
+    where: {
+      locationName: req.body.locationName
+    }
   }).then((dbLocation)=>{
-    return res.render("auth/auth", {
-      layout: "partials/prelogin",
-      signup: true,
-      locationUID: locationUID,
-      companyUID: req.body.companyUID
-    });
+    if(dbLocation == null){
+      db.Location.create({
+        locationUID: locationUID,
+        companyUID: req.body.companyUID,
+        locationName: req.body.locationName
+      }).then((dbLocation)=>{
+        if(req.body.action === "New Location"){
+          return res.render("auth/auth", {
+            layout: "partials/prelogin",
+            newLocation: true,
+            companyUID: req.body.companyUID,
+            companyName: req.body.companyName
+          });
+        } else {
+          db.Location.findAll({
+            where: {
+              companyUID: req.body.companyUID
+            }
+          }).then((dbLocation)=>{
+            var locations = [];
+            for(var i = 0; i < dbLocation.length; i++){
+              locations.push(dbLocation[i].dataValues);
+            }
+            return res.render("auth/auth", {
+              layout: "partials/prelogin",
+              signup: true,
+              companyUID: req.body.companyUID,
+              locations: locations
+            });
+          })
+        }
+      });
+    } else {
+      return res.render("auth/auth", {
+        title: "Sign Up",
+        layout: "partials/prelogin",
+        newLocation: true,
+        companyUID: req.body.companyUID,
+        companyName: req.body.companyName,
+        error: "Location already exists."
+      });
+    }
   })
+
 }
 
 exports.signup = (req, res, next) => {
   //Validate Company Id
+  res.locals.locationUID = req.body.locationUID;
   db.Company.findOne({
     where: {
       companyUID: req.body.companyUID,
@@ -146,6 +194,7 @@ exports.signup = (req, res, next) => {
         layout: "partials/prelogin",
         error: "Invalid Company Id",
         companyUID: req.body.companyUID,
+        locationUID: req.body.locationUID,
         emailAddress: req.body.emailAddress,
         name: req.body.name,
         phoneNumber: req.body.phoneNumber,
@@ -161,6 +210,7 @@ exports.signup = (req, res, next) => {
           layout: "partials/prelogin",
           error: "Password mismatch",
           companyUID: req.body.companyUID,
+          locationUID: req.body.locationUID,
           emailAddress: req.body.emailAddress,
           name: req.body.name,
         });
@@ -179,6 +229,7 @@ exports.signup = (req, res, next) => {
               error:
                 "Email is taken, Please use the password reset link or choose a new email",
               companyUID: req.body.companyUID,
+              locationUID: req.body.locationUID,
               emailAddress: req.body.emailAddress,
               name: req.body.name,
               phoneNumber: req.body.phoneNumber,

@@ -33,6 +33,9 @@
             {{#if companyRegistration}}
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-6">
+                        {{#if error}}
+                            <p class="text-danger mb-1">{{error}}</p>
+                        {{/if}}
                         <form id="newCompanyForm" action="/register" method="POST">
                             <div class="form-group mb-2">
                                 <label class="required" for="name">Company Name</label>
@@ -57,7 +60,12 @@
             {{#if newLocation}}
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-6">
+                        {{#if error}}
+                            <p class="text-danger mb-1">{{error}}</p>
+                        {{/if}}
                         <form id="newLocationForm" action="/newLocation" method="POST">
+                            <input type="hidden" name="companyUID" value="{{companyUID}}" />
+                            <input type="hidden" name="companyName" value="{{companyName}}" />
                             <div class="form-group mb-2">
                                 <label class="required" for="name">Location Name</label>
                                 <input type="text" class="form-control" id="locationName" name="locationName" value="{{locationName}}">
@@ -69,7 +77,9 @@
                                 {{/each}}
                                 {{/if}}
                             </div>
-                            <button type="submit" class="btn btn-block btn-lg btn-dark">Continue</button>
+
+                            <input type="submit" value="New Location" name="action" class="btn btn-sm btn-info float-right" />
+                            <button type="submit" class="btn btn-sm btn-dark">Continue</button>
                         </form>
                     </div>
                 </div>
@@ -84,9 +94,25 @@
                         <form id="signupForm" action="/signup" method="POST">
                             <div class="form-group mb-2">
                                 <label class="required" for="companyUID">Company Id</label>
-                                <input type="text" class="form-control" id="companyUID" name="companyUID" value="{{companyUID}}" {{#if newCompany}} readonly {{/if}}>
-                                <small id="companyUIDHelp" class="form-text text-danger">If you dont know your company Id, contact your Admin.</small>
+                                <input type="text" maxlength="5" class="form-control" id="companyUID" name="companyUID" value="{{companyUID}}" {{#if newCompany}} readonly {{/if}}>
+                                <small id="companyUIDHelp" class="form-text text-danger">No Company Id ? Contact your Admin or <a href="/register">Register Here.</a> </small>
                             </div>
+
+                            <div class="form-group mb-2">
+                                <label class="required" for="locationName">Location Name</label>
+                                {{#if newRegistration}}
+                                    <input type="text" id="locationUID" name="locationUID" class="form-control" />
+                                {{else}}
+                                    <select id="locationUID" class="form-control mb-2" name="locationUID">
+                                        <option value="">Choose Location</option>
+                                        {{#each locations}}
+                                            <option value="{{locationUID}}">{{locationName}}</option>
+                                        {{/each}}
+                                    </select>
+                                {{/if}}
+                                <small id="locationNameHelp" class="form-text text-danger mt-0"></small>
+                            </div>
+                            
                             <div class="form-group mb-2">
                                 <label class="required" for="name">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" value="{{name}}">
@@ -190,3 +216,4 @@
     </div>
 
 </main>
+<script type="text/javascript" src="/assets/js/auth.js"></script>

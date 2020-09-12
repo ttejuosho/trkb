@@ -52,7 +52,8 @@ module.exports = function(passport, user) {
           password: userPassword,
           name: req.body.name,
           phoneNumber: req.body.phoneNumber,
-          companyUID: req.body.companyUID
+          companyUID: req.body.companyUID,
+          locationUID: req.body.locationUID
         };
 
         User.create(data).then(function(newUser, created) {

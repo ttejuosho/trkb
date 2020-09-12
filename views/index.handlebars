@@ -2,7 +2,7 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
         <div class="container">
-            <h1 class="display-3 text-center mt-4">Fin-Rec System</h1>
+            <h1 class="display-3 text-center mt-4">Transaction Library</h1>
             <form>
                 <div class="form-row justify-content-center">
                     <div class="col-12 col-md-6 mb-2 mb-md-0">
@@ -35,43 +35,7 @@
     </div>
 
     <div class="container">
-        <div class="row" id="resultsDiv">
-            {{#each results}}
-            <div class="container">
-                <div class="form-row justify-content-center">
-                    <div class="col-12 col-md-6 p-4 border mb-3">
-                        <table class="table table-striped">
-                            <thead></thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">Transaction Id:</th>
-                                    <td><a class="text-dark" href="/transaction/detail/{{transactionId}}">{{transactionId}}</a></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Transaction Date:</th>
-                                    <td>{{#formatDateTime transactionDate}}{{/formatDateTime}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Transaction Type:</th>
-                                    <td>{{transactionType}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Transaction Terminal:</th>
-                                    <td>{{transactionTerminal}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Agent Name:</th>
-                                    <td>{{preparedBy}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="text-right"><a href="/transaction/detail/{{transactionId}}">More Info</a></div>
-                    </div>
-                </div>
-            </div>
-            {{/each}}
-
-        </div>
+        <div class="row" id="resultsDiv"></div>
     </div>
     <!-- this will show our spinner -->
     <div hidden id="spinner"></div>
