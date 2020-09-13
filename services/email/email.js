@@ -30,9 +30,8 @@ const sendEmail = function(emailBody, subject, recipients) {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      resolve(false);
+      console.log(error);
     } else {
-      resolve(true);
       console.log('Message ID: %s', info.messageId);
       console.log(info.envelope.to.toString());
     }
