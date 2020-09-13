@@ -87,7 +87,7 @@ exports.SaveNewTransaction = (req,res) => {
               return res.render("newTransaction", { transactionSaved: true, transactionUID: dbTransaction.dataValues.transactionUID });
             });
         }
-        
+        return res.render("newTransaction", { transactionSaved: true, transactionUID: dbTransaction.dataValues.transactionUID });
     }).catch((err) => {
         console.log(err.errors[0].message);
         return res.render('error', err.errors[0]);

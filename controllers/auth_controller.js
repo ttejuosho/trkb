@@ -255,7 +255,7 @@ exports.signup = (req, res, next) => {
                   };
                   return res.render("auth/auth", msg);
                 }
-                return res.redirect("/");
+                res.redirect("/");
               });
             })(req, res, next);
           }
