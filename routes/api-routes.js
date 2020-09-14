@@ -139,7 +139,7 @@ module.exports = (app) => {
         searchObject['companyUID'] = res.locals.companyUID;
         db.Transaction.findAll({
             where: searchObject,
-            attributes: ['transactionUID', 'companyUID', 'transactionTerminal', 'transactionType', 'amountReceived', 'amountPaid', 'posCharge', 'estimatedCharge', 'transactionCharge', 'customerName', 'customerPhone', 'customerEmail', 'preparedBy', 'createdAt']
+            attributes: ['transactionUID', 'locationUID', 'companyUID', 'transactionTerminal', 'transactionType', 'amountReceived', 'amountPaid', 'posCharge', 'estimatedCharge', 'transactionCharge', 'customerName', 'customerPhone', 'customerEmail', 'preparedBy', 'createdAt']
         }).then((dbTransaction)=>{
             return res.json(dbTransaction);
         }).catch((err)=>{
@@ -157,7 +157,7 @@ module.exports = (app) => {
         const requestStart = Date.now();
 
         if (searchBy !== "All"){
-            queryObj[searchBy] = { companyUID: res.locals.companyUID, [Op.like]: "%" + searchQuery + "%" };
+            queryObj[searchBy] = { [Op.like]: "%" + searchQuery + "%" };
         } else {
             queryObj = 
             {

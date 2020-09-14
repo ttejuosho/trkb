@@ -1,0 +1,10 @@
+const app = require('./server');
+const http = require("http").createServer(app);
+const port = process.env.PORT || 3000;
+var db = require("./models");
+
+db.sequelize.sync().then(function() {
+  http.listen(port);
+}).catch(function (err) {
+    console.log(err, "Oh no !! Something went wrong with the Database!");
+});

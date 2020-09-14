@@ -1,12 +1,12 @@
 var express = require("express");
+
+// bring in the models
+var app = express();
+const cors = require("cors");
+var db = require("./models");
 var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
 const moment = require("moment");
-// bring in the models
-var db = require("./models");
-const cors = require("cors");
-var app = express();
-const http = require("http").createServer(app);
 const helmet = require("helmet");
 const cookieParser = require(`cookie-parser`);
 const passport = require("passport");
@@ -90,7 +90,7 @@ const hbs = exphbs.create({
     defaultLayout: 'main',
   });
   
-  app.engine('handlebars', hbs.engine);
+app.engine('handlebars', hbs.engine);
 
 app.set("view engine", "handlebars");
 
@@ -119,11 +119,4 @@ require("./routes/auth-routes.js")(app);
 // load passport strategies
 require("./services/passport/passport.js")(passport, db.User);
 
-
-
-const port = process.env.PORT || 3000;
-db.sequelize.sync().then(function() {
-  http.listen(port);
-}).catch(function (err) {
-    console.log(err, "Oh no !! Something went wrong with the Database!");
-  });
+module.exports = app;
