@@ -1,7 +1,10 @@
 const app = require('./server');
 const http = require("http").createServer(app);
-const port = process.env.PORT || 3000;
+require("dotenv").config();
 var db = require("./models");
+
+const port = process.env.PORT || 3000;
+
 
 db.sequelize.sync().then(function() {
   http.listen(port);

@@ -12,7 +12,7 @@ const cookieParser = require(`cookie-parser`);
 const passport = require("passport");
 const session = require("express-session");
 
-require("dotenv").config();
+//require("dotenv").config();
 
 // cors setup
 app.use(cors());
