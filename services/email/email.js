@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 
 const sendEmail = function(emailBody, subject, recipients) {
+  console.log(process.env.EMAIL_PASSWORD);
   const transporter = nodemailer.createTransport({
     host: 'smtp.aol.com',
     port: 587,
