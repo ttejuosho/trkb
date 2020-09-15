@@ -172,7 +172,7 @@ module.exports = (app) => {
         }
 
         db.Transaction.findAll({
-            where: { companyUID: res.locals.companyUID, [Op.or]: queryObj } 
+            where: { companyUID: res.locals.companyUID, [Op.or]: queryObj }
         }).then((dbTransaction)=>{
             if(dbTransaction.length > 0){
                 const processingTime = Date.now() - requestStart;
