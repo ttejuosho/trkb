@@ -70,16 +70,14 @@ exports.SaveNewTransaction = (req, res) => {
         if(common.validateEmail(req.body.customerEmail) && req.body.emailReceipt === "on"){
             const subject = "TrKB Transaction Confirmation";
             const emailBody = `
-                    <p>Ogbeni ${req.body.customerName},</p>
-                    <p style="color: black;">Enle o, Eyin onibara wa. Atunwa l'oruko yin. Ayun lo Ayun bo lowo n yun enu. Aatun ma riyin later.</p>
+                    <p>Hello ${req.body.customerName},</p>
+                    <p>Thank you for visiting our store.</p>
                     <p>Your ${req.body.transactionType.toLowerCase()} transaction is complete. Your transaction Id is 
                     <span><strong>${dbTransaction.dataValues.transactionUID}</strong></span>.
                     Please use this to reference this transaction in future communications with us regarding this transaction. </p>    
-                    <p>If you lost it, dont even call us o, infat dont even come to awa shop again.</p>
-                    <p>Click <a href="https://trkb.herokuapp.com/">here</a> to see fisit us online.</p>
-    
-                    <p>If you did not do any transaction with us, sombori haf hack you be that, we don collect awa chargis, OYO lo wa. Kama pade mo.</p>
-                    <span style="font-size: 1rem;color: black;"><strong>Kowope Enterprises.</strong></span>
+                    
+                    <p>Click <a href="https://trkb.herokuapp.com/">here</a> to visit us online.</p>
+                    <span style="font-size: 1rem;color: black;"><strong>${res.locals.companyName}</strong></span>
                     `;
         
             return new Promise((resolve, reject) => {
@@ -149,4 +147,110 @@ exports.search = (req, res) => {
     }).catch(function (err) {
         res.status(500).send({ message: err.message });
     });
+}
+
+exports.GetProfilePage = async (req, res) => {
+    try {
+        const userInfo = await db.User.findByPk(res.locals.userId, { raw: true });
+        const companyInfo = await db.Company.findOne({ 
+            where: { 
+                companyUID : userInfo.companyUID
+            }, raw: true });
+        const locationInfo = await db.Location.findOne({
+            where: {
+                locationUID: res.locals.locationUID
+            }, raw: true
+        });
+        //console.log(userInfo);
+        //console.log(companyInfo);
+        //console.log(locationInfo);
+        const hbsObject = {
+            name: res.locals.name,
+            companyUID: res.locals.companyUID,
+            locationUID: res.locals.locationUID,
+            emailAddress: res.locals.emailAddress,
+            phoneNumber: res.locals.phoneNumber
+        }
+        res.render('profile', hbsObject);
+    } catch (error) {
+    console.log('There was an error: ', error);
+    }
+}
+
+exports.GetSettingsPage = async (req, res) => {
+    try 
+    {
+        const userInfo = await db.User.findByPk(res.locals.userId, { raw: true });
+        const companyInfo = await db.Company.findOne({ 
+            where: { 
+                companyUID : userInfo.companyUID
+            }, raw: true });
+
+        const locationInfo = await db.Location.findOne({
+            where: {
+                locationUID: res.locals.locationUID
+            }, raw: true
+        });
+
+        const agents = await db.User.findAll({
+            where: {
+                companyUID: res.locals.companyUID
+            }, raw: true
+        });
+
+        const hbsObject = {
+            companyInfo: companyInfo,
+            locationInfo: locationInfo,
+            agents: agents
+        }
+
+        res.render('settings', hbsObject);
+    } 
+    catch (error) {
+        console.log('There was an error: ', error);
+    }
+}
+
+
+exports.UpdateCompanyInfo = async (req, res) => {
+    try
+    {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      errors.companyName = req.body.companyName;
+      errors.companyEmail = req.body.companyEmail;
+      errors.companyAddress = req.body.companyAddress;
+      errors.companyCity = req.body.companyCity;
+      errors.companyState = req.body.companyState;
+      errors.companyPhone = req.body.companyPhone;
+      errors.companyWebsite = req.body.companyWebsite;
+      errors.contactName = req.body.contactName;
+      errors.contactPhone = req.body.contactPhone;
+      errors.contactEmail = req.body.contactEmail;
+      return res.redirect("/settings", errors);
+    }
+
+    await db.Company.update({
+        companyName: req.body.companyName,
+        companyEmail: req.body.companyEmail,
+        companyAddress: req.body.companyAddress,
+        companyCity: req.body.companyCity,
+        companyState: req.body.companyState,
+        companyPhone: req.body.companyPhone,
+        companyWebsite: req.body.companyWebsite,
+        contactName: req.body.contactName,
+        contactPhone: req.body.contactPhone,
+        contactEmail: req.body.contactEmail
+    },
+    { 
+        where: {
+            companyUID: res.locals.companyUID
+        }
+    }).then((dbCompany)=>{
+        return res.redirect('/settings');
+    })
+} 
+catch (error) {
+    console.log('There was an error: ', error);
+}
 }

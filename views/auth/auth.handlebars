@@ -92,6 +92,7 @@
                             <p class="text-danger mb-1">{{error}}</p>
                         {{/if}}
                         <form id="signupForm" action="/signup" method="POST">
+                            <input type="hidden" name="companyName" value="{{companyName}}" />
                             <div class="form-group mb-2">
                                 <label class="required" for="companyUID">Company Id</label>
                                 <input type="text" maxlength="5" class="form-control" id="companyUID" name="companyUID" value="{{companyUID}}" {{#if newCompany}} readonly {{/if}}>

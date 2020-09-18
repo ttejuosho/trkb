@@ -1,0 +1,123 @@
+<main role="main">
+   <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3 text-center mt-4">Settings</h1>
+            <div class="form-row justify-content-center">
+                <div class="col-12 mb-2 mb-md-0">
+                    <nav class="nav nav-pills nav-justified">
+                        <a class="nav-link active" data-toggle="tab" href="#agentsTab">Agents</a>
+                        <a class="nav-link" data-toggle="tab" href="#locationsTab">Locations</a>
+                        <a class="nav-link" data-toggle="tab" href="#companyTab">Company</a>
+                        <a class="nav-link" data-toggle="tab" href="#securityTab">Security</a>
+                    </nav>
+
+                    <div class="tab-content" id="settingsContent">
+
+                        <div class="tab-pane fade show mt-4 active" id="agentsTab" role="tabpanel" aria-labelledby="agents-tab">
+                            <p><button id="newAgentBtn" class="btn btn-sm btn-info">New Agent</button></p>
+                            <table id="agentsTable" class="table table-striped" style="width: 100%;">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">Email Address</th>
+                                        <th scope="col">Phone #</th>
+                                        <th scope="col">Options</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="tab-pane fade" id="locationsTab" role="tabpanel" aria-labelledby="locations-tab">
+
+                            <p><button id="newLocationBtn" class="btn btn-sm btn-info">New Location</button></p>
+                            <table id="locationsTable" class="table table-striped" style="width: 100%;">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">Contact Name</th>
+                                        <th scope="col">Contact Email</th>
+                                        <th scope="col">Contact Phone</th>
+                                        <th scope="col">Options</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="tab-pane fade" id="companyTab" role="tabpanel" aria-labelledby="company-tab">
+<div class="form-row justify-content-center">
+                            <form id="companyInfoForm" action="/updateCompanyInfo" method="POST">
+                                <div class="mb-3">
+                                    <label class="font-weight-bold" for="companyName">Company Name</label>
+                                    <input type="text" class="form-control" id="companyName" name="companyName" value="{{companyInfo.companyName}}">
+                                    {{#if errors}}
+                                    {{#each errors}}
+                                    {{#ifEquals param "companyName"}}
+                                    <div class="messages text-danger mb-2">{{msg}}</div>
+                                    {{/ifEquals}}
+                                    {{/each}}
+                                    {{/if}}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="font-weight-bold" for="email">Email Address</label>
+                                    <input type="email" class="form-control" id="companyEmail" name="companyEmail" value="{{companyInfo.companyEmail}}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="font-weight-bold" for="companyAddress">Address</label>
+                                    <input type="text" class="form-control" id="companyAddress" name="companyAddress" value="{{companyInfo.companyAddress}}">
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label class="font-weight-bold" for="companyCity">City</label>
+                                        <input type="text" class="form-control" id="companyCity" name="companyCity" value="{{companyInfo.companyCity}}">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="font-weight-bold" for="companyState">State</label>
+                                        <input type="text" class="form-control" id="companyState" name="companyState" value="{{companyInfo.companyState}}">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label class="font-weight-bold" for="companyPhone">Phone Number</label>
+                                        <input type="text" class="form-control" id="companyPhone" name="companyPhone" value="{{companyInfo.companyPhone}}">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="font-weight-bold" for="companyWebsite">WWW</label>
+                                        <input type="text" class="form-control" id="companyWebsite" name="companyWebsite" value="{{companyInfo.companyWebsite}}">
+                                    </div>
+                                </div>
+                                <hr>
+                                <p><h3 class="font-weight-light mt-4">Contact Information</h3></p>
+                                <hr>
+                                <div class="mb-3">
+                                    <label class="font-weight-bold" for="contactName">Contact Name</label>
+                                    <input type="text" class="form-control" id="contactName" name="contactName" value="{{companyInfo.contactName}}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="font-weight-bold" for="contactPhone">Contact Phone</label>
+                                    <input type="text" class="form-control" id="contactPhone" name="contactPhone" value="{{companyInfo.contactPhone}}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="font-weight-bold" for="contactEmail">Contact Email</label>
+                                    <input type="text" class="form-control" id="contactEmail" name="contactEmail" value="{{companyInfo.contactEmail}}">
+                                </div>
+                                <button type="submit" class="btn btn-block mb-3 btn-dark" id="updateCompanyInfo">Update</button>
+                            </form>
+</div>
+                        </div>
+                        <div class="tab-pane fade" id="securityTab" role="tabpanel" aria-labelledby="security-tab">security-tab</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script type="text/javascript" src="/assets/js/settings.js"></script>

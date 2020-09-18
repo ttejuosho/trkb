@@ -1,7 +1,9 @@
 const db = require('../models');
 const moment = require("moment");
 const Sequelize = require("sequelize");
+const sequelize = require("sequelize");
 const Op = Sequelize.Op;
+const Security = require('../services/security/security.js');
 
 module.exports = (app) => {
     app.get('/api/getTransactions', (req,res) => {
@@ -13,7 +15,7 @@ module.exports = (app) => {
         })
     });
 
-    app.get('/api/getTransactionById/:transactionId', (req,res)=>{
+    app.get('/api/getTransactionById/:transactionId', Security.isLoggedIn ,(req,res)=>{
         db.Transaction.findByPk(req.params.transactionId).then((dbTransaction)=>{
             res.json(dbTransaction);
         });
@@ -114,7 +116,7 @@ module.exports = (app) => {
 
     app.get('/api/getUsers', (req,res)=>{
         db.User.findAll({
-            attributes: {exclude: ['password']}
+            attributes: {exclude: ['password', 'resetPasswordToken', 'resetPasswordExpires']}
         }).then((dbUser)=>{
             res.json(dbUser);
         }).catch((err)=>{
@@ -217,7 +219,7 @@ module.exports = (app) => {
     app.get('/api/getLocations', (req, res) => {
         db.Location.findAll({
             where: {
-                companyUID: companyUID
+                companyUID: res.locals.companyUID
             }
         }).then((dbLocation)=>{
             res.json(dbLocation);
@@ -275,6 +277,26 @@ module.exports = (app) => {
             locationContactPhone: req.body.locationContactPhone
         }).then((dbLocation)=>{
             res.json(dbLocation);
+        }).catch((err)=>{
+            res.json(err);
+        });
+    });
+
+    app.get('/api/getAgents', async (req,res)=>{
+        const data = await db.sequelize.query('SELECT `User`.`userId`, `User`.`name`, `User`.`emailAddress`, `User`.`phoneNumber`, `Locations`.`locationId` AS `locationId`,  `Locations`.`locationUID` AS `locationUID`, `Locations`.`locationName` AS `locationName` FROM `Users` AS `User` LEFT OUTER JOIN `Locations` AS `Locations` ON `User`.`locationUID` = `Locations`.`locationUID` WHERE `User`.`companyUID` = ' + res.locals.companyUID , {
+            type: sequelize.QueryTypes.SELECT
+        });
+
+        return res.status(200).json(data);
+    });
+
+    app.get('/api/getCompanyInfo', (req, res) => {
+        db.Company.findOne({
+            where: {
+                companyUID: res.locals.companyUID
+            }
+        }).then((dbCompany)=>{
+            res.json(dbCompany);
         }).catch((err)=>{
             res.json(err);
         });

@@ -42,7 +42,7 @@ exports.getiForgotPage = (req, res) => {
   });
 };
 
-exports.getResetPasswordPage = (req, res) => {
+exports.getPasswordResetPage = (req, res) => {
   db.User.findOne({
     where: {
       resetPasswordToken: req.params.token,
@@ -161,6 +161,7 @@ exports.newLocation = (req, res) => {
               layout: "partials/prelogin",
               signup: true,
               companyUID: req.body.companyUID,
+              companyName: req.body.companyName,
               locations: locations
             });
           })
@@ -194,6 +195,7 @@ exports.signup = (req, res, next) => {
         layout: "partials/prelogin",
         error: "Invalid Company Id",
         companyUID: req.body.companyUID,
+        companyName: req.body.companyName,
         locationUID: req.body.locationUID,
         emailAddress: req.body.emailAddress,
         name: req.body.name,
@@ -210,12 +212,15 @@ exports.signup = (req, res, next) => {
           layout: "partials/prelogin",
           error: "Password mismatch",
           companyUID: req.body.companyUID,
+          companyName: req.body.companyName,
           locationUID: req.body.locationUID,
           emailAddress: req.body.emailAddress,
           name: req.body.name,
         });
       } else {
-        res.locals.companyUID = dbCompany.dataValues.companyUID;
+        req.session.userInfo = {};
+        req.session.userInfo.companyUID = dbCompany.dataValues.companyUID;
+        req.session.userInfo.companyName = req.body.companyName;
         // check if Email address exists
         db.User.findOne({
           where: {
@@ -229,6 +234,7 @@ exports.signup = (req, res, next) => {
               error:
                 "Email is taken, Please use the password reset link or choose a new email",
               companyUID: req.body.companyUID,
+              companyName: req.body.companyName,
               locationUID: req.body.locationUID,
               emailAddress: req.body.emailAddress,
               name: req.body.name,
@@ -255,6 +261,7 @@ exports.signup = (req, res, next) => {
                   };
                   return res.render("auth/auth", msg);
                 }
+
                 res.redirect("/");
               });
             })(req, res, next);
@@ -289,8 +296,19 @@ exports.signin = (req, res, next) => {
         };
         return res.render("auth/auth", msg);
       }
+      
+      db.Company.findOne({
+        where: {
+          companyUID: user.companyUID
+        },
+        raw: true
+      }).then((dbCompany)=>{
+        req.session.userInfo = {};
+        req.session.userInfo.companyId = dbCompany.companyId;
+        req.session.userInfo.companyName = dbCompany.companyName;
+        return res.redirect("/");
+      });
 
-      return res.redirect("/");
     });
   })(req, res, next);
 };
@@ -356,7 +374,7 @@ exports.sendPasswordResetEmail = (req, res) => {
   });
 };
 
-exports.resetPassword = (req, res) => {
+exports.passwordReset = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     (errors.resetPassword = true), (errors.token = req.params.token);
@@ -424,8 +442,75 @@ exports.resetPassword = (req, res) => {
   }
 };
 
-exports.signout = function (req, res) {
+exports.ResetPassword = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errors.resetPasswordError = true;
+    return res.render("profile", errors);
+  } else if (req.body.newPassword !== req.body.confirmPassword) {
+    const hbsObject = {
+      resetPasswordError: true,
+      error: "Passwords dont match",
+      companyUID: res.locals.companyUID,
+      locationUID: res.locals.locationUID,
+      name: res.locals.name,
+      emailAddress: res.locals.emailAddress,
+      phoneNUmber: res.locals.phoneNumber
+    };
+
+    return res.render("profile", hbsObject);
+  } else {
+    const userPassword = bCrypt.hashSync(
+      req.body.newPassword,
+      bCrypt.genSaltSync(8),
+      null
+    );
+    db.User.update(
+      { password: userPassword },
+      {
+        where: {
+          userId: res.locals.userId,
+        },
+      }
+    );
+    const name = res.locals.name;
+    const subject = "Your TrKB Password has changed";
+    const emailBody = `
+          <p>Hello ${name},</p>
+          <p style="color: black;">Your password has been successfully reset.</p>    
+          <p>Click <a href="https://trkb.herokuapp.com/signin">here to Log In</a>.</p>
+          <span style="font-size: 1rem;color: black;"><strong>TrKB Inc.</strong></span>`;
+    return new Promise((resolve, reject) => {
+      sendEmail(emailBody, subject, res.locals.emailAddress);
+      return res.redirect("/profile");
+    });
+  }
+};
+
+exports.signout = (req, res) => {
   req.session.destroy(function (err) {
     res.redirect("/signin");
   });
+};
+
+exports.updateUserDetails = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errors.name = req.body.name;
+    errors.emailAddress = req.body.emailAddress;
+    errors.phoneNumber = req.body.phoneNumber;
+    return res.render("profile", errors);
+  }
+
+  db.User.update(
+    {
+      name: req.body.name,
+      emailAddress: req.body.emailAddress,
+      phoneNUmber: req.body.phoneNumber
+    },
+    {
+      where: { userId: res.locals.userId } 
+  }).then((dbUser)=>{
+    return res.redirect('/profile');
+  })
 };

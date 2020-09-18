@@ -24,4 +24,20 @@ module.exports = function(app) {
     app.post('/search', 
     [ check('searchQuery').not().isEmpty().escape().withMessage('Enter a valid search term') ],
     Security.isLoggedIn, finRecController.search);
+
+    app.get('/profile', Security.isLoggedIn, finRecController.GetProfilePage);
+    app.get('/settings', Security.isLoggedIn, finRecController.GetSettingsPage);
+    app.post('/updateCompanyInfo', 
+    [
+        check('companyName').not().isEmpty().escape().withMessage('Company name is required'),
+        check('companyEmail').not().isEmpty().escape().withMessage('Email is required'),
+        check('companyAddress').not().isEmpty().escape().withMessage('Address is required'),
+        check('companyCity').not().isEmpty().escape().withMessage('City is required'),
+        check('companyState').not().isEmpty().escape().withMessage('State is required'),
+        check('companyPhone').not().isEmpty().escape().withMessage('Phone number is required'),
+        check('contactName').not().isEmpty().escape().withMessage('Contact name is required'),
+        check('contactEmail').not().isEmpty().escape().withMessage('Contact email is required'),
+        check('contactPhone').not().isEmpty().escape().withMessage('Contact phone is required'),
+    ],
+    Security.isLoggedIn, finRecController.UpdateCompanyInfo);
 }

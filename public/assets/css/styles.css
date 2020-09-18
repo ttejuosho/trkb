@@ -125,8 +125,18 @@ input.checkbox-lg {
 .btn span.glyphicon {    			
 	opacity: 0;				
 }
+
 .btn.active span.glyphicon {				
 	opacity: 1;				
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #343a40;
+}
+
+a.nav-link{
+    color: #343a40;
 }
 
 @media (max-width: 800px) {

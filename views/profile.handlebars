@@ -1,0 +1,76 @@
+<main role="main">
+   <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3 text-center mt-4">Personal Details</h1>
+            <div class="form-row justify-content-center">
+                <div class="col-12 col-md-6 mb-2 mb-md-0">
+                    <div class="mb-3">
+                        <label class="font-weight-bold" for="companyUID">Company Id</label>
+                        <input type="text" class="form-control" id="companyUID" name="companyUID" value="{{companyUID}}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="font-weight-bold" for="locationUID">Location Id</label>
+                        <input type="text" class="form-control" id="locationUID" name="locationUID" value="{{locationUID}}" readonly>
+                    </div>
+                    <form id="userDetailsForm" action="/updateUserDetails" method="POST">
+                        <div class="mb-3">
+                            <label class="font-weight-bold" for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{name}}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="font-weight-bold" for="email">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{emailAddress}}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="font-weight-bold" for="phoneNumber">Phone Number</label>
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="{{phoneNumber}}">
+                        </div>
+
+                        <button type="submit" class="btn btn-block mb-3 btn-dark" id="updateDetails">Update</button>
+                    </form>
+
+                    {{#if resetPasswordError}}
+                    {{else}}
+                        <p id="changePassword"><a href="#" role="button">Change Password</a></p>
+                    {{/if}}
+                 
+                    <div {{#if resetPasswordError}} class="fdx" {{else}}class="d-none"{{/if}} id="changePasswordDiv">
+                        <hr>
+                        <h3 class="font-weight-light mt-4">Change Password</h3>
+                        <hr>
+                        <form id="resetPasswordForm" action="/resetPassword" method="POST">
+                        {{#if resetPasswordError}}<p class="text-danger mb-1">{{error}}</p>{{/if}}
+                            <div class="mb-3">
+                                <label class="font-weight-bold" for="newPassword">New Password</label>
+                                <input type="password" class="form-control" id="newPassword" name="newPassword" value="">
+                                {{#if errors}}
+                                {{#each errors}}
+                                {{#ifEquals param "newPassword"}}
+                                <div class="messages text-danger mb-2">{{msg}}</div>
+                                {{/ifEquals}}
+                                {{/each}}
+                                {{/if}}
+                            </div>
+                            <div class="mb-3">
+                                <label class="font-weight-bold" for="confirmPassword">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" value="">
+                                {{#if errors}}
+                                {{#each errors}}
+                                {{#ifEquals param "confirmPassword"}}
+                                <div class="messages text-danger mb-2">{{msg}}</div>
+                                {{/ifEquals}}
+                                {{/each}}
+                                {{/if}}
+                            </div>
+
+                            <input type="submit" value="Update Password" name="action" class="btn btn-sm btn-dark float-right" />
+                            <button type="button" class="btn btn-sm btn-danger" id="cancelChangePassword">Cancel</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript" src="/assets/js/profile.js"></script>
