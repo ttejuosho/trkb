@@ -1,3 +1,5 @@
+localStorage.removeItem('activeTab');
+
 $('#searchBy').selectize({
     onChange: function (value) {
         if(value.length > 0){ getDropdownData(value); }

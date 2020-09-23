@@ -1,3 +1,5 @@
+localStorage.removeItem('activeTab');
+
 $('#locationUID').selectize({
     maxItems: 1,
     create: false,

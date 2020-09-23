@@ -1,3 +1,5 @@
+localStorage.removeItem('activeTab');
+
 $('#changePassword').click(()=>{
     $('#changePasswordDiv').removeClass('d-none');
     $('#changePassword').addClass('d-none');

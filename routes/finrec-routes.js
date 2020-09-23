@@ -34,10 +34,8 @@ module.exports = function(app) {
         check('companyAddress').not().isEmpty().escape().withMessage('Address is required'),
         check('companyCity').not().isEmpty().escape().withMessage('City is required'),
         check('companyState').not().isEmpty().escape().withMessage('State is required'),
-        check('companyPhone').not().isEmpty().escape().withMessage('Phone number is required'),
-        check('contactName').not().isEmpty().escape().withMessage('Contact name is required'),
-        check('contactEmail').not().isEmpty().escape().withMessage('Contact email is required'),
-        check('contactPhone').not().isEmpty().escape().withMessage('Contact phone is required'),
+        check('companyPhone').not().isEmpty().escape().withMessage('Phone number is required')
     ],
     Security.isLoggedIn, finRecController.UpdateCompanyInfo);
+
 }
