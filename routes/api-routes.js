@@ -18,7 +18,7 @@ module.exports = (app) => {
 
   app.get(
     "/api/getTransactionById/:transactionId",
-    Security.isLoggedIn,
+    Security.authorize,
     (req, res) => {
       db.Transaction.findByPk(req.params.transactionId).then(
         (dbTransaction) => {
@@ -439,7 +439,8 @@ module.exports = (app) => {
   app.get("/api/getLocationData/:locationUID", async (req, res) => {
     try {
       const data = await db.sequelize.query(
-        "SELECT `Transaction`.`transactionId`, `Transaction`.`transactionUID`,`Transaction`.`companyUID`,`Transaction`.`locationUID`,`Transaction`.`transactionTerminal`,`Transaction`.`transactionType`,`Transaction`.`amountReceived`,`Transaction`.`amountPaid`,`Transaction`.`posCharge`,`Transaction`.`estimatedCharge`,`Transaction`.`transactionCharge`,`Transaction`.`customerName`,`Transaction`.`customerPhone`,`Transaction`.`customerEmail`,`Transaction`.`preparedBy`,`Transaction`.`createdAt`,`Location`.`locationId` AS `locationId`,`Location`.`locationUID` AS `locationUID`,`Location`.`locationName` AS `locationName`,`Location`.`locationAddress` AS `locationAddress`,`Location`.`locationCity` AS `locationCity`,`Location`.`locationState` AS `locationState`,`Location`.`locationPhone` AS `locationPhone` FROM `Transactions` AS `Transaction` LEFT OUTER JOIN `Locations` AS `Location` ON `Transaction`.`locationUID` = `Location`.`locationUID` WHERE `Transaction`.`locationUID` =" + req.params.locationUID,
+        "SELECT `Transaction`.`transactionId`, `Transaction`.`transactionUID`,`Transaction`.`companyUID`,`Transaction`.`locationUID`,`Transaction`.`transactionTerminal`,`Transaction`.`transactionType`,`Transaction`.`amountReceived`,`Transaction`.`amountPaid`,`Transaction`.`posCharge`,`Transaction`.`estimatedCharge`,`Transaction`.`transactionCharge`,`Transaction`.`customerName`,`Transaction`.`customerPhone`,`Transaction`.`customerEmail`,`Transaction`.`preparedBy`,`Transaction`.`createdAt`,`Location`.`locationId` AS `locationId`,`Location`.`locationUID` AS `locationUID`,`Location`.`locationName` AS `locationName`,`Location`.`locationAddress` AS `locationAddress`,`Location`.`locationCity` AS `locationCity`,`Location`.`locationState` AS `locationState`,`Location`.`locationPhone` AS `locationPhone` FROM `Transactions` AS `Transaction` LEFT OUTER JOIN `Locations` AS `Location` ON `Transaction`.`locationUID` = `Location`.`locationUID` WHERE `Transaction`.`locationUID` =" +
+          req.params.locationUID,
         {
           type: sequelize.QueryTypes.SELECT,
         }
@@ -472,11 +473,10 @@ module.exports = (app) => {
           };
           result.Transactions.push(temp);
         });
-    } else {
+      } else {
         result = data;
-    }
-        return res.status(200).json(result);
-
+      }
+      return res.status(200).json(result);
     } catch (errors) {
       return res.json(errors);
     }
