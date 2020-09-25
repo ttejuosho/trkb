@@ -344,13 +344,13 @@ exports.sendPasswordResetEmail = (req, res) => {
     const emailBody = `
           <p>Hello ${userInfo.name},</p>
           <p style="color: black;">Ready to reset your password ?.</p>    
-          <p>Click <a href="https://torokobo.herokuapp.com/passwordreset/${token}">Reset now</a> to begin.</p>
+          <p>Click <a href="https://trkb.herokuapp.com/passwordreset/${token}">Reset now</a> to begin.</p>
           <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
           <span style="font-size: 1rem;color: black;"><strong>Kowope Enterprises.</strong></span>
           `;
 
     return new Promise((resolve, reject) => {
-      sendEmail(emailBody, subject, userInfo.emailAddress);
+      sendEmail("TrKB Financials", emailBody, subject, userInfo.emailAddress);
       db.User.update(
         {
           resetPasswordExpires: userInfo.resetPasswordExpires,
@@ -429,10 +429,15 @@ exports.passwordReset = (req, res) => {
         const emailBody = `
               <p>Hello ${name},</p>
               <p style="color: black;">Your password has been successfully reset.</p>    
-              <p>Click <a href="https://torokobo.herokuapp.com/signin">here to Log In</a>.</p>
+              <p>Click <a href="https://trkb.herokuapp.com/signin">here to Log In</a>.</p>
               <span style="font-size: 1rem;color: black;"><strong>Kowope Enterprises.</strong></span>`;
         return new Promise((resolve, reject) => {
-          sendEmail(emailBody, subject, dbUser.dataValues.emailAddress);
+          sendEmail(
+            req.session.userInfo.companyName,
+            emailBody,
+            subject,
+            dbUser.dataValues.emailAddress
+          );
           return res.redirect("/signin");
         });
       }
@@ -479,7 +484,7 @@ exports.ResetPassword = (req, res) => {
           <p>Click <a href="https://trkb.herokuapp.com/signin">here to Log In</a>.</p>
           <span style="font-size: 1rem;color: black;"><strong>TrKB Inc.</strong></span>`;
     return new Promise((resolve, reject) => {
-      sendEmail(emailBody, subject, res.locals.emailAddress);
+      sendEmail("TrKB Financial", emailBody, subject, res.locals.emailAddress);
       return res.redirect("/profile");
     });
   }

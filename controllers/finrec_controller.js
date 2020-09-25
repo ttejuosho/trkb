@@ -94,12 +94,17 @@ exports.SaveNewTransaction = (req, res) => {
                     
                     <p>Click <a href="https://trkb.herokuapp.com/">here</a> to visit us online.</p>
                     <span style="font-size: 1rem;color: black;"><strong>${
-                      res.locals.companyName
+                      req.session.userInfo.companyName
                     }</strong></span>
                     `;
 
       return new Promise((resolve, reject) => {
-        sendEmail(emailBody, subject, req.body.customerEmail);
+        sendEmail(
+          req.session.userInfo.companyName,
+          emailBody,
+          subject,
+          req.body.customerEmail
+        );
         return res.render("newTransaction", {
           transactionSaved: true,
           transactionUID: dbTransaction.dataValues.transactionUID,

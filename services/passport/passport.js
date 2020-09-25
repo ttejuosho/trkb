@@ -72,10 +72,15 @@ module.exports = function (passport, user) {
                 //Send Confirmation Email to new user
                 const emailBody = `
           <p>Hello ${req.body.name},</p>
-          <p style="color: black;">Your account is set and you're all good to go. Click <a href="https://torokobo.herokuapp.com/">here</a> to sign in to manage your business finances.</p>
+          <p style="color: black;">Your account is set and you're all good to go. Click <a href="https://trkb.herokuapp.com/">here</a> to sign in to manage your business finances.</p>
           <p> <span style="font-size: 1rem;color: black;"><strong>The TRKB Team</strong></span></p>
           `;
-                sendEmail(emailBody, "Welcome to Torokobo!", email);
+                sendEmail(
+                  "TrKB Financial",
+                  emailBody,
+                  "Welcome to Torokobo!",
+                  email
+                );
               });
           }
         });

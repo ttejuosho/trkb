@@ -1,13 +1,13 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
-const sendEmail = function(emailBody, subject, recipients) {
+const sendEmail = function (companyName, emailBody, subject, recipients) {
   console.log(process.env.EMAIL_PASSWORD);
   const transporter = nodemailer.createTransport({
-    host: 'smtp.aol.com',
+    host: "smtp.aol.com",
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: 'ttejuosho@aol.com', // user
+      user: "ttejuosho@aol.com", // user
       pass: process.env.EMAIL_PASSWORD, // password
     },
     tls: {
@@ -21,7 +21,7 @@ const sendEmail = function(emailBody, subject, recipients) {
   // }));
 
   const mailOptions = {
-    from: '"Kowope & Sons" <ttejuosho@aol.com>', // sender address
+    from: companyName + "<ttejuosho@aol.com>", // sender address
     to: recipients, // list of receivers
     subject: subject, // Subject line
     // text: 'Hello world?', // plain text body
@@ -33,7 +33,7 @@ const sendEmail = function(emailBody, subject, recipients) {
     if (error) {
       console.log(error);
     } else {
-      console.log('Message ID: %s', info.messageId);
+      console.log("Message ID: %s", info.messageId);
       console.log(info.envelope.to.toString());
     }
   });
