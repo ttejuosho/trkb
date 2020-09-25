@@ -1,10 +1,10 @@
-const jwt = require("jsonwebtoken");
+const { roles } = require("./role");
 
 exports.isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect("/signin");
+  return res.redirect("/signin");
 };
 
 exports.validateEmail = (email) => {
@@ -18,12 +18,19 @@ exports.validateEmail = (email) => {
   return false;
 };
 
-exports.authorize = (req, res, next) => {
-  try {
-    const token = req.headers.authorization.split(" ")[1];
-    jwt.verify(token, "longer-secret-is-better");
-    next();
-  } catch (error) {
-    res.status(401).json({ message: "Authentication failed!" });
+exports.authenticate = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
   }
+  return res.status(401).json({ message: "Authentication failed!" });
+};
+
+exports.grantAccess = (role, action, resource) => {
+  const permission = roles.can(role)[action](resource);
+  if (!permission.granted) {
+    return res.status(401).json({
+      error: "You don't have enough permission to perform this action",
+    });
+  }
+  return true;
 };

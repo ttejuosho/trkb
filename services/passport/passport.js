@@ -2,7 +2,6 @@
 // const session = require('express-session');
 // load bcrypt
 const bCrypt = require("bcrypt-nodejs");
-const JsonWebToken = require("jsonwebtoken");
 const db = require("../../models");
 const sendEmail = require("../email/email.js");
 
@@ -119,17 +118,10 @@ module.exports = function (passport, user) {
               });
             }
             const userInfo = user.get();
-            var token = JsonWebToken.sign(
-              JSON.parse(JSON.stringify(user)),
-              "nodeauthsecret",
-              { expiresIn: 8640 * 30 }
-            );
-            JsonWebToken.verify(token, "nodeauthsecret", (err, data) => {
-              return done(null, userInfo);
-            });
+            return done(null, userInfo);
           })
           .catch(function (err) {
-            console.log("Error:", err);
+            //console.log("Error:", err);
             return done(null, false, {
               message: "Something went wrong with your Signin",
             });

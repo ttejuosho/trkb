@@ -20,7 +20,7 @@ exports.getSignupPage = (req, res) => {
     title: "Sign Up",
     layout: "partials/prelogin",
     signup: true,
-    newRegistration: true
+    newRegistration: true,
   });
 };
 
@@ -29,9 +29,9 @@ exports.getNewLocationPage = (req, res) => {
     title: "New Location",
     layout: "partials/prelogin",
     newLocation: true,
-    companyUID: res.locals.companyUID
+    companyUID: res.locals.companyUID,
   });
-}
+};
 
 // Render Forgot Password page
 exports.getiForgotPage = (req, res) => {
@@ -131,30 +131,30 @@ exports.newLocation = (req, res) => {
   var locationUID = Math.floor(Math.random() * 90000) + 10000;
   db.Location.findOne({
     where: {
-      locationName: req.body.locationName
-    }
-  }).then((dbLocation)=>{
-    if(dbLocation == null){
+      locationName: req.body.locationName,
+    },
+  }).then((dbLocation) => {
+    if (dbLocation == null) {
       db.Location.create({
         locationUID: locationUID,
         companyUID: req.body.companyUID,
-        locationName: req.body.locationName
-      }).then((dbLocation)=>{
-        if(req.body.action === "New Location"){
+        locationName: req.body.locationName,
+      }).then((dbLocation) => {
+        if (req.body.action === "New Location") {
           return res.render("auth/auth", {
             layout: "partials/prelogin",
             newLocation: true,
             companyUID: req.body.companyUID,
-            companyName: req.body.companyName
+            companyName: req.body.companyName,
           });
         } else {
           db.Location.findAll({
             where: {
-              companyUID: req.body.companyUID
-            }
-          }).then((dbLocation)=>{
+              companyUID: req.body.companyUID,
+            },
+          }).then((dbLocation) => {
             var locations = [];
-            for(var i = 0; i < dbLocation.length; i++){
+            for (var i = 0; i < dbLocation.length; i++) {
               locations.push(dbLocation[i].dataValues);
             }
             return res.render("auth/auth", {
@@ -162,9 +162,9 @@ exports.newLocation = (req, res) => {
               signup: true,
               companyUID: req.body.companyUID,
               companyName: req.body.companyName,
-              locations: locations
+              locations: locations,
             });
-          })
+          });
         }
       });
     } else {
@@ -174,12 +174,11 @@ exports.newLocation = (req, res) => {
         newLocation: true,
         companyUID: req.body.companyUID,
         companyName: req.body.companyName,
-        error: "Location already exists."
+        error: "Location already exists.",
       });
     }
-  })
-
-}
+  });
+};
 
 exports.signup = (req, res, next) => {
   //Validate Company Id
@@ -296,19 +295,18 @@ exports.signin = (req, res, next) => {
         };
         return res.render("auth/auth", msg);
       }
-      
+
       db.Company.findOne({
         where: {
-          companyUID: user.companyUID
+          companyUID: user.companyUID,
         },
-        raw: true
-      }).then((dbCompany)=>{
+        raw: true,
+      }).then((dbCompany) => {
         req.session.userInfo = {};
         req.session.userInfo.companyId = dbCompany.companyId;
         req.session.userInfo.companyName = dbCompany.companyName;
         return res.redirect("/");
       });
-
     });
   })(req, res, next);
 };
@@ -455,7 +453,7 @@ exports.ResetPassword = (req, res) => {
       locationUID: res.locals.locationUID,
       name: res.locals.name,
       emailAddress: res.locals.emailAddress,
-      phoneNUmber: res.locals.phoneNumber
+      phoneNUmber: res.locals.phoneNumber,
     };
 
     return res.render("profile", hbsObject);
@@ -506,11 +504,12 @@ exports.updateUserDetails = (req, res) => {
     {
       name: req.body.name,
       emailAddress: req.body.emailAddress,
-      phoneNUmber: req.body.phoneNumber
+      phoneNUmber: req.body.phoneNumber,
     },
     {
-      where: { userId: res.locals.userId } 
-  }).then((dbUser)=>{
-    return res.redirect('/profile');
-  })
+      where: { userId: res.locals.userId },
+    }
+  ).then((dbUser) => {
+    return res.redirect("/profile");
+  });
 };

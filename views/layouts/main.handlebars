@@ -16,49 +16,53 @@
   <link rel="stylesheet" href="/assets/css/selectize.bootstrap4.css" />
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <link rel="stylesheet" href="/assets/js/DataTables2/datatables.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+    crossorigin="anonymous" />
+
   <script type="text/javascript" src="/assets/js/jquery/jquery.js"></script>
   <script type="text/javascript" src="/assets/js/bootstrap-js/bootstrap.min.js"></script>
   <script type="text/javascript" src="/assets/js/selectize/selectize.js"></script>
   <script type="text/javascript" src="/assets/js/moment.js"></script>
   <script type="text/javascript" src="/assets/js/DataTables2/datatables.min.js"></script>
-  
+
 </head>
 
 <body class="d-flex flex-column h-100">
 
   <!-- Navigation -->
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <a class="navbar-brand" href="/">TrKB</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-        aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+      aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto"></ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li class="nav-item"><a href="/transaction/new" class="nav-link">New Transaction</a></li>
-          <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>
-          <li class="nav-item"><a href="/settings" class="nav-link">Settings</a></li>
-          <li class="nav-item"><a href="/signout" class="nav-link">Sign Out</a></li>
-        </ul>
+      <ul class="navbar-nav mr-auto"></ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="nav-item"><a href="/transaction/new" class="nav-link">New Transaction</a></li>
+        <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>
+        <li class="nav-item"><a href="/settings" class="nav-link">Settings</a></li>
+        <li class="nav-item"><a href="/signout" class="nav-link">Sign Out</a></li>
+      </ul>
     </div>
-</nav>
+  </nav>
 
   <!-- Page Content -->
-{{{ body }}}
+  {{{ body }}}
   <!-- /.container -->
 
   <!-- Footer -->
-<footer class="footer mt-auto py-3 bg-dark">
-  <div class="container">
-    <span class="text-muted">Kowope Inc. &copy; Taiwo Tejuosho 2020</span>
-  </div>
-</footer>
+  <footer class="footer mt-auto py-3 bg-dark">
+    <div class="container">
+      {{!-- <span class="text-muted">Kowope Inc. &copy; Taiwo Tejuosho 2020</span> --}}
+      <span class="text-muted">{{companyName}} &copy; Taiwo Tejuosho 2020</span>
+    </div>
+  </footer>
 
   <!-- Bootstrap core JavaScript -->
 </body>
 <script type="text/javascript" src="/assets/js/app.js"></script>
+
 </html>

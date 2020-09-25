@@ -15,16 +15,18 @@ exports.CheckApi = (req, res) => {
   });
 };
 
-exports.GetSelectTransactionTypePage = (req, res) => {
-  return res.render("transactionType");
-};
-
 exports.GetNewTransactionForm = (req, res) => {
-  return res.render("newTransaction");
+  return res.render("newTransaction", {
+    companyName: req.session.userInfo.companyName,
+    companyId: req.session.userInfo.companyId,
+  });
 };
 
 exports.GetHomePage = (req, res) => {
-  return res.render("index");
+  return res.render("index", {
+    companyName: req.session.userInfo.companyName,
+    companyId: req.session.userInfo.companyId,
+  });
 };
 
 exports.GetTransactionDetails = (req, res) => {
@@ -32,8 +34,11 @@ exports.GetTransactionDetails = (req, res) => {
     where: {
       transactionUID: req.params.transactionUID,
     },
+    raw: true,
   }).then((dbTransaction) => {
-    return res.render("transactionDetails", dbTransaction.dataValues);
+    dbTransaction.companyName = req.session.userInfo.companyName;
+    dbTransaction.companyId = req.session.userInfo.companyId;
+    return res.render("transactionDetails", dbTransaction);
   });
 };
 
@@ -49,6 +54,8 @@ exports.SaveNewTransaction = (req, res) => {
     errors.customerName = req.body.customerName;
     errors.customerPhone = req.body.customerPhone;
     errors.customerEmail = req.body.customerEmail;
+    errors.companyName = req.session.userInfo.companyName;
+    errors.companyId = req.session.userInfo.companyId;
     return res.render("newTransaction", errors);
   }
 
@@ -96,12 +103,16 @@ exports.SaveNewTransaction = (req, res) => {
         return res.render("newTransaction", {
           transactionSaved: true,
           transactionUID: dbTransaction.dataValues.transactionUID,
+          companyName: req.session.userInfo.companyName,
+          companyId: req.session.userInfo.companyId,
         });
       });
     }
     return res.render("newTransaction", {
       transactionSaved: true,
       transactionUID: dbTransaction.dataValues.transactionUID,
+      companyName: req.session.userInfo.companyName,
+      companyId: req.session.userInfo.companyId,
     });
   });
 };
@@ -138,6 +149,8 @@ exports.search = (req, res) => {
     .then((dbTransaction) => {
       if (dbTransaction.length > 0) {
         var data = {
+          companyName: req.session.userInfo.companyName,
+          companyId: req.session.userInfo.companyId,
           count: dbTransaction.length,
           results: [],
         };
@@ -180,15 +193,15 @@ exports.GetProfilePage = async (req, res) => {
       },
       raw: true,
     });
-    //console.log(userInfo);
-    //console.log(companyInfo);
-    //console.log(locationInfo);
+
     const hbsObject = {
       name: res.locals.name,
       companyUID: res.locals.companyUID,
       locationUID: res.locals.locationUID,
       emailAddress: res.locals.emailAddress,
       phoneNumber: res.locals.phoneNumber,
+      companyName: req.session.userInfo.companyName,
+      companyId: req.session.userInfo.companyId,
     };
     res.render("profile", hbsObject);
   } catch (error) {
@@ -220,6 +233,8 @@ exports.GetSettingsPage = async (req, res) => {
 
     const hbsObject = {
       companyInfo: companyInfo,
+      companyName: req.session.userInfo.companyName,
+      companyId: req.session.userInfo.companyId,
     };
 
     res.render("settings", hbsObject);
@@ -278,4 +293,3 @@ exports.UpdateCompanyInfo = async (req, res) => {
     console.log("There was an error: ", error);
   }
 };
-

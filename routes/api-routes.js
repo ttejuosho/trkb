@@ -3,7 +3,8 @@ const moment = require("moment");
 const Sequelize = require("sequelize");
 const sequelize = require("sequelize");
 const Op = Sequelize.Op;
-const Security = require("../services/security/security.js");
+const { authenticate } = require("../services/security/security.js");
+const { grantAccess } = require("../services/security/security.js");
 const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
 
@@ -18,8 +19,9 @@ module.exports = (app) => {
 
   app.get(
     "/api/getTransactionById/:transactionId",
-    Security.authorize,
+    authenticate,
     (req, res) => {
+      grantAccess(req.user.role, "readAny", "transaction");
       db.Transaction.findByPk(req.params.transactionId).then(
         (dbTransaction) => {
           res.json(dbTransaction);
@@ -28,109 +30,145 @@ module.exports = (app) => {
     }
   );
 
-  app.get("/api/getTransactionsByPreparer/:preparedBy", (req, res) => {
-    db.Transaction.findAll({
-      where: {
-        preparedBy: req.params.preparedBy,
-      },
-    }).then((dbTransaction) => {
-      res.json(dbTransaction);
-    });
-  });
-
-  app.get("/api/getTransactionsByType/:transactionType", (req, res) => {
-    db.Transaction.findAll({
-      where: {
-        transactionType: req.params.transactionType,
-      },
-    }).then((dbTransaction) => {
-      res.json(dbTransaction);
-    });
-  });
-
-  app.get("/api/getTransactionsByTerminal/:transactionTerminal", (req, res) => {
-    db.Transaction.findAll({
-      where: {
-        transactionTerminal: req.params.transactionTerminal,
-      },
-    }).then((dbTransaction) => {
-      res.json(dbTransaction);
-    });
-  });
-
-  app.get("/api/getTransactionsByDateRange/:startDate/:endDate", (req, res) => {
-    // Date Format 2020-08-30T15:10:36.000Z
-    const ACCEPT_FORMAT = "YYYY-MM-DD hh:mm:ss";
-    const start_date = req.params.startDate;
-    const end_date = req.params.endDate;
-    const start = moment.utc(start_date, ACCEPT_FORMAT);
-    const end = moment.utc(end_date, ACCEPT_FORMAT);
-
-    db.Transaction.findAll({
-      where: {
-        createdAt: {
-          [Op.between]: [start, end],
+  app.get(
+    "/api/getTransactionByUID/:transactionUID",
+    authenticate,
+    (req, res) => {
+      db.Transaction.findOne({
+        where: {
+          transactionUID: req.params.transactionUID,
         },
-      },
-    })
-      .then((dbTransaction) => {
+      }).then((dbTransaction) => {
         res.json(dbTransaction);
-      })
-      .catch((error) => {
-        console.log(error);
       });
-  });
+    }
+  );
 
-  app.get("/api/transaction/delete/:transactionId", (req, res) => {
-    db.Transaction.findByPk(req.params.transactionId).then((dbTransaction) => {
-      if (dbTransaction !== null) {
-        db.Transaction.update(
-          { deleted: true },
-          {
-            where: {
-              transactionId: req.params.transactionId,
-            },
-          }
-        ).then((dbTransaction) => {
-          console.log(dbTransaction);
-          res.json(dbTransaction);
-        });
-      }
-    });
-  });
-
-  app.get("/api/getTransactionsByLocation/:locationUID", (req, res) => {
-    db.Transaction.findAll({
-      where: {
-        locationUID: req.params.locationUID,
-      },
-    }).then((dbTransaction) => {
-      res.json(dbTransaction);
-    });
-  });
-
-  app.get("/api/getDistinct/:columnName", (req, res) => {
-    if (req.isAuthenticated()) {
+  app.get(
+    "/api/getTransactionsByPreparer/:preparedBy",
+    authenticate,
+    (req, res) => {
       db.Transaction.findAll({
         where: {
-          companyUID: res.locals.companyUID,
+          preparedBy: req.params.preparedBy,
         },
-        attributes: [
-          [
-            Sequelize.fn("DISTINCT", Sequelize.col(req.params.columnName)),
-            "value",
-          ],
-        ],
-      })
-        .then((dbData) => {
-          res.json(dbData);
-        })
-        .catch((err) => {
-          res.json(err);
-        });
-    } else {
-      res.json({ Error: "Unauthorized" });
+      }).then((dbTransaction) => {
+        res.json(dbTransaction);
+      });
     }
+  );
+
+  app.get(
+    "/api/getTransactionsByType/:transactionType",
+    authenticate,
+    (req, res) => {
+      db.Transaction.findAll({
+        where: {
+          transactionType: req.params.transactionType,
+        },
+      }).then((dbTransaction) => {
+        res.json(dbTransaction);
+      });
+    }
+  );
+
+  app.get(
+    "/api/getTransactionsByTerminal/:transactionTerminal",
+    authenticate,
+    (req, res) => {
+      db.Transaction.findAll({
+        where: {
+          transactionTerminal: req.params.transactionTerminal,
+        },
+      }).then((dbTransaction) => {
+        res.json(dbTransaction);
+      });
+    }
+  );
+
+  app.get(
+    "/api/getTransactionsByDateRange/:startDate/:endDate",
+    authenticate,
+    (req, res) => {
+      // Date Format 2020-08-30T15:10:36.000Z
+      const ACCEPT_FORMAT = "YYYY-MM-DD hh:mm:ss";
+      const start_date = req.params.startDate;
+      const end_date = req.params.endDate;
+      const start = moment.utc(start_date, ACCEPT_FORMAT);
+      const end = moment.utc(end_date, ACCEPT_FORMAT);
+
+      db.Transaction.findAll({
+        where: {
+          createdAt: {
+            [Op.between]: [start, end],
+          },
+        },
+      })
+        .then((dbTransaction) => {
+          res.json(dbTransaction);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  );
+
+  app.get(
+    "/api/transaction/delete/:transactionId",
+    authenticate,
+    (req, res) => {
+      db.Transaction.findByPk(req.params.transactionId).then(
+        (dbTransaction) => {
+          if (dbTransaction !== null) {
+            db.Transaction.update(
+              { deleted: true },
+              {
+                where: {
+                  transactionId: req.params.transactionId,
+                },
+              }
+            ).then((dbTransaction) => {
+              console.log(dbTransaction);
+              res.json(dbTransaction);
+            });
+          }
+        }
+      );
+    }
+  );
+
+  app.get(
+    "/api/getTransactionsByLocation/:locationUID",
+    authenticate,
+    (req, res) => {
+      db.Transaction.findAll({
+        where: {
+          locationUID: req.params.locationUID,
+        },
+      }).then((dbTransaction) => {
+        res.json(dbTransaction);
+      });
+    }
+  );
+
+  app.get("/api/getDistinct/:columnName", authenticate, (req, res) => {
+    db.Transaction.findAll({
+      where: {
+        companyUID: res.locals.companyUID,
+      },
+      attributes: [
+        [
+          Sequelize.fn("DISTINCT", Sequelize.col(req.params.columnName)),
+          "value",
+        ],
+      ],
+    })
+      .then((dbData) => {
+        res.json(dbData);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
   });
 
   app.get("/api/getUsers", (req, res) => {
@@ -147,7 +185,7 @@ module.exports = (app) => {
       });
   });
 
-  app.get("/api/getUser/:userId", (req, res) => {
+  app.get("/api/getUser/:userId", authenticate, (req, res) => {
     db.User.findByPk(req.params.userId)
       .then((dbUser) => {
         res.json(dbUser);
@@ -157,42 +195,43 @@ module.exports = (app) => {
       });
   });
 
-  app.get("/api/getTransactions/:searchBy/:searchQuery", (req, res) => {
-    if (!req.isAuthenticated()) {
-      return res.status(401).send({ Error: "Please sign in" });
-    }
-    var searchObject = {};
-    searchObject[req.params.searchBy] = req.params.searchQuery;
-    searchObject["companyUID"] = res.locals.companyUID;
-    db.Transaction.findAll({
-      where: searchObject,
-      attributes: [
-        "transactionUID",
-        "locationUID",
-        "companyUID",
-        "transactionTerminal",
-        "transactionType",
-        "amountReceived",
-        "amountPaid",
-        "posCharge",
-        "estimatedCharge",
-        "transactionCharge",
-        "customerName",
-        "customerPhone",
-        "customerEmail",
-        "preparedBy",
-        "createdAt",
-      ],
-    })
-      .then((dbTransaction) => {
-        return res.json(dbTransaction);
+  app.get(
+    "/api/getTransactions/:searchBy/:searchQuery",
+    authenticate,
+    (req, res) => {
+      var searchObject = {};
+      searchObject[req.params.searchBy] = req.params.searchQuery;
+      searchObject["companyUID"] = res.locals.companyUID;
+      db.Transaction.findAll({
+        where: searchObject,
+        attributes: [
+          "transactionUID",
+          "locationUID",
+          "companyUID",
+          "transactionTerminal",
+          "transactionType",
+          "amountReceived",
+          "amountPaid",
+          "posCharge",
+          "estimatedCharge",
+          "transactionCharge",
+          "customerName",
+          "customerPhone",
+          "customerEmail",
+          "preparedBy",
+          "createdAt",
+        ],
       })
-      .catch((err) => {
-        res.json(err);
-      });
-  });
+        .then((dbTransaction) => {
+          return res.json(dbTransaction);
+        })
+        .catch((err) => {
+          res.json(err);
+        });
+    }
+  );
 
-  app.get("/api/search/:searchBy/:searchQuery", (req, res) => {
+  app.get("/api/search/:searchBy/:searchQuery", authenticate, (req, res) => {
     if (!req.isAuthenticated()) {
       return res.status(401).send({ Error: "Please sign in" });
     }
@@ -252,13 +291,13 @@ module.exports = (app) => {
       });
   });
 
-  app.post("/api/saveTransactions", (req, res) => {
+  app.post("/api/saveTransactions", authenticate, (req, res) => {
     db.Transaction.bulkCreate(req.body).then((dbTransaction) => {
       res.json(dbTransaction);
     });
   });
 
-  app.get("/api/getLocations", (req, res) => {
+  app.get("/api/getLocations", authenticate, (req, res) => {
     db.Location.findAll({
       where: {
         companyUID: res.locals.companyUID,
@@ -272,31 +311,35 @@ module.exports = (app) => {
       });
   });
 
-  app.get("/api/getLocationsByCompany/:companyUID", (req, res) => {
-    db.Company.findOne({
-      where: {
-        companyUID: req.params.companyUID,
-      },
-    }).then((dbCompany) => {
-      if (dbCompany !== null) {
-        db.Location.findAll({
-          where: {
-            companyUID: req.params.companyUID,
-          },
-        })
-          .then((dbLocation) => {
-            res.json(dbLocation);
+  app.get(
+    "/api/getLocationsByCompany/:companyUID",
+    authenticate,
+    (req, res) => {
+      db.Company.findOne({
+        where: {
+          companyUID: req.params.companyUID,
+        },
+      }).then((dbCompany) => {
+        if (dbCompany !== null) {
+          db.Location.findAll({
+            where: {
+              companyUID: req.params.companyUID,
+            },
           })
-          .catch((err) => {
-            res.json(err);
-          });
-      } else {
-        res.json({ message: "Company Id is invalid." });
-      }
-    });
-  });
+            .then((dbLocation) => {
+              res.json(dbLocation);
+            })
+            .catch((err) => {
+              res.json(err);
+            });
+        } else {
+          res.json({ message: "Company Id is invalid." });
+        }
+      });
+    }
+  );
 
-  app.get("/api/getLocationById/:locationUID", (req, res) => {
+  app.get("/api/getLocationById/:locationUID", authenticate, (req, res) => {
     db.Location.findOne({
       where: {
         locationUID: req.params.locationUID,
@@ -312,6 +355,7 @@ module.exports = (app) => {
 
   app.post(
     "/api/newAgent",
+    authenticate,
     [
       check("name").not().isEmpty().escape().withMessage("Name is required"),
       check("emailAddress")
@@ -363,6 +407,7 @@ module.exports = (app) => {
 
   app.post(
     "/api/newLocation",
+    authenticate,
     [
       check("locationName")
         .not()
@@ -410,7 +455,7 @@ module.exports = (app) => {
     }
   );
 
-  app.get("/api/getAgents", async (req, res) => {
+  app.get("/api/getAgents", authenticate, async (req, res) => {
     const data = await db.sequelize.query(
       "SELECT `User`.`userId`, `User`.`name`, `User`.`emailAddress`, `User`.`phoneNumber`, `Locations`.`locationId` AS `locationId`,  `Locations`.`locationUID` AS `locationUID`, `Locations`.`locationName` AS `locationName` FROM `Users` AS `User` LEFT OUTER JOIN `Locations` AS `Locations` ON `User`.`locationUID` = `Locations`.`locationUID` WHERE `User`.`companyUID` = " +
         res.locals.companyUID,
@@ -422,7 +467,7 @@ module.exports = (app) => {
     return res.status(200).json(data);
   });
 
-  app.get("/api/getCompanyInfo", (req, res) => {
+  app.get("/api/getCompanyInfo", authenticate, (req, res) => {
     db.Company.findOne({
       where: {
         companyUID: res.locals.companyUID,
@@ -436,49 +481,53 @@ module.exports = (app) => {
       });
   });
 
-  app.get("/api/getLocationData/:locationUID", async (req, res) => {
-    try {
-      const data = await db.sequelize.query(
-        "SELECT `Transaction`.`transactionId`, `Transaction`.`transactionUID`,`Transaction`.`companyUID`,`Transaction`.`locationUID`,`Transaction`.`transactionTerminal`,`Transaction`.`transactionType`,`Transaction`.`amountReceived`,`Transaction`.`amountPaid`,`Transaction`.`posCharge`,`Transaction`.`estimatedCharge`,`Transaction`.`transactionCharge`,`Transaction`.`customerName`,`Transaction`.`customerPhone`,`Transaction`.`customerEmail`,`Transaction`.`preparedBy`,`Transaction`.`createdAt`,`Location`.`locationId` AS `locationId`,`Location`.`locationUID` AS `locationUID`,`Location`.`locationName` AS `locationName`,`Location`.`locationAddress` AS `locationAddress`,`Location`.`locationCity` AS `locationCity`,`Location`.`locationState` AS `locationState`,`Location`.`locationPhone` AS `locationPhone` FROM `Transactions` AS `Transaction` LEFT OUTER JOIN `Locations` AS `Location` ON `Transaction`.`locationUID` = `Location`.`locationUID` WHERE `Transaction`.`locationUID` =" +
-          req.params.locationUID,
-        {
-          type: sequelize.QueryTypes.SELECT,
-        }
-      );
-      if (data.length > 0) {
-        var result = { Location: {}, Transactions: [] };
-        result.Location.locationId = data[0].locationId;
-        result.Location.locationUID = data[0].locationUID;
-        result.Location.locationName = data[0].locationName;
-        result.Location.locationAddress = data[0].locationAddress;
-        result.Location.locationCity = data[0].locationCity;
-        result.Location.locationState = data[0].locationState;
-        result.Location.locationPhone = data[0].locationPhone;
+  app.get(
+    "/api/getLocationData/:locationUID",
+    authenticate,
+    async (req, res) => {
+      try {
+        const data = await db.sequelize.query(
+          "SELECT `Transaction`.`transactionId`, `Transaction`.`transactionUID`,`Transaction`.`companyUID`,`Transaction`.`locationUID`,`Transaction`.`transactionTerminal`,`Transaction`.`transactionType`,`Transaction`.`amountReceived`,`Transaction`.`amountPaid`,`Transaction`.`posCharge`,`Transaction`.`estimatedCharge`,`Transaction`.`transactionCharge`,`Transaction`.`customerName`,`Transaction`.`customerPhone`,`Transaction`.`customerEmail`,`Transaction`.`preparedBy`,`Transaction`.`createdAt`,`Location`.`locationId` AS `locationId`,`Location`.`locationUID` AS `locationUID`,`Location`.`locationName` AS `locationName`,`Location`.`locationAddress` AS `locationAddress`,`Location`.`locationCity` AS `locationCity`,`Location`.`locationState` AS `locationState`,`Location`.`locationPhone` AS `locationPhone` FROM `Transactions` AS `Transaction` LEFT OUTER JOIN `Locations` AS `Location` ON `Transaction`.`locationUID` = `Location`.`locationUID` WHERE `Transaction`.`locationUID` =" +
+            req.params.locationUID,
+          {
+            type: sequelize.QueryTypes.SELECT,
+          }
+        );
+        if (data.length > 0) {
+          var result = { Location: {}, Transactions: [] };
+          result.Location.locationId = data[0].locationId;
+          result.Location.locationUID = data[0].locationUID;
+          result.Location.locationName = data[0].locationName;
+          result.Location.locationAddress = data[0].locationAddress;
+          result.Location.locationCity = data[0].locationCity;
+          result.Location.locationState = data[0].locationState;
+          result.Location.locationPhone = data[0].locationPhone;
 
-        data.forEach((trans) => {
-          var temp = {
-            transactionId: trans.transactionId,
-            transactionUID: trans.transactionUID,
-            companyUID: trans.companyUID,
-            transactionTerminal: trans.transactionTerminal,
-            transactionType: trans.transactionType,
-            transactionCharge: trans.transactionCharge,
-            amountPaid: trans.amountPaid,
-            amountReceived: trans.amountReceived,
-            posCharge: trans.posCharge,
-            estimatedCharge: trans.estimatedCharge,
-            customerName: trans.customerName,
-            customerEmail: trans.customerEmail,
-            customerPhone: trans.customerPhone,
-          };
-          result.Transactions.push(temp);
-        });
-      } else {
-        result = data;
+          data.forEach((trans) => {
+            var temp = {
+              transactionId: trans.transactionId,
+              transactionUID: trans.transactionUID,
+              companyUID: trans.companyUID,
+              transactionTerminal: trans.transactionTerminal,
+              transactionType: trans.transactionType,
+              transactionCharge: trans.transactionCharge,
+              amountPaid: trans.amountPaid,
+              amountReceived: trans.amountReceived,
+              posCharge: trans.posCharge,
+              estimatedCharge: trans.estimatedCharge,
+              customerName: trans.customerName,
+              customerEmail: trans.customerEmail,
+              customerPhone: trans.customerPhone,
+            };
+            result.Transactions.push(temp);
+          });
+        } else {
+          result = data;
+        }
+        return res.status(200).json(result);
+      } catch (errors) {
+        return res.json(errors);
       }
-      return res.status(200).json(result);
-    } catch (errors) {
-      return res.json(errors);
     }
-  });
+  );
 };
