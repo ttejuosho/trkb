@@ -21,12 +21,19 @@ module.exports = (app) => {
     "/api/getTransactionById/:transactionId",
     authenticate,
     (req, res) => {
-      grantAccess(req.user.role, "readAny", "transaction");
+      const permission = grantAccess("basic", "readOwn", "transaction");
+
       db.Transaction.findByPk(req.params.transactionId).then(
         (dbTransaction) => {
-          res.json(dbTransaction);
+          const data = permission.filter(dbTransaction.dataValues);
+          console.log(data);
+          return res.json(dbTransaction);
         }
       );
+
+      // return res.status(401).json({
+      //   error: "You don't have enough permission to perform this action.",
+      // });
     }
   );
 

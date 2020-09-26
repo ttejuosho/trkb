@@ -1,4 +1,4 @@
-const { roles } = require("./role");
+const ac = require("./role");
 
 exports.isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -26,11 +26,5 @@ exports.authenticate = (req, res, next) => {
 };
 
 exports.grantAccess = (role, action, resource) => {
-  const permission = roles.can(role)[action](resource);
-  if (!permission.granted) {
-    return res.status(401).json({
-      error: "You don't have enough permission to perform this action",
-    });
-  }
-  return true;
+  return ac.roles.can(role)[action](resource);
 };
