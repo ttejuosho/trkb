@@ -106,17 +106,7 @@ $(document).ready(function () {
           data: null,
           className: "locationOptions",
           render: function (data, type, row, meta) {
-            return (
-              '<button onclick="activateEditAgentModal(' +
-              "'" +
-              row.locationId +
-              "'" +
-              ')" data-toggle="modal" data-target="#editAgentModal" class="btn btn-warning mr-1"><i class="fas fa-edit"></i></button> <button onclick="activateEditLocationModal(' +
-              "'" +
-              row.locationId +
-              "'" +
-              ')" data-toggle="modal" data-target="#deleteLocationModal" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>'
-            );
+            return '<button id="activateEditLocationModal" class="btn btn-warning mr-1"><i class="fas fa-edit"></i></button> <button id="activateEditLocationModal" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>';
           },
         },
       ],
@@ -169,22 +159,28 @@ $(document).ready(function () {
           data: null,
           className: "agentsOptions",
           render: function (data, type, row, meta) {
-            return (
-              '<button onclick="activateEditAgentModal(' +
-              "'" +
-              row.userId +
-              "'" +
-              ')" data-toggle="modal" data-target="#editAgentModal" class="btn btn-warning mr-1"><i class="fas fa-edit"></i></button> <button onclick="activateDeleteAgentModal(' +
-              "'" +
-              row.userId +
-              "'" +
-              ')" data-toggle="modal" data-target="#deleteAgentModal" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>'
-            );
+            return '<button id="activateEditAgentModal" class="btn btn-warning mr-1"><i class="fas fa-edit"></i></button> <button id="activateDeleteAgentModal" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>';
           },
         },
       ],
     });
   }
+
+  $("#activateEditLocationModal").on("click", () => {
+    $("#editLocationModal").modal("show");
+  });
+
+  $("#activateDeleteLocationModal").on("click", () => {
+    $("#deleteLocationModal").modal("show");
+  });
+
+  $("#activateEditAgentModal").on("click", () => {
+    $("#editAgentModal").modal("show");
+  });
+
+  $("#activateDeleteAgentModal").on("click", () => {
+    $("#deleteAgentModal").modal("show");
+  });
 
   $("#closeNewAgentModal").on("click", () => {
     $("#newAgentForm")[0].reset();
