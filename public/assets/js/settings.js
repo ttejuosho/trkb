@@ -33,13 +33,6 @@ $(document).ready(function () {
       });
     });
 
-  function fixNull(string) {
-    if (string === null) {
-      return "";
-    }
-    return string;
-  }
-
   function renderLocationsTable(data) {
     locationsTable = $("#locationsTable").DataTable({
       data: data,
@@ -106,7 +99,13 @@ $(document).ready(function () {
           data: null,
           className: "locationOptions",
           render: function (data, type, row, meta) {
-            return '<button id="activateEditLocationModal" class="btn btn-warning mr-1"><i class="fas fa-edit"></i></button> <button id="activateEditLocationModal" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>';
+            return (
+              '<button id="activateEditLocationModal" data-value="' +
+              data.locationId +
+              '" class="editLocation btn btn-warning mr-1"><i class="fas fa-edit"></i></button> <button id="activateEditLocationModal" data-value="' +
+              data.locationId +
+              '" class="deleteLocation btn btn-danger"><i class="fas fa-trash-alt"></i></button>'
+            );
           },
         },
       ],
@@ -127,8 +126,8 @@ $(document).ready(function () {
               "<span>" +
               row.name +
               (row.role === "basic"
-                ? "<span class='ml-1 btn btn-danger' style='padding: 0.01rem .30rem;'>B</span>"
-                : "<span class='ml-1 btn btn-danger' style='padding: 0.01rem .30rem;'>A</span>") +
+                ? "<span class='ml-1 btn btn-danger' style='padding: 0.01rem .30rem;'>Basic</span>"
+                : "<span class='ml-1 btn btn-success' style='padding: 0.01rem .30rem;'>Admin</span>") +
               "</span>"
             );
           },
@@ -159,38 +158,18 @@ $(document).ready(function () {
           data: null,
           className: "agentsOptions",
           render: function (data, type, row, meta) {
-            return '<button id="activateEditAgentModal" class="btn btn-warning mr-1"><i class="fas fa-edit"></i></button> <button id="activateDeleteAgentModal" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>';
+            return (
+              '<button id="activateEditAgentModal" data-value="' +
+              data.userId +
+              '" class="editAgent btn btn-warning mr-1"><i class="fas fa-edit"></i></button> <button id="activateDeleteAgentModal" data-value="' +
+              data.userId +
+              '" class="deleteAgent btn btn-danger"><i class="fas fa-trash-alt"></i></button>'
+            );
           },
         },
       ],
     });
   }
-
-  $("#activateEditLocationModal").on("click", () => {
-    $("#editLocationModal").modal("show");
-  });
-
-  $("#activateDeleteLocationModal").on("click", () => {
-    $("#deleteLocationModal").modal("show");
-  });
-
-  $("#activateEditAgentModal").on("click", () => {
-    $("#editAgentModal").modal("show");
-  });
-
-  $("#activateDeleteAgentModal").on("click", () => {
-    $("#deleteAgentModal").modal("show");
-  });
-
-  $("#closeNewAgentModal").on("click", () => {
-    $("#newAgentForm")[0].reset();
-    $("#newAgentModal").modal("hide");
-  });
-
-  $("#closeNewLocationModal").on("click", () => {
-    $("#newLocationForm")[0].reset();
-    $("#newLocationModal").modal("hide");
-  });
 
   $("#saveNewAgent").on("click", () => {
     var locationName = $("#locationUID")[0]
@@ -256,6 +235,53 @@ $(document).ready(function () {
           $(".message").text("Location saved !!");
         }
       });
+  });
+
+  $("#agentsTable tbody").on("click", ".editAgent", function () {
+    var rowId = $(this).data("value");
+    var data = agentsTable.row($("#" + rowId)).data();
+    console.log(data);
+    $("#name").val(data.name);
+    $("#emailAddress").val(data.emailAddress);
+    $("#phoneNumber").val(data.phoneNumber);
+    $("#locationUID")[0].selectize.setValue(data.locationUID);
+    $("#newAgentModal").modal("show");
+  });
+
+  $("#locationsTable tbody").on("click", ".editLocation", function () {
+    var rowId = $(this).data("value");
+    var data = locationsTable.row($("#" + rowId)).data();
+    console.log(data);
+    $("#locationName").val(data.locationName);
+    $("#locationAddress").val(data.locationAddress);
+    $("#locationEmail").val(data.locationEmail);
+    $("#locationPhone").val(data.locationPhone);
+    $("#contactNameModal").val(data.locationContactName);
+    $("#contactEmailModal").val(data.locationContactEmail);
+    $("#contactPhoneModal").val(data.locationContactPhone);
+    $("#newLocationModal").modal("show");
+  });
+
+  $("#agentsTable tbody").on("click", ".deleteAgent", function () {
+    var agentId = $(this).data("value");
+    console.log(agentId);
+    $("#deleteAgentModal").modal("show");
+  });
+
+  $("#locationsTable tbody").on("click", ".deleteLocation", function () {
+    var locationId = $(this).data("value");
+    console.log(locationId);
+    $("#deleteLocationModal").modal("show");
+  });
+
+  $("#closeNewAgentModal").on("click", () => {
+    $("#newAgentForm")[0].reset();
+    $("#newAgentModal").modal("hide");
+  });
+
+  $("#closeNewLocationModal").on("click", () => {
+    $("#newLocationForm")[0].reset();
+    $("#newLocationModal").modal("hide");
   });
 
   $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
