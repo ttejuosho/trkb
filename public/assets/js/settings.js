@@ -245,6 +245,7 @@ $(document).ready(function () {
     $("#emailAddress").val(data.emailAddress);
     $("#phoneNumber").val(data.phoneNumber);
     $("#locationUID")[0].selectize.setValue(data.locationUID);
+    $("#newAgentForm").attr("action", "/api/updateUser/" + data.userId);
     $("#newAgentModal").modal("show");
   });
 
@@ -259,6 +260,10 @@ $(document).ready(function () {
     $("#contactNameModal").val(data.locationContactName);
     $("#contactEmailModal").val(data.locationContactEmail);
     $("#contactPhoneModal").val(data.locationContactPhone);
+    $("#newLocationForm").attr(
+      "action",
+      "/api/updateLocation/" + data.locationUID
+    );
     $("#newLocationModal").modal("show");
   });
 
