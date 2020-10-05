@@ -7,6 +7,7 @@ const { authenticate } = require("../services/security/security.js");
 const { grantAccess } = require("../services/security/security.js");
 const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
+const { query } = require("express");
 
 module.exports = (app) => {
   app.get("/api/getTransactions", (req, res) => {
@@ -124,23 +125,29 @@ module.exports = (app) => {
     "/api/transaction/delete/:transactionId",
     authenticate,
     (req, res) => {
-      db.Transaction.findByPk(req.params.transactionId).then(
-        (dbTransaction) => {
-          if (dbTransaction !== null) {
-            db.Transaction.update(
-              { deleted: true },
-              {
-                where: {
-                  transactionId: req.params.transactionId,
-                },
-              }
-            ).then((dbTransaction) => {
-              console.log(dbTransaction);
-              res.json(dbTransaction);
-            });
+      if (res.locals.role == "basic") {
+        return res.json({
+          message: "You are not authorized to perform this operation",
+        });
+      } else {
+        db.Transaction.findByPk(req.params.transactionId).then(
+          (dbTransaction) => {
+            if (dbTransaction !== null) {
+              db.Transaction.update(
+                { deleted: true },
+                {
+                  where: {
+                    transactionId: req.params.transactionId,
+                  },
+                }
+              ).then((dbTransaction) => {
+                console.log(dbTransaction);
+                res.json(dbTransaction);
+              });
+            }
           }
-        }
-      );
+        );
+      }
     }
   );
 
@@ -148,10 +155,15 @@ module.exports = (app) => {
     "/api/getTransactionsByLocation/:locationUID",
     authenticate,
     (req, res) => {
+      var queryParams = {
+        locationUID: res.locals.locationUID,
+      };
+
+      if (res.locals.role == "basic") {
+        queryParams.UserUserId = res.locals.userId;
+      }
       db.Transaction.findAll({
-        where: {
-          locationUID: req.params.locationUID,
-        },
+        where: queryParams,
       }).then((dbTransaction) => {
         res.json(dbTransaction);
       });
@@ -159,10 +171,16 @@ module.exports = (app) => {
   );
 
   app.get("/api/getDistinct/:columnName", authenticate, (req, res) => {
+    var queryParams = {
+      companyUID: res.locals.companyUID,
+    };
+
+    if (res.locals.role == "basic") {
+      queryParams.UserUserId = res.locals.userId;
+    }
+
     db.Transaction.findAll({
-      where: {
-        companyUID: res.locals.companyUID,
-      },
+      where: queryParams,
       attributes: [
         [
           Sequelize.fn("DISTINCT", Sequelize.col(req.params.columnName)),
@@ -171,10 +189,10 @@ module.exports = (app) => {
       ],
     })
       .then((dbData) => {
-        res.json(dbData);
+        return res.json(dbData);
       })
       .catch((err) => {
-        res.json(err);
+        return res.json(err.message);
       });
   });
 
@@ -299,9 +317,13 @@ module.exports = (app) => {
   });
 
   app.post("/api/saveTransactions", authenticate, (req, res) => {
-    db.Transaction.bulkCreate(req.body).then((dbTransaction) => {
-      res.json(dbTransaction);
-    });
+    db.Transaction.bulkCreate(req.body)
+      .then((dbTransaction) => {
+        res.json(dbTransaction);
+      })
+      .catch((error) => {
+        res.json(error.message);
+      });
   });
 
   app.get("/api/getLocations", authenticate, (req, res) => {
@@ -318,33 +340,29 @@ module.exports = (app) => {
       });
   });
 
-  app.get(
-    "/api/getLocationsByCompany/:companyUID",
-    authenticate,
-    (req, res) => {
-      db.Company.findOne({
-        where: {
-          companyUID: req.params.companyUID,
-        },
-      }).then((dbCompany) => {
-        if (dbCompany !== null) {
-          db.Location.findAll({
-            where: {
-              companyUID: req.params.companyUID,
-            },
+  app.get("/api/getLocationsByCompany/:companyUID", (req, res) => {
+    db.Company.findOne({
+      where: {
+        companyUID: req.params.companyUID,
+      },
+    }).then((dbCompany) => {
+      if (dbCompany !== null) {
+        db.Location.findAll({
+          where: {
+            companyUID: req.params.companyUID,
+          },
+        })
+          .then((dbLocation) => {
+            res.json(dbLocation);
           })
-            .then((dbLocation) => {
-              res.json(dbLocation);
-            })
-            .catch((err) => {
-              res.json(err);
-            });
-        } else {
-          res.json({ message: "Company Id is invalid." });
-        }
-      });
-    }
-  );
+          .catch((err) => {
+            res.json(err);
+          });
+      } else {
+        res.json({ message: "Company Id is invalid." });
+      }
+    });
+  });
 
   app.get("/api/getLocationById/:locationUID", authenticate, (req, res) => {
     db.Location.findOne({
