@@ -180,6 +180,7 @@ $(document).ready(function () {
       emailAddress: $("#emailAddress").val(),
       locationUID: $("#locationUID").val(),
       phoneNumber: $("#phoneNumber").val(),
+      role: $("#role").val(),
     };
 
     fetch("/api/newAgent", {
@@ -192,8 +193,9 @@ $(document).ready(function () {
       })
       .then((res) => {
         console.log(res.response);
-        agentsTable.row.add({
+        agentsTable.rows.add({
           userId: res.response.userId,
+          role: res.response.role,
           name: res.response.name,
           emailAddress: res.response.emailAddress,
           phoneNumber: res.response.phoneNumber,
@@ -203,7 +205,10 @@ $(document).ready(function () {
         if (res.errors.length < 1) {
           $("#newAgentForm")[0].reset();
           $(".message").text("New agent created !!");
+        } else {
+          $(".message").text(res.errors[0].message);
         }
+        return;
       });
   });
 
@@ -240,12 +245,15 @@ $(document).ready(function () {
   $("#agentsTable tbody").on("click", ".editAgent", function () {
     var rowId = $(this).data("value");
     var data = agentsTable.row($("#" + rowId)).data();
-    console.log(data);
+    //console.log(data);
     $("#name").val(data.name);
     $("#emailAddress").val(data.emailAddress);
     $("#phoneNumber").val(data.phoneNumber);
     $("#locationUID")[0].selectize.setValue(data.locationUID);
     $("#newAgentForm").attr("action", "/api/updateUser/" + data.userId);
+    if (data.role === "admin") {
+      $("#role").attr("checked", true);
+    }
     $("#newAgentModal").modal("show");
   });
 
@@ -281,6 +289,8 @@ $(document).ready(function () {
 
   $("#closeNewAgentModal").on("click", () => {
     $("#newAgentForm")[0].reset();
+    $("#role").attr("checked", false);
+    $(".message").text("");
     $("#newAgentModal").modal("hide");
   });
 

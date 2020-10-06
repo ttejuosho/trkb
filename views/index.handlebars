@@ -18,16 +18,17 @@
                         </select>
                         <input type="text" id="searchQuery" name="searchQuery" class="form-control mb-2"
                             placeholder="Search" value="{{searchQuery}}">
-                                {{#if errors}}
-                                {{#each errors}}
-                                {{#ifEquals param "searchQuery"}}
-                                <div class="messages text-danger mb-2">{{msg}}</div>
-                                {{/ifEquals}}
-                                {{/each}}
-                                {{/if}}
+                        {{#if errors}}
+                        {{#each errors}}
+                        {{#ifEquals param "searchQuery"}}
+                        <div class="messages text-danger mb-2">{{msg}}</div>
+                        {{/ifEquals}}
+                        {{/each}}
+                        {{/if}}
                         <div id="newInputDiv"></div>
                         <button type="button" class="btn btn-block btn-lg btn-dark" id="goSearch">Search</button>
-                        <p id="searchInfo" class="mt-3"></p>
+                        <p id="searchInfo" class=" text-secondary mt-3"></p>
+                        <p id="errorMessage" class="text-danger mt-3"></p>
                     </div>
                 </div>
             </form>

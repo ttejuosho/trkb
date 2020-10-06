@@ -3,9 +3,7 @@ const ac = new AccessControl();
 
 exports.roles = (function () {
   ac.grant("basic").readOwn("profile").updateOwn("profile");
-  ac.grant("basic")
-    .createOwn("transaction")
-    .readOwn("transaction", ["UserUserId"]);
+  ac.grant("basic").createOwn("transaction").readOwn("transaction", ["*"]);
   ac.grant("admin")
     .extend("basic")
     .readAny("profile")

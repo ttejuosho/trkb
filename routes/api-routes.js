@@ -257,9 +257,6 @@ module.exports = (app) => {
   );
 
   app.get("/api/search/:searchBy/:searchQuery", authenticate, (req, res) => {
-    if (!req.isAuthenticated()) {
-      return res.status(401).send({ Error: "Please sign in" });
-    }
     const searchQuery = req.params.searchQuery;
     const searchBy = req.params.searchBy;
     let queryObj = {};
@@ -316,7 +313,7 @@ module.exports = (app) => {
       });
   });
 
-  app.post("/api/saveTransactions", authenticate, (req, res) => {
+  app.post("/api/saveTransactions", (req, res) => {
     db.Transaction.bulkCreate(req.body)
       .then((dbTransaction) => {
         res.json(dbTransaction);
@@ -409,23 +406,30 @@ module.exports = (app) => {
         var data = { errors: errors.errors };
         return res.json(data);
       } else {
-        db.User.create({
-          name: req.body.name,
-          emailAddress: req.body.emailAddress,
-          phoneNumber: req.body.phoneNumber,
-          locationUID: req.body.locationUID,
-          companyUID: res.locals.companyUID,
-          password: 1234,
-        }).then((dbUser) => {
-          delete dbUser.password;
-          delete dbUser.active;
+        if (res.locals.role == "admin") {
+          db.User.create({
+            name: req.body.name,
+            emailAddress: req.body.emailAddress,
+            phoneNumber: req.body.phoneNumber,
+            locationUID: req.body.locationUID,
+            companyUID: res.locals.companyUID,
+            role: req.body.role == "on" ? "admin" : "basic",
+            password: 1234,
+          }).then((dbUser) => {
+            delete dbUser.password;
+            delete dbUser.active;
 
-          var data = {
-            errors: [],
-            response: dbUser,
-          };
-          return res.json(data);
-        });
+            var data = {
+              errors: [],
+              response: dbUser,
+            };
+            return res.json(data);
+          });
+        } else {
+          return res.json({
+            errors: [{ message: "You are not authorized to perform action." }],
+          });
+        }
       }
     }
   );
