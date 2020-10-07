@@ -54,8 +54,8 @@ $(document).ready(function () {
           },
         },
         {
-          className: "locationAddress",
           data: null,
+          className: "locationAddress",
           render: function (data, type, row, meta) {
             if (
               row.locationAddress === null &&
@@ -97,6 +97,7 @@ $(document).ready(function () {
         },
         {
           data: null,
+          orderable: false,
           className: "locationOptions",
           render: function (data, type, row, meta) {
             return (
@@ -156,6 +157,7 @@ $(document).ready(function () {
         },
         {
           data: null,
+          orderable: false,
           className: "agentsOptions",
           render: function (data, type, row, meta) {
             return (
@@ -204,6 +206,7 @@ $(document).ready(function () {
         });
         if (res.errors.length < 1) {
           $("#newAgentForm")[0].reset();
+          $("#locationUID")[0].selectize.setValue("");
           $(".message").text("New agent created !!");
         } else {
           $(".message").text(res.errors[0].message);
@@ -290,6 +293,7 @@ $(document).ready(function () {
   $("#closeNewAgentModal").on("click", () => {
     $("#newAgentForm")[0].reset();
     $("#role").attr("checked", false);
+    $("#locationUID")[0].selectize.setValue("");
     $(".message").text("");
     $("#newAgentModal").modal("hide");
   });
