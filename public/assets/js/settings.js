@@ -248,7 +248,9 @@ $(document).ready(function () {
   $("#agentsTable tbody").on("click", ".editAgent", function () {
     var rowId = $(this).data("value");
     var data = agentsTable.row($("#" + rowId)).data();
-    //console.log(data);
+
+    $("#newAgentModalLabel").text("Edit " + data.name);
+    $("#saveNewAgent").text("Update");
     $("#name").val(data.name);
     $("#emailAddress").val(data.emailAddress);
     $("#phoneNumber").val(data.phoneNumber);
@@ -264,6 +266,9 @@ $(document).ready(function () {
     var rowId = $(this).data("value");
     var data = locationsTable.row($("#" + rowId)).data();
     console.log(data);
+    $("#newLocationModalLabel").text("Edit " + data.locationName);
+    $("#saveNewLocation").text("Update");
+
     $("#locationName").val(data.locationName);
     $("#locationAddress").val(data.locationAddress);
     $("#locationEmail").val(data.locationEmail);
@@ -273,7 +278,7 @@ $(document).ready(function () {
     $("#contactPhoneModal").val(data.locationContactPhone);
     $("#newLocationForm").attr(
       "action",
-      "/api/updateLocation/" + data.locationUID
+      "/api/updateLocation/" + data.locationId
     );
     $("#newLocationModal").modal("show");
   });
@@ -288,6 +293,11 @@ $(document).ready(function () {
     var locationId = $(this).data("value");
     console.log(locationId);
     $("#deleteLocationModal").modal("show");
+  });
+
+  $("#newAgentBtn").on("click", () => {
+    $("#newAgentModalLabel").text("New Agent");
+    $("#saveNewAgent").text("Save");
   });
 
   $("#closeNewAgentModal").on("click", () => {

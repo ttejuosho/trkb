@@ -415,16 +415,79 @@ module.exports = (app) => {
             companyUID: res.locals.companyUID,
             role: req.body.role == "on" ? "admin" : "basic",
             password: 1234,
-          }).then((dbUser) => {
-            delete dbUser.password;
-            delete dbUser.active;
+          })
+            .then((dbUser) => {
+              delete dbUser.password;
+              delete dbUser.active;
 
-            var data = {
-              errors: [],
-              response: dbUser,
-            };
-            return res.json(data);
+              var data = {
+                errors: [],
+                response: dbUser,
+              };
+              return res.json(data);
+            })
+            .catch((err) => {
+              res.json(err.errors);
+            });
+        } else {
+          return res.json({
+            errors: [{ message: "You are not authorized to perform action." }],
           });
+        }
+      }
+    }
+  );
+
+  app.put(
+    "/api/updateUser",
+    authenticate,
+    [
+      check("name").not().isEmpty().escape().withMessage("Name is required"),
+      check("emailAddress")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Email is required"),
+      check("phoneNumber")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Phone number is required"),
+      check("locationUID")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Location is required"),
+    ],
+    (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        errors.name = req.body.name;
+        errors.emailAddress = req.body.emailAddress;
+        errors.phoneNumber = req.body.phoneNumber;
+        errors.locationUID = req.body.locationUID;
+        var data = { errors: errors.errors };
+        return res.json(data);
+      } else {
+        if (res.locals.role == "admin") {
+          db.User.update({
+            name: req.body.name,
+            emailAddress: req.body.emailAddress,
+            phoneNumber: req.body.phoneNumber,
+            locationUID: req.body.locationUID,
+            companyUID: res.locals.companyUID,
+            role: req.body.role == "on" ? "admin" : "basic",
+          })
+            .then((dbUser) => {
+              var data = {
+                errors: [],
+                response: dbUser,
+              };
+              return res.json(data);
+            })
+            .catch((err) => {
+              res.json(err.errors);
+            });
         } else {
           return res.json({
             errors: [{ message: "You are not authorized to perform action." }],
@@ -480,6 +543,62 @@ module.exports = (app) => {
           .catch((err) => {
             res.json(err.errors);
           });
+      }
+    }
+  );
+
+  app.put(
+    "/api/updateLocation",
+    authenticate,
+    [
+      check("locationName")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Location name is required"),
+      check("locationAddress")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Location Address is required"),
+    ],
+    (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        errors.locationName = req.body.locationName;
+        errors.locationAddress = req.body.locationAddress;
+        var data = { errors: errors.errors };
+        return res.json(data);
+      } else {
+        if (res.locals.role == "admin") {
+          db.Location.update({
+            locationUID: req.body.locationUID,
+            locationName: req.body.locationName,
+            companyUID: res.locals.companyUID,
+            locationEmail: req.body.locationEmail,
+            locationAddress: req.body.locationAddress,
+            locationCity: req.body.locationCity,
+            locationState: req.body.locationState,
+            locationPhone: req.body.locationPhone,
+            locationContactName: req.body.locationContactName,
+            locationContactEmail: req.body.locationContactEmail,
+            locationContactPhone: req.body.locationContactPhone,
+          })
+            .then((dbLocation) => {
+              var data = {
+                errors: [],
+                response: dbLocation,
+              };
+              return res.json(data);
+            })
+            .catch((err) => {
+              res.json(err.errors);
+            });
+        } else {
+          return res.json({
+            errors: [{ message: "You are not authorized to perform action." }],
+          });
+        }
       }
     }
   );
