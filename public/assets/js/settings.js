@@ -126,9 +126,9 @@ $(document).ready(function () {
             return (
               "<span>" +
               row.name +
-              (row.role === "basic"
-                ? "<span class='ml-1 btn btn-danger' style='padding: 0.01rem .30rem;'>Basic</span>"
-                : "<span class='ml-1 btn btn-success' style='padding: 0.01rem .30rem;'>Admin</span>") +
+              (row.role === "admin"
+                ? "<span class='ml-1 btn btn-success' style='padding: 0.01rem .30rem;'>Admin</span>"
+                : "<span class='ml-1 btn btn-danger' style='padding: 0.01rem .30rem;'>Basic</span>") +
               "</span>"
             );
           },
@@ -177,7 +177,7 @@ $(document).ready(function () {
     var locationName = $("#locationUID")[0]
       .selectize.getItem($("#locationUID").val())
       .text();
-    var data = {
+    var agentData = {
       name: $("#name").val(),
       emailAddress: $("#emailAddress").val(),
       locationUID: $("#locationUID").val(),
@@ -185,38 +185,48 @@ $(document).ready(function () {
       role: $("#role").val(),
     };
 
-    fetch("/api/newAgent", {
+    var apiUrl = "/api/newAgent";
+
+    if ($("#saveNewAgent").attr("action") == "update") {
+      apiUrl = $("#newAgentForm").attr("action");
+    }
+
+    fetch(apiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(agentData),
     })
       .then((data) => {
         return data.json();
       })
       .then((res) => {
-        console.log(res.response);
-        agentsTable.rows.add({
-          userId: res.response.userId,
-          role: res.response.role,
-          name: res.response.name,
-          emailAddress: res.response.emailAddress,
-          phoneNumber: res.response.phoneNumber,
-          locationUID: res.response.locationUID,
-          locationName: locationName,
-        });
+        console.log(res);
+        // agentsTable.rows.add({
+        //   userId: res.response.userId,
+        //   role: res.response.role,
+        //   name: res.response.name,
+        //   emailAddress: res.response.emailAddress,
+        //   phoneNumber: res.response.phoneNumber,
+        //   locationUID: res.response.locationUID,
+        //   locationName: locationName,
+        // });
         if (res.errors.length < 1) {
+          if ($("#saveNewAgent").attr("action") == "update") {
+            $(".message").text("Update Successful !!");
+          } else {
+            $(".message").text("New Agent Created !!");
+          }
           $("#newAgentForm")[0].reset();
           $("#locationUID")[0].selectize.setValue("");
-          $(".message").text("New agent created !!");
         } else {
-          $(".message").text(res.errors[0].message);
+          $(".errorMessage").text(res.errors[0].message);
         }
         return;
       });
   });
 
   $("#saveNewLocation").on("click", () => {
-    var data = {
+    var locationData = {
       locationName: $("#locationName").val(),
       locationEmail: $("#locationEmail").val(),
       locationAddress: $("#locationAddress").val(),
@@ -228,10 +238,16 @@ $(document).ready(function () {
       locationContactPhone: $("#contactPhoneModal").val(),
     };
 
-    fetch("/api/newLocation", {
+    var apiUrl = "/api/newLocation";
+
+    if ($("#saveNewLocation").attr("action") == "update") {
+      apiUrl = $("#newLocationForm").attr("action");
+    }
+
+    fetch(apiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(locationData),
     })
       .then((data) => {
         return data.json();
@@ -240,7 +256,13 @@ $(document).ready(function () {
         console.log(res);
         if (res.errors.length < 1) {
           $("#newLocationForm")[0].reset();
-          $(".message").text("Location saved !!");
+          if ($("#saveNewLocation").attr("action") == "update") {
+            $(".message").text("Update Successful !!");
+          } else {
+            $(".message").text("Location saved !!");
+          }
+        } else {
+          $(".errorMessage").text(res.errors[0].message);
         }
       });
   });
@@ -256,6 +278,7 @@ $(document).ready(function () {
     $("#phoneNumber").val(data.phoneNumber);
     $("#locationUID")[0].selectize.setValue(data.locationUID);
     $("#newAgentForm").attr("action", "/api/updateUser/" + data.userId);
+    $("#saveNewAgent").attr("action", "update");
     if (data.role === "admin") {
       $("#role").attr("checked", true);
     }
@@ -268,9 +291,12 @@ $(document).ready(function () {
     console.log(data);
     $("#newLocationModalLabel").text("Edit " + data.locationName);
     $("#saveNewLocation").text("Update");
+    $("#saveNewLocation").attr("action", "update");
 
     $("#locationName").val(data.locationName);
     $("#locationAddress").val(data.locationAddress);
+    $("#locationCity").val(data.locationCity);
+    $("#locationState").val(data.locationState);
     $("#locationEmail").val(data.locationEmail);
     $("#locationPhone").val(data.locationPhone);
     $("#contactNameModal").val(data.locationContactName);
@@ -305,11 +331,14 @@ $(document).ready(function () {
     $("#role").attr("checked", false);
     $("#locationUID")[0].selectize.setValue("");
     $(".message").text("");
+    $(".errorMessage").text("");
     $("#newAgentModal").modal("hide");
   });
 
   $("#closeNewLocationModal").on("click", () => {
     $("#newLocationForm")[0].reset();
+    $(".message").text("");
+    $(".errorMessage").text("");
     $("#newLocationModal").modal("hide");
   });
 

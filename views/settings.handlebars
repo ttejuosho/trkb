@@ -189,27 +189,29 @@
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="newAgentModalLabel">New Agent</h5>
                                 </div>
-                                <p class="text-success mb-0 mt-2 text-center message"></p>
+
                                 <form id="newAgentForm" action="/api/newAgent" method="POST">
-                                    <div class="modal-body">
+                                    <div class="modal-body pt-0">
                                         <div class="col-12 justify-content-center">
-                                            <div class="mb-3">
+                                            <p class="text-success mb-0 mb-2 message"></p>
+                                            <p class="text-danger mb-0 mb-2 errorMessage"></p>
+                                            <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required" for="name">Name</label>
                                                 <input type="text" class="form-control" id="name" name="name" value="">
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required"
                                                     for="locationUID">Location</label>
                                                 <input type="text" class="form-control" id="locationUID"
                                                     name="locationUID">
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required" for="emailAddress">Email
                                                     Address</label>
                                                 <input type="text" class="form-control" id="emailAddress"
                                                     name="emailAddress" value="">
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required" for="phoneNumber">Phone
                                                     Number</label>
                                                 <input type="text" class="form-control" id="phoneNumber"
@@ -241,45 +243,59 @@
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="newLocationModalLabel">New Location</h5>
                                 </div>
-                                <p class="text-success mb-0 mt-2 text-center message"></p>
+
                                 <form id="newLocationForm" action="/api/newLocation" method="POST">
-                                    <div class="modal-body">
+                                    <div class="modal-body pt-0">
                                         <div class="col-12 justify-content-center">
-                                            <div class="mb-3">
+                                            <p class="text-success mb-0 mb-2 message"></p>
+                                            <p class="text-danger mb-0 mb-2 errorMessage"></p>
+                                            <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required"
                                                     for="locationName">Location Name</label>
                                                 <input type="text" class="form-control" id="locationName"
                                                     name="locationName" value="{{locationName}}">
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required"
                                                     for="locationAddress">Address</label>
                                                 <input type="text" class="form-control" id="locationAddress"
                                                     name="locationAddress" value="{{locationAddress}}">
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-2">
+                                                <label class="font-weight-bold mb-0 required"
+                                                    for="locationCity">City</label>
+                                                <input type="text" class="form-control" id="locationCity"
+                                                    name="locationCity" value="{{locationCity}}">
+                                            </div>
+                                            <div class="mb-2">
+                                                <label class="font-weight-bold mb-0 required"
+                                                    for="locationState">State</label>
+                                                <input type="text" class="form-control" id="locationState"
+                                                    name="locationState" value="{{locationState}}">
+                                            </div>
+                                            <div class="mb-2">
                                                 <label class="font-weight-bold mb-0" for="locationEmail">Email</label>
                                                 <input type="text" class="form-control" id="locationEmail"
                                                     name="locationEmail" value="{{locationEmail}}">
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-2">
                                                 <label class="font-weight-bold mb-0" for="locationPhone">Phone</label>
                                                 <input type="text" class="form-control" id="locationPhone"
                                                     name="locationPhone" value="{{locationPhone}}">
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-2">
                                                 <label class="font-weight-bold mb-0" for="contactName">Contact
                                                     Name</label>
                                                 <input type="text" class="form-control" id="contactNameModal"
                                                     name="contactName" value="{{contactName}}">
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-2">
                                                 <label class="font-weight-bold mb-0" for="contactEmail">Contact
                                                     Email</label>
                                                 <input type="text" class="form-control" id="contactEmailModal"
                                                     name="contactEmail" value="{{contactEmail}}">
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-2">
                                                 <label class="font-weight-bold mb-0" for="contactPhone">Contact
                                                     Phone</label>
                                                 <input type="text" class="form-control" id="contactPhoneModal"

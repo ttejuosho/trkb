@@ -431,15 +431,17 @@ module.exports = (app) => {
             });
         } else {
           return res.json({
-            errors: [{ message: "You are not authorized to perform action." }],
+            errors: [
+              { message: "Error: You are not authorized to perform action." },
+            ],
           });
         }
       }
     }
   );
 
-  app.put(
-    "/api/updateUser",
+  app.post(
+    "/api/updateUser/:userId",
     authenticate,
     [
       check("name").not().isEmpty().escape().withMessage("Name is required"),
@@ -470,14 +472,21 @@ module.exports = (app) => {
         return res.json(data);
       } else {
         if (res.locals.role == "admin") {
-          db.User.update({
-            name: req.body.name,
-            emailAddress: req.body.emailAddress,
-            phoneNumber: req.body.phoneNumber,
-            locationUID: req.body.locationUID,
-            companyUID: res.locals.companyUID,
-            role: req.body.role == "on" ? "admin" : "basic",
-          })
+          db.User.update(
+            {
+              name: req.body.name,
+              emailAddress: req.body.emailAddress,
+              phoneNumber: req.body.phoneNumber,
+              locationUID: req.body.locationUID,
+              companyUID: res.locals.companyUID,
+              role: req.body.role == "on" ? "admin" : "basic",
+            },
+            {
+              where: {
+                userId: req.params.userId,
+              },
+            }
+          )
             .then((dbUser) => {
               var data = {
                 errors: [],
@@ -490,7 +499,9 @@ module.exports = (app) => {
             });
         } else {
           return res.json({
-            errors: [{ message: "You are not authorized to perform action." }],
+            errors: [
+              { message: "Error: You are not authorized to perform action." },
+            ],
           });
         }
       }
@@ -547,8 +558,8 @@ module.exports = (app) => {
     }
   );
 
-  app.put(
-    "/api/updateLocation",
+  app.post(
+    "/api/updateLocation/:locationId",
     authenticate,
     [
       check("locationName")
@@ -571,19 +582,26 @@ module.exports = (app) => {
         return res.json(data);
       } else {
         if (res.locals.role == "admin") {
-          db.Location.update({
-            locationUID: req.body.locationUID,
-            locationName: req.body.locationName,
-            companyUID: res.locals.companyUID,
-            locationEmail: req.body.locationEmail,
-            locationAddress: req.body.locationAddress,
-            locationCity: req.body.locationCity,
-            locationState: req.body.locationState,
-            locationPhone: req.body.locationPhone,
-            locationContactName: req.body.locationContactName,
-            locationContactEmail: req.body.locationContactEmail,
-            locationContactPhone: req.body.locationContactPhone,
-          })
+          db.Location.update(
+            {
+              locationUID: req.body.locationUID,
+              locationName: req.body.locationName,
+              companyUID: res.locals.companyUID,
+              locationEmail: req.body.locationEmail,
+              locationAddress: req.body.locationAddress,
+              locationCity: req.body.locationCity,
+              locationState: req.body.locationState,
+              locationPhone: req.body.locationPhone,
+              locationContactName: req.body.locationContactName,
+              locationContactEmail: req.body.locationContactEmail,
+              locationContactPhone: req.body.locationContactPhone,
+            },
+            {
+              where: {
+                locationId: req.params.locationId,
+              },
+            }
+          )
             .then((dbLocation) => {
               var data = {
                 errors: [],
@@ -596,7 +614,9 @@ module.exports = (app) => {
             });
         } else {
           return res.json({
-            errors: [{ message: "You are not authorized to perform action." }],
+            errors: [
+              { message: "Error: You are not authorized to perform action." },
+            ],
           });
         }
       }
