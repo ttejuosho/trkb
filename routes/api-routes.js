@@ -432,7 +432,7 @@ module.exports = (app) => {
         } else {
           return res.json({
             errors: [
-              { message: "Error: You are not authorized to perform action." },
+              { message: "Error: You are not authorized to perform this action." },
             ],
           });
         }
@@ -500,7 +500,7 @@ module.exports = (app) => {
         } else {
           return res.json({
             errors: [
-              { message: "Error: You are not authorized to perform action." },
+              { message: "Error: You are not authorized to perform this action." },
             ],
           });
         }
@@ -615,7 +615,7 @@ module.exports = (app) => {
         } else {
           return res.json({
             errors: [
-              { message: "Error: You are not authorized to perform action." },
+              { message: "Error: You are not authorized to perform this action." },
             ],
           });
         }
@@ -681,13 +681,13 @@ module.exports = (app) => {
     } else {
       return res.json({
         errors: [
-          { message: "Error: You are not authorized to perform action." },
+          { message: "Error: You are not authorized to perform this action." },
         ],
       });
     }
   });
 
-  app.delete("/api/deleteUser/:userId", authenticate, (req, res) => {
+  app.get("/api/deleteUser/:userId", authenticate, (req, res) => {
     if (res.locals.role == "admin") {
       db.User.findOne({
         where: {
@@ -708,7 +708,29 @@ module.exports = (app) => {
     } else {
       return res.json({
         errors: [
-          { message: "Error: You are not authorized to perform action." },
+          { message: "Error: You are not authorized to perform this action." },
+        ],
+      });
+    }
+  });
+
+    app.get("/api/deleteLocation/:locationId", authenticate, (req, res) => {
+    if (res.locals.role == "admin") {
+      db.Location.findByPk(req.params.locationId).then((dbLocation) => {
+        if (dbLocation != null) {
+          db.Location.destroy({
+            where: {
+              locationId: req.params.userId,
+            },
+          }).then((dbUser) => {
+            res.json(dbUser);
+          });
+        }
+      });
+    } else {
+      return res.json({
+        errors: [
+          { message: "Error: You are not authorized to perform this action." },
         ],
       });
     }

@@ -337,6 +337,7 @@ $(document).ready(function () {
   });
 
   $("#closeDeleteConfirmationModal").on("click", () => {
+    $('#confirmDeleteErrorMesaage').text("");
     $("#deleteConfirmationModal").modal("hide");
   });
 
@@ -352,6 +353,9 @@ $(document).ready(function () {
       })
       .then((res) => {
         console.log(res);
+        if(res.errors.length > 0){
+          $('#confirmDeleteErrorMesaage').text(res.errors[0].message);
+        }
       });
 
     console.log(apiParamId);
