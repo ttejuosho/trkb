@@ -24,6 +24,7 @@
                                         <th scope="col">Location</th>
                                         <th scope="col">Email Address</th>
                                         <th scope="col">Phone #</th>
+                                        <th scope="col">Active</th>
                                         <th scope="col">Options</th>
                                     </tr>
                                 </thead>
@@ -189,7 +190,6 @@
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="newAgentModalLabel">New Agent</h5>
                                 </div>
-
                                 <form id="newAgentForm" action="/api/newAgent" method="POST">
                                     <div class="modal-body pt-0">
                                         <div class="col-12 justify-content-center">
@@ -217,9 +217,15 @@
                                                 <input type="text" class="form-control" id="phoneNumber"
                                                     name="phoneNumber" value="">
                                             </div>
-                                            <div class="form-group form-check">
+                                            <div class="form-group form-check form-check-inline">
                                                 <input type="checkbox" class="form-check-input" name="role" id="role">
                                                 <label class="form-check-label" for="role">Admin User</label>
+                                            </div>
+                                            <div id="activeCheckbox"
+                                                class="form-group form-check form-check-inline d-none">
+                                                <input type="checkbox" class="form-check-input" name="active"
+                                                    id="active">
+                                                <label class="form-check-label" for="role">Deactivate User</label>
                                             </div>
                                         </div>
                                     </div>
@@ -314,6 +320,31 @@
                         </div>
                     </div>
                     {{!-- New Location Modal End --}}
+
+                    {{!-- Delete Confirmation Modal --}}
+                    <div class="modal" id="deleteConfirmationModal" tabindex="-1"
+                        aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-danger" id="deleteConfirmationModalLabel"><i
+                                            class="fas fa-exclamation-triangle"></i> Delete ke ??</h5>
+                                </div>
+                                <div class="modal-body">
+                                    Delete na bad thing, think am well well o. Click Delete if your head correct or
+                                    click Cancel if your head correct.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-danger"
+                                        id="closeDeleteConfirmationModal">Cancel</button>
+                                    <button type="button" class="btn btn-outline-dark continueDelete" data-option=""
+                                        data-id="" id="continueDelete">
+                                        Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{!-- Delete Confirmation Modal End --}}
                 </div>
             </div>
         </div>

@@ -123,14 +123,15 @@ $(document).ready(function () {
           className: "name",
           data: "name",
           render: function (data, type, row, meta) {
-            return (
-              "<span>" +
-              row.name +
-              (row.role === "admin"
+            return `<span>${row.name}${
+              row.role === "admin"
                 ? "<span class='ml-1 btn btn-success' style='padding: 0.01rem .30rem;'>Admin</span>"
-                : "<span class='ml-1 btn btn-danger' style='padding: 0.01rem .30rem;'>Basic</span>") +
-              "</span>"
-            );
+                : "<span class='ml-1 btn btn-danger' style='padding: 0.01rem .30rem;'>Basic</span>"
+            }${
+              row.active === 0
+                ? "<span class='ml-1 btn btn-secondary' style='padding: 0.01rem .30rem;'>Inactive</span>"
+                : ""
+            }</span>`;
           },
         },
         {
@@ -154,6 +155,12 @@ $(document).ready(function () {
         {
           className: "phoneNumber",
           data: "phoneNumber",
+        },
+        {
+          className: "active",
+          data: "active",
+          visible: false,
+          searchable: false,
         },
         {
           data: null,
@@ -200,7 +207,7 @@ $(document).ready(function () {
         return data.json();
       })
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         // agentsTable.rows.add({
         //   userId: res.response.userId,
         //   role: res.response.role,
@@ -271,7 +278,7 @@ $(document).ready(function () {
     var rowId = $(this).data("value");
     var data = agentsTable.row($("#" + rowId)).data();
 
-    $("#newAgentModalLabel").text("Edit " + data.name);
+    $("#newAgentModalLabel").text(data.name);
     $("#saveNewAgent").text("Update");
     $("#name").val(data.name);
     $("#emailAddress").val(data.emailAddress);
@@ -282,14 +289,18 @@ $(document).ready(function () {
     if (data.role === "admin") {
       $("#role").attr("checked", true);
     }
+    $("#activeCheckbox").removeClass("d-none");
+    if (data.active == 1) {
+      $("#active").attr("checked", true);
+    }
     $("#newAgentModal").modal("show");
   });
 
   $("#locationsTable tbody").on("click", ".editLocation", function () {
     var rowId = $(this).data("value");
     var data = locationsTable.row($("#" + rowId)).data();
-    console.log(data);
-    $("#newLocationModalLabel").text("Edit " + data.locationName);
+    //console.log(data);
+    $("#newLocationModalLabel").text(data.locationName);
     $("#saveNewLocation").text("Update");
     $("#saveNewLocation").attr("action", "update");
 
@@ -312,13 +323,38 @@ $(document).ready(function () {
   $("#agentsTable tbody").on("click", ".deleteAgent", function () {
     var agentId = $(this).data("value");
     console.log(agentId);
-    $("#deleteAgentModal").modal("show");
+    $("#continueDelete").attr("data-option", "user");
+    $("#continueDelete").attr("data-id", agentId);
+    $("#deleteConfirmationModal").modal("show");
   });
 
   $("#locationsTable tbody").on("click", ".deleteLocation", function () {
     var locationId = $(this).data("value");
     console.log(locationId);
-    $("#deleteLocationModal").modal("show");
+    $("#continueDelete").attr("data-option", "location");
+    $("#continueDelete").attr("data-id", locationId);
+    $("#deleteConfirmationModal").modal("show");
+  });
+
+  $("#closeDeleteConfirmationModal").on("click", () => {
+    $("#deleteConfirmationModal").modal("hide");
+  });
+
+  $("#continueDelete").on("click", () => {
+    var apiParamId = $("#continueDelete").attr("data-id");
+    var apiRouteUrl = "/api/deleteUser/" + apiParamId;
+    if ($("#continueDelete").attr("data-option") == "location") {
+      apiRouteUrl = "/api/deleteLocation/" + apiParamId;
+    }
+    fetch(apiRouteUrl)
+      .then((data) => {
+        return data.json();
+      })
+      .then((res) => {
+        console.log(res);
+      });
+
+    console.log(apiParamId);
   });
 
   $("#newAgentBtn").on("click", () => {
@@ -329,9 +365,11 @@ $(document).ready(function () {
   $("#closeNewAgentModal").on("click", () => {
     $("#newAgentForm")[0].reset();
     $("#role").attr("checked", false);
+    $("#active").attr("checked", false);
     $("#locationUID")[0].selectize.setValue("");
     $(".message").text("");
     $(".errorMessage").text("");
+    $("#activeCheckbox").addClass("d-none");
     $("#newAgentModal").modal("hide");
   });
 
