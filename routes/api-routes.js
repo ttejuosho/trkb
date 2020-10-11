@@ -623,6 +623,67 @@ module.exports = (app) => {
     }
   );
 
+  app.get("/api/deactivateUser/:userId", authenticate, (req,res)=>{
+    db.User.findOne({
+      where: {
+        userId: req.params.userId,
+        companyUID: res.locals.companyUID
+      }
+    }).then((dbUser)=>{
+      if (dbUser != null){
+        db.User.update({
+          active: false
+        }, {
+          where: {
+            userId: req.params.userId
+          }
+        }).then((dbUser)=>{
+          res.json(dbUser);
+        });
+      }
+    });
+  });
+
+  app.get("/api/activateUser/:userId", authenticate, (req,res)=>{
+    db.User.findOne({
+      where: {
+        userId: req.params.userId,
+        companyUID: res.locals.companyUID
+      }
+    }).then((dbUser)=>{
+      if (dbUser != null){
+        db.User.update({
+          active: true
+        }, {
+          where: {
+            userId: req.params.userId
+          }
+        }).then((dbUser)=>{
+          res.json(dbUser);
+        });
+      }
+    });
+  });
+
+  app.delete("/api/deleteUser/:userId", authenticate, (req,res)=>{
+    db.User.findOne({
+      where: {
+        userId: req.params.userId,
+        companyUID: res.locals.companyUID
+      }
+    }).then((dbUser)=>{
+      if (dbUser != null){
+        db.User.destroy({
+          where: {
+            userId: req.params.userId
+          }
+        }).then((dbUser)=>{
+          res.json(dbUser);
+        });
+      }
+    });
+  });
+
   app.get("/api/getAgents", authenticate, async (req, res) => {
     const data = await db.sequelize.query(
       "SELECT `User`.`userId`, `User`.`name`, `User`.`emailAddress`, `User`.`phoneNumber`, `User`.`role`, `Locations`.`locationId` AS `locationId`,  `Locations`.`locationUID` AS `locationUID`, `Locations`.`locationName` AS `locationName` FROM `Users` AS `User` LEFT OUTER JOIN `Locations` AS `Locations` ON `User`.`locationUID` = `Locations`.`locationUID` WHERE `User`.`companyUID` = " +
