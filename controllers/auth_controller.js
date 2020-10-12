@@ -161,6 +161,7 @@ exports.newLocation = (req, res) => {
             return res.render("auth/auth", {
               layout: "partials/prelogin",
               signup: true,
+              newCompany: true,
               companyUID: req.body.companyUID,
               companyName: req.body.companyName,
               locations: locations,
@@ -200,6 +201,7 @@ exports.signup = (req, res, next) => {
         emailAddress: req.body.emailAddress,
         name: req.body.name,
         phoneNumber: req.body.phoneNumber,
+        newCompany: req.body.newCompany,
       });
     } else {
       //Check Password
@@ -216,6 +218,7 @@ exports.signup = (req, res, next) => {
           locationUID: req.body.locationUID,
           emailAddress: req.body.emailAddress,
           name: req.body.name,
+          newCompany: req.body.newCompany,
         });
       } else {
         req.session.userInfo = {};
@@ -239,6 +242,7 @@ exports.signup = (req, res, next) => {
               emailAddress: req.body.emailAddress,
               name: req.body.name,
               phoneNumber: req.body.phoneNumber,
+              newCompany: req.body.newCompany,
             });
           } else {
             // Success

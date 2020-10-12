@@ -57,6 +57,7 @@ module.exports = function (passport, user) {
               phoneNumber: req.body.phoneNumber,
               companyUID: req.body.companyUID,
               locationUID: req.body.locationUID,
+              role: req.body.newCompany == "true" ? "admin" : "basic",
             };
 
             User.create(data)
