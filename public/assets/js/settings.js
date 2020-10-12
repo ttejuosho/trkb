@@ -189,7 +189,8 @@ $(document).ready(function () {
       emailAddress: $("#emailAddress").val(),
       locationUID: $("#locationUID").val(),
       phoneNumber: $("#phoneNumber").val(),
-      role: $("#role").val(),
+      role: $("input[name=role]").prop("checked") === true ? "admin" : "basic",
+      active: $("input[name=active]").prop("checked") === true ? false : true,
     };
 
     var apiUrl = "/api/newAgent";
@@ -225,6 +226,8 @@ $(document).ready(function () {
           }
           $("#newAgentForm")[0].reset();
           $("#locationUID")[0].selectize.setValue("");
+          $("#active").attr("checked", false);
+          $("#role").attr("checked", false);
         } else {
           $(".errorMessage").text(res.errors[0].message);
         }
@@ -290,7 +293,7 @@ $(document).ready(function () {
       $("#role").attr("checked", true);
     }
     $("#activeCheckbox").removeClass("d-none");
-    if (data.active == 1) {
+    if (data.active == 0) {
       $("#active").attr("checked", true);
     }
     $("#newAgentModal").modal("show");
@@ -323,7 +326,7 @@ $(document).ready(function () {
   $("#agentsTable tbody").on("click", ".deleteAgent", function () {
     var agentId = $(this).data("value");
     console.log(agentId);
-    $("#continueDelete").attr("data-option", "user");
+    $("#continueDelete").attr("data-option", "User");
     $("#continueDelete").attr("data-id", agentId);
     $("#deleteConfirmationModal").modal("show");
   });
@@ -331,20 +334,25 @@ $(document).ready(function () {
   $("#locationsTable tbody").on("click", ".deleteLocation", function () {
     var locationId = $(this).data("value");
     console.log(locationId);
-    $("#continueDelete").attr("data-option", "location");
+    $("#continueDelete").attr("data-option", "Location");
     $("#continueDelete").attr("data-id", locationId);
     $("#deleteConfirmationModal").modal("show");
   });
 
   $("#closeDeleteConfirmationModal").on("click", () => {
-    $('#confirmDeleteErrorMesaage').text("");
+    $("#confirmDeleteErrorMesaage").text("");
+    $("#confirmDeleteSuccessMesaage").addClass("d-none");
+    $("#deleteModalBody").removeClass("d-none");
+    $("#deleteSuccessConfirmationModalLabel").addClass("d-none");
+    $("#deleteConfirmationModalLabel").removeClass("d-none");
+    $("#continueDelete").removeClass("d-none");
     $("#deleteConfirmationModal").modal("hide");
   });
 
   $("#continueDelete").on("click", () => {
     var apiParamId = $("#continueDelete").attr("data-id");
     var apiRouteUrl = "/api/deleteUser/" + apiParamId;
-    if ($("#continueDelete").attr("data-option") == "location") {
+    if ($("#continueDelete").attr("data-option") == "Location") {
       apiRouteUrl = "/api/deleteLocation/" + apiParamId;
     }
     fetch(apiRouteUrl)
@@ -352,13 +360,17 @@ $(document).ready(function () {
         return data.json();
       })
       .then((res) => {
-        console.log(res);
-        if(res.errors.length > 0){
-          $('#confirmDeleteErrorMesaage').text(res.errors[0].message);
+        if (res.errors && res.errors.length > 0) {
+          $("#confirmDeleteErrorMesaage").text(res.errors[0].message);
+        } else {
+          $("#userLocationSpan").text($("#continueDelete").attr("data-option"));
+          $("#confirmDeleteSuccessMesaage").removeClass("d-none");
+          $("#deleteModalBody").addClass("d-none");
+          $("#deleteSuccessConfirmationModalLabel").removeClass("d-none");
+          $("#continueDelete").addClass("d-none");
+          $("#deleteConfirmationModalLabel").addClass("d-none");
         }
       });
-
-    console.log(apiParamId);
   });
 
   $("#newAgentBtn").on("click", () => {

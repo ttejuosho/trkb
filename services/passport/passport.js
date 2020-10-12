@@ -101,8 +101,8 @@ module.exports = function (passport, user) {
       },
       function (req, email, password, done) {
         const User = user;
-        const isValidPassword = function (userpass, password) {
-          return bCrypt.compareSync(password, userpass);
+        const isValidPassword = function (inputPassword, hashedPassword) {
+          return bCrypt.compareSync(inputPassword, hashedPassword);
         };
 
         User.findOne({
@@ -111,13 +111,21 @@ module.exports = function (passport, user) {
           },
         })
           .then(function (user) {
-            if (!user) {
+            if (user == null) {
               return done(null, false, {
-                message: "Email does not exist",
+                message:
+                  "Email does not exist, click sign up with your company Id or register.",
               });
             }
 
-            if (!isValidPassword(user.password, password)) {
+            if (user.active == 0) {
+              return done(null, true, {
+                message:
+                  "Your account is inactive. Contact your Admin to activate your account.",
+              });
+            }
+
+            if (!isValidPassword(password, user.password)) {
               return done(null, false, {
                 message: "Incorrect password.",
               });

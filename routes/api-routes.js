@@ -432,7 +432,10 @@ module.exports = (app) => {
         } else {
           return res.json({
             errors: [
-              { message: "Error: You are not authorized to perform this action." },
+              {
+                message:
+                  "Error: You are not authorized to perform this action.",
+              },
             ],
           });
         }
@@ -479,7 +482,8 @@ module.exports = (app) => {
               phoneNumber: req.body.phoneNumber,
               locationUID: req.body.locationUID,
               companyUID: res.locals.companyUID,
-              role: req.body.role == "on" ? "admin" : "basic",
+              role: req.body.role,
+              active: req.body.active,
             },
             {
               where: {
@@ -500,7 +504,10 @@ module.exports = (app) => {
         } else {
           return res.json({
             errors: [
-              { message: "Error: You are not authorized to perform this action." },
+              {
+                message:
+                  "Error: You are not authorized to perform this action.",
+              },
             ],
           });
         }
@@ -615,7 +622,10 @@ module.exports = (app) => {
         } else {
           return res.json({
             errors: [
-              { message: "Error: You are not authorized to perform this action." },
+              {
+                message:
+                  "Error: You are not authorized to perform this action.",
+              },
             ],
           });
         }
@@ -714,16 +724,16 @@ module.exports = (app) => {
     }
   });
 
-    app.get("/api/deleteLocation/:locationId", authenticate, (req, res) => {
+  app.get("/api/deleteLocation/:locationId", authenticate, (req, res) => {
     if (res.locals.role == "admin") {
       db.Location.findByPk(req.params.locationId).then((dbLocation) => {
         if (dbLocation != null) {
           db.Location.destroy({
             where: {
-              locationId: req.params.userId,
+              locationId: req.params.locationId,
             },
-          }).then((dbUser) => {
-            res.json(dbUser);
+          }).then((dbLocation) => {
+            return res.json(dbLocation);
           });
         }
       });

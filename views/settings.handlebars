@@ -188,7 +188,8 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="newAgentModalLabel">New Agent</h5>
+                                    <h5 class="modal-title"><i class="fas fa-user text-primary pl-3 mr-2"></i> <span
+                                            id="newAgentModalLabel">New Agent</span></h5>
                                 </div>
                                 <form id="newAgentForm" action="/api/newAgent" method="POST">
                                     <div class="modal-body pt-0">
@@ -247,7 +248,8 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="newLocationModalLabel">New Location</h5>
+                                    <h5 class="modal-title"><i class="fas fa-location-arrow text-primary pl-3 mr-2"></i>
+                                        <span id="newLocationModalLabel"> New Location</span></h5>
                                 </div>
 
                                 <form id="newLocationForm" action="/api/newLocation" method="POST">
@@ -329,15 +331,22 @@
                                 <div class="modal-header">
                                     <h5 class="modal-title text-danger mb-2" id="deleteConfirmationModalLabel"><i
                                             class="fas fa-exclamation-triangle"></i> Delete ke ??</h5>
+
+                                    <h5 class="modal-title text-success mb-2 d-none"
+                                        id="deleteSuccessConfirmationModalLabel">
+                                        <i class="fas fa-check-circle"></i> Done !! </h5>
                                 </div>
                                 <div class="modal-body pt-1">
                                     <p id="confirmDeleteErrorMesaage" class="text-danger"></p>
-                                    Delete na bad thing, think am well well o. Click Delete if your head correct or
-                                    click Cancel if your head correct.
+                                    <p id="confirmDeleteSuccessMesaage" class="text-success d-none"><span
+                                            id="userLocationSpan"></span> deleted.</p>
+                                    <p id="deleteModalBody" class="">Delete na bad thing, think am well well o. Click
+                                        Delete if your head correct or
+                                        click Cancel if your head correct.</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-danger"
-                                        id="closeDeleteConfirmationModal">Cancel</button>
+                                        id="closeDeleteConfirmationModal">Close</button>
                                     <button type="button" class="btn btn-outline-dark continueDelete" data-option=""
                                         data-id="" id="continueDelete">
                                         Delete</button>

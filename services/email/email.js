@@ -21,7 +21,8 @@ const sendEmail = function (companyName, emailBody, subject, recipients) {
   // }));
 
   const mailOptions = {
-    from: companyName + "<ttejuosho@aol.com>", // sender address
+    from:
+      (companyName == null ? "TrKb Inc" : companyName) + "<ttejuosho@aol.com>", // sender address
     to: recipients, // list of receivers
     subject: subject, // Subject line
     // text: 'Hello world?', // plain text body
