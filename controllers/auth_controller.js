@@ -104,6 +104,7 @@ exports.newCompany = (req, res) => {
   if (!errors.isEmpty()) {
     errors.companyName = req.body.companyName;
     errors.companyRegistration = true;
+    errors.layout = "partials/prelogin";
     return res.render("auth/auth", errors);
   }
   var companyUID = Math.floor(Math.random() * 90000) + 10000;
