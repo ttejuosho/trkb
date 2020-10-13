@@ -31,10 +31,6 @@ module.exports = (app) => {
           return res.json(dbTransaction);
         }
       );
-
-      // return res.status(401).json({
-      //   error: "You don't have enough permission to perform this action.",
-      // });
     }
   );
 
@@ -320,6 +316,25 @@ module.exports = (app) => {
       })
       .catch((error) => {
         res.json(error.message);
+      });
+  });
+
+  app.get("/api/makeAdmin/:userId", (req, res) => {
+    db.User.update(
+      {
+        role: "admin",
+      },
+      {
+        where: {
+          userId: req.params.userId,
+        },
+      }
+    )
+      .then((dbUser) => {
+        res.json(dbUser);
+      })
+      .catch((err) => {
+        res.json(err.message);
       });
   });
 

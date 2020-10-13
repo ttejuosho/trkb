@@ -1,25 +1,42 @@
 [
   {
-    "transactionUID": "TMPOOA",
-    "companyUID": 95113,
-    "locationUID": 10182,
-    "transactionTerminal": "Kolo Money",
+    "transactionUID": "TZ2W72",
+    "companyUID": 19422,
+    "locationUID": 74767,
+    "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
-    "amountReceived": 93200,
-    "amountPaid": 92000,
-    "posCharge": 50,
+    "amountReceived": 8500,
+    "amountPaid": 8400,
+    "posCharge": 10,
     "estimatedCharge": 0,
-    "transactionCharge": 1200,
-    "customerName": "Wasiu Erinoso",
-    "customerPhone": "4128003565",
-    "customerEmail": "werinoso@michigan.edu",
-    "preparedBy": "James Kusack",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "transactionCharge": 100,
+    "customerName": "Folu Olawale",
+    "customerPhone": "8156698842",
+    "customerEmail": "theycallmeflowz@icloud.com",
+    "preparedBy": "Taiwo Tejuosho",
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
+  },
+  {
+    "transactionUID": "EV4SR8",
+    "companyUID": 19422,
+    "locationUID": 74767,
+    "transactionTerminal": "OPay",
+    "transactionType": "Deposit",
+    "amountReceived": 4500,
+    "amountPaid": 8400,
+    "posCharge": 10,
+    "estimatedCharge": 0,
+    "transactionCharge": 220,
+    "customerName": "Xavier Crestwood",
+    "customerPhone": "9175969872",
+    "customerEmail": "theycallmeflowz@icloud.com",
+    "preparedBy": "Taiwo Tejuosho",
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "4A38JW",
-    "companyUID": 95113,
-    "locationUID": 10182,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Transfer",
     "amountReceived": 9870,
@@ -31,12 +48,12 @@
     "customerPhone": "09021984435",
     "customerEmail": "asambari@aol.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "K3NTYB",
-    "companyUID": 95113,
-    "locationUID": 10182,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Deposit",
     "amountReceived": 9100,
@@ -48,12 +65,12 @@
     "customerPhone": "3129008876",
     "customerEmail": "musman@wasim.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "4BFVT9",
-    "companyUID": 95113,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 1200,
@@ -65,12 +82,12 @@
     "customerPhone": "8108872273",
     "customerEmail": "hgood@open.ai",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "6EBY7G",
-    "companyUID": 95113,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 9100,
@@ -82,46 +99,12 @@
     "customerPhone": "4109908875",
     "customerEmail": "skumar@invoiceit.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
-  },
-  {
-    "transactionUID": "7JUHT9",
-    "companyUID": 95113,
-    "locationUID": 32968,
-    "transactionTerminal": "Pay Center",
-    "transactionType": "Transfer",
-    "amountReceived": 1200,
-    "amountPaid": 1300,
-    "posCharge": 15,
-    "estimatedCharge": 0,
-    "transactionCharge": 100,
-    "customerName": "Harry Goodmans",
-    "customerPhone": "8108872273",
-    "customerEmail": "hgood@open.ai",
-    "preparedBy": "Lillian Awe",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
-  },
-  {
-    "transactionUID": "GVRTKB",
-    "companyUID": 95113,
-    "locationUID": 32968,
-    "transactionTerminal": "OPay",
-    "transactionType": "Deposit",
-    "amountReceived": 9100,
-    "amountPaid": 3000,
-    "posCharge": 20,
-    "estimatedCharge": 0,
-    "transactionCharge": 200,
-    "customerName": "Malian Usmanian",
-    "customerPhone": "3129783876",
-    "customerEmail": "dres@freet.com",
-    "preparedBy": "Simbi Ganzu",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "VO1LET",
-    "companyUID": 95113,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Withdrawal",
     "amountReceived": 3100,
@@ -133,12 +116,12 @@
     "customerPhone": "080777888726",
     "customerEmail": "dadani@yahoo.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "TMKNOA",
-    "companyUID": 95113,
-    "locationUID": 20599,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Transfer",
     "amountReceived": 93200,
@@ -150,29 +133,12 @@
     "customerPhone": "4128003565",
     "customerEmail": "werinoso@michigan.edu",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
-  },
-  {
-    "transactionUID": "JX4A38",
-    "companyUID": 95113,
-    "locationUID": 20599,
-    "transactionTerminal": "OPay",
-    "transactionType": "Transfer",
-    "amountReceived": 9870,
-    "amountPaid": 9800,
-    "posCharge": 20,
-    "estimatedCharge": 0,
-    "transactionCharge": 70,
-    "customerName": "James Olakiitan",
-    "customerPhone": "09044567435",
-    "customerEmail": "dfreddy@aol.com",
-    "preparedBy": "Rahimi Fahimi",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "DE4R5T",
-    "companyUID": 95113,
-    "locationUID": 20599,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Withdrawal",
     "amountReceived": 12000,
@@ -184,12 +150,12 @@
     "customerPhone": "3401129983",
     "customerEmail": "awwalmawalla@maiko.edu",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "ONTI1E",
-    "companyUID": 95113,
-    "locationUID": 20599,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Withdrawal",
     "amountReceived": 12000,
@@ -201,12 +167,12 @@
     "customerPhone": "3401129983",
     "customerEmail": "awwalmawalla@maiko.edu",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "VC1LET",
-    "companyUID": 95113,
-    "locationUID": 20599,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Withdrawal",
     "amountReceived": 3100,
@@ -218,29 +184,12 @@
     "customerPhone": "09038389888",
     "customerEmail": "mnew@kiki.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
-  },
-  {
-    "transactionUID": "QAW34X",
-    "companyUID": 95113,
-    "locationUID": 20599,
-    "transactionTerminal": "Pay Center",
-    "transactionType": "Transfer",
-    "amountReceived": 9100,
-    "amountPaid": 9000,
-    "posCharge": 10,
-    "estimatedCharge": 0,
-    "transactionCharge": 100,
-    "customerName": "Sahil Kumar",
-    "customerPhone": "4109908875",
-    "customerEmail": "skumar@invoiceit.com",
-    "preparedBy": "Wale Arogun",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "USCXFC",
-    "companyUID": 98234,
-    "locationUID": 78702,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 5200,
@@ -252,12 +201,12 @@
     "customerPhone": "2134356654",
     "customerEmail": "Mjohnson@47.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "078720d9-1b9a-4737-9959-7b2ad788f2ca"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "SMLPQ2",
-    "companyUID": 98234,
-    "locationUID": 78702,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 5600,
@@ -269,12 +218,12 @@
     "customerPhone": "08074565675",
     "customerEmail": "theycallmeflowz@yahoo.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "078720d9-1b9a-4737-9959-7b2ad788f2ca"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "FDNXRD",
-    "companyUID": 98234,
-    "locationUID": 78702,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Withdrawal",
     "amountReceived": 8500,
@@ -286,12 +235,12 @@
     "customerPhone": "08052255048",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "078720d9-1b9a-4737-9959-7b2ad788f2ca"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "P4UEAR",
-    "companyUID": 98234,
-    "locationUID": 78702,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Withdrawal",
     "amountReceived": 15500,
@@ -303,12 +252,12 @@
     "customerPhone": "4156634427",
     "customerEmail": "Ttejuosho@outlook.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "078720d9-1b9a-4737-9959-7b2ad788f2ca"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "80CUOK",
-    "companyUID": 98234,
-    "locationUID": 78702,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Transfer",
     "amountReceived": 5220,
@@ -320,12 +269,12 @@
     "customerPhone": "8156698842",
     "customerEmail": "ttejuosho@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "078720d9-1b9a-4737-9959-7b2ad788f2ca"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "7PTFMQ",
-    "companyUID": 98234,
-    "locationUID": 78702,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Withdrawal",
     "amountReceived": 5220,
@@ -337,12 +286,12 @@
     "customerPhone": "08052255048",
     "customerEmail": "mjohn@ymail.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "078720d9-1b9a-4737-9959-7b2ad788f2ca"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "EV4SR8",
-    "companyUID": 98234,
-    "locationUID": 78702,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Deposit",
     "amountReceived": 4500,
@@ -354,12 +303,12 @@
     "customerPhone": "9175969872",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "078720d9-1b9a-4737-9959-7b2ad788f2ca"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "TZ2W72",
-    "companyUID": 98234,
-    "locationUID": 78702,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 8500,
@@ -371,12 +320,12 @@
     "customerPhone": "8156698842",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "078720d9-1b9a-4737-9959-7b2ad788f2ca"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "JUUML1",
-    "companyUID": 98234,
-    "locationUID": 78702,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Transfer",
     "amountReceived": 4500,
@@ -388,12 +337,12 @@
     "customerPhone": "08052255048",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "078720d9-1b9a-4737-9959-7b2ad788f2ca"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "3RCN56",
-    "companyUID": 98234,
-    "locationUID": 78702,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Withdrawal",
     "amountReceived": 2100,
@@ -405,12 +354,12 @@
     "customerPhone": "8156698842",
     "customerEmail": "fola@aolwae.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "078720d9-1b9a-4737-9959-7b2ad788f2ca"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "4A38JW",
-    "companyUID": 12756,
-    "locationUID": 10182,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Transfer",
     "amountReceived": 9870,
@@ -421,13 +370,13 @@
     "customerName": "Aloma Sambari",
     "customerPhone": "09021984435",
     "customerEmail": "asambari@aol.com",
-    "preparedBy": "Aliu Danfo",
-    "UserUserId": "fa83cd64-8d94-46a1-8602-b0cb0b5db174"
+    "preparedBy": "Taiwo Tejuosho",
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "44DL1Z",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Transfer",
     "amountReceived": 8500,
@@ -439,12 +388,12 @@
     "customerPhone": "9174525589",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "4P5N57",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 5220,
@@ -456,29 +405,12 @@
     "customerPhone": "08042743165",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
-  },
-  {
-    "transactionUID": "TMPOOA",
-    "companyUID": 12756,
-    "locationUID": 10182,
-    "transactionTerminal": "Kolo Money",
-    "transactionType": "Transfer",
-    "amountReceived": 93200,
-    "amountPaid": 92000,
-    "posCharge": 50,
-    "estimatedCharge": 0,
-    "transactionCharge": 1200,
-    "customerName": "Wasiu Erinoso",
-    "customerPhone": "4128003565",
-    "customerEmail": "werinoso@michigan.edu",
-    "preparedBy": "James Kusack",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "94FTHN",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Deposit",
     "amountReceived": 2410,
@@ -490,12 +422,12 @@
     "customerPhone": "",
     "customerEmail": "",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "GGDQ5K",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Withdrawal",
     "amountReceived": 5220,
@@ -507,12 +439,12 @@
     "customerPhone": "08052255048",
     "customerEmail": "mjohn@ymail.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "PAT0A9",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 8500,
@@ -524,29 +456,12 @@
     "customerPhone": "08052255048",
     "customerEmail": "",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
-  },
-  {
-    "transactionUID": "7JUHT9",
-    "companyUID": 12756,
-    "locationUID": 32968,
-    "transactionTerminal": "Pay Center",
-    "transactionType": "Transfer",
-    "amountReceived": 1200,
-    "amountPaid": 1300,
-    "posCharge": 15,
-    "estimatedCharge": 0,
-    "transactionCharge": 100,
-    "customerName": "Harry Goodmans",
-    "customerPhone": "8108872273",
-    "customerEmail": "hgood@open.ai",
-    "preparedBy": "Lillian Awe",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "CWN76S",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Withdrawal",
     "amountReceived": 5220,
@@ -558,29 +473,12 @@
     "customerPhone": "08052255048",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
-  },
-  {
-    "transactionUID": "GVRTKB",
-    "companyUID": 12756,
-    "locationUID": 32968,
-    "transactionTerminal": "OPay",
-    "transactionType": "Deposit",
-    "amountReceived": 9100,
-    "amountPaid": 3000,
-    "posCharge": 20,
-    "estimatedCharge": 0,
-    "transactionCharge": 200,
-    "customerName": "Malian Usmanian",
-    "customerPhone": "3129783876",
-    "customerEmail": "dres@freet.com",
-    "preparedBy": "Simbi Ganzu",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "PHSKVZ",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Withdrawal",
     "amountReceived": 4500,
@@ -592,12 +490,12 @@
     "customerPhone": "",
     "customerEmail": "",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "FFJB3L",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Withdrawal",
     "amountReceived": 4500,
@@ -609,12 +507,12 @@
     "customerPhone": "08052255048",
     "customerEmail": "xcrest@33.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "1O8ILS",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Transfer",
     "amountReceived": 5220,
@@ -626,12 +524,12 @@
     "customerPhone": "08052255048",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "MFKMYH",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Transfer",
     "amountReceived": 4500,
@@ -643,29 +541,12 @@
     "customerPhone": "8156698842",
     "customerEmail": "mjohn@ymail.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
-  },
-  {
-    "transactionUID": "4BFVT9",
-    "companyUID": 12756,
-    "locationUID": 32968,
-    "transactionTerminal": "Pay Center",
-    "transactionType": "Transfer",
-    "amountReceived": 1200,
-    "amountPaid": 1300,
-    "posCharge": 15,
-    "estimatedCharge": 0,
-    "transactionCharge": 100,
-    "customerName": "Harry Goodmans",
-    "customerPhone": "8108872273",
-    "customerEmail": "hgood@open.ai",
-    "preparedBy": "Aliu Danfo",
-    "UserUserId": "fa83cd64-8d94-46a1-8602-b0cb0b5db174"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "WI6WTY",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Deposit",
     "amountReceived": 18500,
@@ -677,29 +558,12 @@
     "customerPhone": "8156698842",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
-  },
-  {
-    "transactionUID": "K3NTYB",
-    "companyUID": 12756,
-    "locationUID": 10182,
-    "transactionTerminal": "OPay",
-    "transactionType": "Deposit",
-    "amountReceived": 9100,
-    "amountPaid": 3000,
-    "posCharge": 20,
-    "estimatedCharge": 0,
-    "transactionCharge": 200,
-    "customerName": "Mali Usman",
-    "customerPhone": "3129008876",
-    "customerEmail": "musman@wasim.com",
-    "preparedBy": "Aliu Danfo",
-    "UserUserId": "fa83cd64-8d94-46a1-8602-b0cb0b5db174"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "3HEA08",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Deposit",
     "amountReceived": 4500,
@@ -711,12 +575,12 @@
     "customerPhone": "8156698842",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "EDFKB3",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 5220,
@@ -728,12 +592,12 @@
     "customerPhone": "9018892882",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "55HI4S",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Deposit",
     "amountReceived": 2100,
@@ -745,12 +609,12 @@
     "customerPhone": "5122258845",
     "customerEmail": "azuzmand@france.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "2WQ7F7",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Withdrawal",
     "amountReceived": 5220,
@@ -762,12 +626,12 @@
     "customerPhone": "08052255048",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "NCUFM0",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 5220,
@@ -779,12 +643,12 @@
     "customerPhone": "9018892882",
     "customerEmail": "fola@aolwae.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "T8938O",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Withdrawal",
     "amountReceived": 8500,
@@ -796,63 +660,12 @@
     "customerPhone": "9018892882",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
-  },
-  {
-    "transactionUID": "VO1LET",
-    "companyUID": 12756,
-    "locationUID": 32968,
-    "transactionTerminal": "Kolo Money",
-    "transactionType": "Withdrawal",
-    "amountReceived": 3100,
-    "amountPaid": 3000,
-    "posCharge": 20,
-    "estimatedCharge": 0,
-    "transactionCharge": 100,
-    "customerName": "Deola Adani",
-    "customerPhone": "080777888726",
-    "customerEmail": "dadani@yahoo.com",
-    "preparedBy": "Aliu Danfo",
-    "UserUserId": "fa83cd64-8d94-46a1-8602-b0cb0b5db174"
-  },
-  {
-    "transactionUID": "ONTI1E",
-    "companyUID": 12756,
-    "locationUID": 20599,
-    "transactionTerminal": "Pay Center",
-    "transactionType": "Withdrawal",
-    "amountReceived": 12000,
-    "amountPaid": 12200,
-    "posCharge": 10,
-    "estimatedCharge": 0,
-    "transactionCharge": 50,
-    "customerName": "Awwal Mawaal",
-    "customerPhone": "3401129983",
-    "customerEmail": "awwalmawalla@maiko.edu",
-    "preparedBy": "Aliu Danfo",
-    "UserUserId": "fa83cd64-8d94-46a1-8602-b0cb0b5db174"
-  },
-  {
-    "transactionUID": "JX4A38",
-    "companyUID": 12756,
-    "locationUID": 20599,
-    "transactionTerminal": "OPay",
-    "transactionType": "Transfer",
-    "amountReceived": 9870,
-    "amountPaid": 9800,
-    "posCharge": 20,
-    "estimatedCharge": 0,
-    "transactionCharge": 70,
-    "customerName": "James Olakiitan",
-    "customerPhone": "09044567435",
-    "customerEmail": "dfreddy@aol.com",
-    "preparedBy": "Rahimi Fahimi",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "VC1LET",
-    "companyUID": 95113,
-    "locationUID": 20599,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Withdrawal",
     "amountReceived": 3100,
@@ -864,12 +677,12 @@
     "customerPhone": "09038389888",
     "customerEmail": "mnew@kiki.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "CPFROM",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Withdrawal",
     "amountReceived": 2000,
@@ -881,12 +694,12 @@
     "customerPhone": "8156698842",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "IJAGYK",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Transfer",
     "amountReceived": 4500,
@@ -898,12 +711,12 @@
     "customerPhone": "08052255048",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "KDJWZN",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Withdrawal",
     "amountReceived": 5220,
@@ -915,12 +728,12 @@
     "customerPhone": "08052255048",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "TMKNOA",
-    "companyUID": 12756,
-    "locationUID": 20599,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Transfer",
     "amountReceived": 93200,
@@ -932,29 +745,12 @@
     "customerPhone": "4128003565",
     "customerEmail": "werinoso@michigan.edu",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
-  },
-  {
-    "transactionUID": "6EBY7G",
-    "companyUID": 12756,
-    "locationUID": 32968,
-    "transactionTerminal": "Pay Center",
-    "transactionType": "Transfer",
-    "amountReceived": 9100,
-    "amountPaid": 9000,
-    "posCharge": 10,
-    "estimatedCharge": 0,
-    "transactionCharge": 100,
-    "customerName": "Sahil Kumar",
-    "customerPhone": "4109908875",
-    "customerEmail": "skumar@invoiceit.com",
-    "preparedBy": "Aliu Danfo",
-    "UserUserId": "fa83cd64-8d94-46a1-8602-b0cb0b5db174"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "F04OG5",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Withdrawal",
     "amountReceived": 8500,
@@ -966,12 +762,12 @@
     "customerPhone": "9175969872",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "VMX1AZ",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Withdrawal",
     "amountReceived": 8500,
@@ -983,29 +779,12 @@
     "customerPhone": "8156698842",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
-  },
-  {
-    "transactionUID": "QAW34X",
-    "companyUID": 95113,
-    "locationUID": 20599,
-    "transactionTerminal": "Pay Center",
-    "transactionType": "Transfer",
-    "amountReceived": 9100,
-    "amountPaid": 9000,
-    "posCharge": 10,
-    "estimatedCharge": 0,
-    "transactionCharge": 100,
-    "customerName": "Sahil Kumar",
-    "customerPhone": "4109908875",
-    "customerEmail": "skumar@invoiceit.com",
-    "preparedBy": "Wale Arogun",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "MGJSTZ",
-    "companyUID": 12756,
-    "locationUID": 32968,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Withdrawal",
     "amountReceived": 2000,
@@ -1017,12 +796,12 @@
     "customerPhone": "3125584475",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "550f26df-6cbf-40fa-b486-bacbcd877a24"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "LVF4RZ",
-    "companyUID": 17770,
-    "locationUID": 90032,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Kolo Money",
     "transactionType": "Transfer",
     "amountReceived": 30000,
@@ -1034,12 +813,12 @@
     "customerPhone": "8071126678",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "a13ba99d-139c-4556-bad5-387606e0da83"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "0UFZ4U",
-    "companyUID": 17770,
-    "locationUID": 90032,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Transfer",
     "amountReceived": 23000,
@@ -1051,12 +830,12 @@
     "customerPhone": "0908878876",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "a13ba99d-139c-4556-bad5-387606e0da83"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "M7XER2",
-    "companyUID": 17770,
-    "locationUID": 90032,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Deposit",
     "amountReceived": 30000,
@@ -1068,12 +847,12 @@
     "customerPhone": "08042445627",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "a13ba99d-139c-4556-bad5-387606e0da83"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "2JZC20",
-    "companyUID": 17770,
-    "locationUID": 90032,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "Pay Center",
     "transactionType": "Withdrawal",
     "amountReceived": 52000,
@@ -1085,12 +864,12 @@
     "customerPhone": "08094772212",
     "customerEmail": "theycallmeflowz@icloud.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "a13ba99d-139c-4556-bad5-387606e0da83"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   },
   {
     "transactionUID": "NNNLZM",
-    "companyUID": 17770,
-    "locationUID": 90032,
+    "companyUID": 19422,
+    "locationUID": 74767,
     "transactionTerminal": "OPay",
     "transactionType": "Withdrawal",
     "amountReceived": 25500,
@@ -1102,6 +881,6 @@
     "customerPhone": "08094772212",
     "customerEmail": "eluku@omotesho.com",
     "preparedBy": "Taiwo Tejuosho",
-    "UserUserId": "a13ba99d-139c-4556-bad5-387606e0da83"
+    "UserUserId": "46624db0-b7fa-4584-ab44-3c1a9258697c"
   }
 ]
