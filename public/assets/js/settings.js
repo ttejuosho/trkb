@@ -229,7 +229,9 @@ $(document).ready(function () {
           $("#active").attr("checked", false);
           $("#role").attr("checked", false);
         } else {
-          $(".errorMessage").text(res.errors[0].message);
+          res.errors.forEach((error) => {
+            $("." + error.param + "Error").text(error.msg);
+          });
         }
         return;
       });
@@ -263,7 +265,6 @@ $(document).ready(function () {
         return data.json();
       })
       .then((res) => {
-        console.log(res);
         if (res.errors.length < 1) {
           $("#newLocationForm")[0].reset();
           if ($("#saveNewLocation").attr("action") == "update") {
@@ -272,7 +273,9 @@ $(document).ready(function () {
             $(".message").text("Location saved !!");
           }
         } else {
-          $(".errorMessage").text(res.errors[0].message);
+          res.errors.forEach((error) => {
+            $("." + error.param + "Error").text(error.msg);
+          });
         }
       });
   });
@@ -325,7 +328,6 @@ $(document).ready(function () {
 
   $("#agentsTable tbody").on("click", ".deleteAgent", function () {
     var agentId = $(this).data("value");
-    console.log(agentId);
     $("#continueDelete").attr("data-option", "User");
     $("#continueDelete").attr("data-id", agentId);
     $("#deleteConfirmationModal").modal("show");
@@ -333,7 +335,6 @@ $(document).ready(function () {
 
   $("#locationsTable tbody").on("click", ".deleteLocation", function () {
     var locationId = $(this).data("value");
-    console.log(locationId);
     $("#continueDelete").attr("data-option", "Location");
     $("#continueDelete").attr("data-id", locationId);
     $("#deleteConfirmationModal").modal("show");
@@ -375,7 +376,14 @@ $(document).ready(function () {
 
   $("#newAgentBtn").on("click", () => {
     $("#newAgentModalLabel").text("New Agent");
+    $("#newAgentForm").attr("action", "/api/newAgent");
     $("#saveNewAgent").text("Save");
+  });
+
+  $("#newLocationBtn").on("click", () => {
+    $("#newLocationModalLabel").text("New Location");
+    $("#newLocationForm").attr("action", "/api/newLocation");
+    $("#saveNewLocation").text("Save");
   });
 
   $("#closeNewAgentModal").on("click", () => {
@@ -384,6 +392,7 @@ $(document).ready(function () {
     $("#active").attr("checked", false);
     $("#locationUID")[0].selectize.setValue("");
     $(".message").text("");
+    $(".newAgentServerMessages").text("");
     $(".errorMessage").text("");
     $("#activeCheckbox").addClass("d-none");
     $("#newAgentModal").modal("hide");
@@ -392,6 +401,7 @@ $(document).ready(function () {
   $("#closeNewLocationModal").on("click", () => {
     $("#newLocationForm")[0].reset();
     $(".message").text("");
+    $(".newLocationServerMessages").text("");
     $(".errorMessage").text("");
     $("#newLocationModal").modal("hide");
   });

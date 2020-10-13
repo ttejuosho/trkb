@@ -199,24 +199,31 @@
                                             <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required" for="name">Name</label>
                                                 <input type="text" class="form-control" id="name" name="name" value="">
+                                                <div class="newAgentServerMessages text-danger nameError mb-2"></div>
                                             </div>
                                             <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required"
                                                     for="locationUID">Location</label>
                                                 <input type="text" class="form-control" id="locationUID"
                                                     name="locationUID">
+                                                <div class="newAgentServerMessages text-danger locationUIDError mb-2">
+                                                </div>
                                             </div>
                                             <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required" for="emailAddress">Email
                                                     Address</label>
                                                 <input type="text" class="form-control" id="emailAddress"
                                                     name="emailAddress" value="">
+                                                <div class="newAgentServerMessages text-danger emailAddressError mb-2">
+                                                </div>
                                             </div>
                                             <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required" for="phoneNumber">Phone
                                                     Number</label>
                                                 <input type="text" class="form-control" id="phoneNumber"
                                                     name="phoneNumber" value="">
+                                                <div class="newAgentServerMessages text-danger phoneNumberError mb-2">
+                                                </div>
                                             </div>
                                             <div class="form-group form-check form-check-inline">
                                                 <input type="checkbox" class="form-check-input" name="role" id="role">
@@ -262,24 +269,37 @@
                                                     for="locationName">Location Name</label>
                                                 <input type="text" class="form-control" id="locationName"
                                                     name="locationName" value="{{locationName}}">
+                                                <div
+                                                    class="newLocationServerMessages text-danger locationNameError mb-2">
+                                                </div>
+
                                             </div>
                                             <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required"
                                                     for="locationAddress">Address</label>
                                                 <input type="text" class="form-control" id="locationAddress"
                                                     name="locationAddress" value="{{locationAddress}}">
+                                                <div
+                                                    class="newLocationServerMessages text-danger locationAddressError mb-2">
+                                                </div>
                                             </div>
                                             <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required"
                                                     for="locationCity">City</label>
                                                 <input type="text" class="form-control" id="locationCity"
                                                     name="locationCity" value="{{locationCity}}">
+                                                <div
+                                                    class="newLocationServerMessages text-danger locationCityError mb-2">
+                                                </div>
                                             </div>
                                             <div class="mb-2">
                                                 <label class="font-weight-bold mb-0 required"
                                                     for="locationState">State</label>
                                                 <input type="text" class="form-control" id="locationState"
                                                     name="locationState" value="{{locationState}}">
+                                                <div
+                                                    class="newLocationServerMessages text-danger locationStateError mb-2">
+                                                </div>
                                             </div>
                                             <div class="mb-2">
                                                 <label class="font-weight-bold mb-0" for="locationEmail">Email</label>
