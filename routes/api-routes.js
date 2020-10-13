@@ -338,6 +338,25 @@ module.exports = (app) => {
       });
   });
 
+  app.get("/api/makeBasic/:userId", (req, res) => {
+    db.User.update(
+      {
+        role: "basic",
+      },
+      {
+        where: {
+          userId: req.params.userId,
+        },
+      }
+    )
+      .then((dbUser) => {
+        res.json(dbUser);
+      })
+      .catch((err) => {
+        res.json(err.message);
+      });
+  });
+
   app.get("/api/getLocations", authenticate, (req, res) => {
     db.Location.findAll({
       where: {
