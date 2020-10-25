@@ -201,7 +201,7 @@ exports.signup = (req, res, next) => {
         emailAddress: req.body.emailAddress,
         name: req.body.name,
         phoneNumber: req.body.phoneNumber,
-        newCompany: req.body.newCompany,
+        newCompany: false,
       });
     } else {
       //Check Password
