@@ -625,12 +625,24 @@ module.exports = (app) => {
         .isEmpty()
         .escape()
         .withMessage("Location Address is required"),
+      check("locationCity")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Location City is required"),
+      check("locationState")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Location State is required"),
     ],
     (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         errors.locationName = req.body.locationName;
         errors.locationAddress = req.body.locationAddress;
+        errors.locationCity = req.body.locationCity;
+        errors.locationState = req.body.locationState;
         var data = { errors: errors.errors };
         return res.json(data);
       } else {
