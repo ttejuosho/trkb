@@ -8,7 +8,7 @@
                     View transaction details</a></p>
             <p class="text-center"><a class="btn btn-outline-primary" href="/transaction/new">New transaction</a></p>
             {{else}}
-            <h4 class="display-4 text-center mt-4">New Transaction</h4>
+            <h4 class="display-4 text-center mt-4">New {{#if transactionType}} {{transactionType}} {{/if}} Transaction</h4>
             <form id="newTransactionForm" action="/transaction/new" method="POST">
                 <div class="form-row justify-content-center">
                     <div class="col-12 col-md-6 mb-2 mb-md-0">
@@ -23,9 +23,11 @@
                                         {{else}}
                                         <option value="">Choose Transaction Type</option>
                                         {{/if}}
+                                        {{#unless transactionType}}
                                         <option value="Transfer">Transfer</option>
                                         <option value="Withdrawal">Withdrawal</option>
                                         <option value="Deposit">Deposit</option>
+                                        {{/unless}}
                                     </select>
                                 </div>
                                 {{#if errors}}
@@ -94,24 +96,6 @@
                             {{#if errors}}
                             {{#each errors}}
                             {{#ifEquals param "amountPaid"}}
-                            <div class="messages text-danger mb-2">{{msg}}</div>
-                            {{/ifEquals}}
-                            {{/each}}
-                            {{/if}}
-                        </div>
-
-                        <div class="mb-2">
-                            <label class="sr-only" for="transactionCharge">Amount Charged</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">&#8358;</div>
-                                </div>
-                                <input type="text" class="form-control" id="transactionCharge" name="transactionCharge"
-                                    placeholder="Amount Charged" value="{{transactionCharge}}">
-                            </div>
-                            {{#if errors}}
-                            {{#each errors}}
-                            {{#ifEquals param "transactionCharge"}}
                             <div class="messages text-danger mb-2">{{msg}}</div>
                             {{/ifEquals}}
                             {{/each}}

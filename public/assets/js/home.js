@@ -65,6 +65,7 @@ function appendSearchInput() {
           valueField: "transactionUID",
           searchField: [
             "transactionUID",
+            "locationUID",
             "transactionType",
             "transactionTerminal",
             "amountReceived",

@@ -7,10 +7,17 @@ module.exports = function (app) {
   app.get("/", Security.isLoggedIn, finRecController.GetHomePage);
 
   app.get(
+    "/transaction/new/:transactionType",
+    Security.isLoggedIn,
+    finRecController.GetNewTransactionForm
+  );
+
+  app.get(
     "/transaction/new",
     Security.isLoggedIn,
     finRecController.GetNewTransactionForm
   );
+
   app.post(
     "/transaction/new",
     [
@@ -36,12 +43,6 @@ module.exports = function (app) {
         .escape()
         .isNumeric()
         .withMessage("Please enter amount paid"),
-      check("transactionCharge")
-        .not()
-        .isEmpty()
-        .isNumeric()
-        .escape()
-        .withMessage("Please enter amount charged"),
       check("posCharge")
         .not()
         .isEmpty()

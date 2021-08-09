@@ -19,6 +19,7 @@ exports.GetNewTransactionForm = (req, res) => {
   return res.render("newTransaction", {
     companyName: req.session.userInfo.companyName,
     companyId: req.session.userInfo.companyId,
+    transactionType: req.params.transactionType
   });
 };
 
@@ -49,7 +50,6 @@ exports.SaveNewTransaction = (req, res) => {
     errors.transactionType = req.body.transactionType;
     errors.amountReceived = req.body.amountReceived;
     errors.amountPaid = req.body.amountPaid;
-    errors.transactionCharge = req.body.transactionCharge;
     errors.posCharge = req.body.posCharge;
     errors.customerName = req.body.customerName;
     errors.customerPhone = req.body.customerPhone;
@@ -73,7 +73,6 @@ exports.SaveNewTransaction = (req, res) => {
     amountPaid: parseFloat(req.body.amountPaid),
     amountReceived: parseFloat(req.body.amountReceived),
     posCharge: parseFloat(req.body.posCharge),
-    transactionCharge: parseFloat(req.body.transactionCharge),
     customerName: req.body.customerName,
     customerPhone: req.body.customerPhone,
     customerEmail: req.body.customerEmail,

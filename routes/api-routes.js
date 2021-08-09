@@ -234,8 +234,6 @@ module.exports = (app) => {
           "amountReceived",
           "amountPaid",
           "posCharge",
-          "estimatedCharge",
-          "transactionCharge",
           "customerName",
           "customerPhone",
           "customerEmail",
@@ -263,6 +261,7 @@ module.exports = (app) => {
     } else {
       queryObj = {
         transactionUID: { [Op.like]: "%" + searchQuery + "%" },
+        locatioUID: { [Op.like]: "%" + searchQuery + "%" },
         transactionTerminal: { [Op.like]: "%" + searchQuery + "%" },
         transactionType: { [Op.like]: "%" + searchQuery + "%" },
         customerName: { [Op.like]: "%" + searchQuery + "%" },
@@ -509,6 +508,7 @@ module.exports = (app) => {
         return res.json(data);
       } else {
         if (res.locals.role == "admin") {
+          res.locals.locatioUID = req.body.locationUID;
           db.User.update(
             {
               name: req.body.name,
@@ -836,7 +836,7 @@ module.exports = (app) => {
     async (req, res) => {
       try {
         const data = await db.sequelize.query(
-          "SELECT `Transaction`.`transactionId`, `Transaction`.`transactionUID`,`Transaction`.`companyUID`,`Transaction`.`locationUID`,`Transaction`.`transactionTerminal`,`Transaction`.`transactionType`,`Transaction`.`amountReceived`,`Transaction`.`amountPaid`,`Transaction`.`posCharge`,`Transaction`.`estimatedCharge`,`Transaction`.`transactionCharge`,`Transaction`.`customerName`,`Transaction`.`customerPhone`,`Transaction`.`customerEmail`,`Transaction`.`preparedBy`,`Transaction`.`createdAt`,`Location`.`locationId` AS `locationId`,`Location`.`locationUID` AS `locationUID`,`Location`.`locationName` AS `locationName`,`Location`.`locationAddress` AS `locationAddress`,`Location`.`locationCity` AS `locationCity`,`Location`.`locationState` AS `locationState`,`Location`.`locationPhone` AS `locationPhone` FROM `Transactions` AS `Transaction` LEFT OUTER JOIN `Locations` AS `Location` ON `Transaction`.`locationUID` = `Location`.`locationUID` WHERE `Transaction`.`locationUID` =" +
+          "SELECT `Transaction`.`transactionId`, `Transaction`.`transactionUID`,`Transaction`.`companyUID`,`Transaction`.`locationUID`,`Transaction`.`transactionTerminal`,`Transaction`.`transactionType`,`Transaction`.`amountReceived`,`Transaction`.`amountPaid`,`Transaction`.`posCharge`,`Transaction`.`customerName`,`Transaction`.`customerPhone`,`Transaction`.`customerEmail`,`Transaction`.`preparedBy`,`Transaction`.`createdAt`,`Location`.`locationId` AS `locationId`,`Location`.`locationUID` AS `locationUID`,`Location`.`locationName` AS `locationName`,`Location`.`locationAddress` AS `locationAddress`,`Location`.`locationCity` AS `locationCity`,`Location`.`locationState` AS `locationState`,`Location`.`locationPhone` AS `locationPhone` FROM `Transactions` AS `Transaction` LEFT OUTER JOIN `Locations` AS `Location` ON `Transaction`.`locationUID` = `Location`.`locationUID` WHERE `Transaction`.`locationUID` =" +
             req.params.locationUID,
           {
             type: sequelize.QueryTypes.SELECT,
@@ -859,11 +859,9 @@ module.exports = (app) => {
               companyUID: trans.companyUID,
               transactionTerminal: trans.transactionTerminal,
               transactionType: trans.transactionType,
-              transactionCharge: trans.transactionCharge,
               amountPaid: trans.amountPaid,
               amountReceived: trans.amountReceived,
               posCharge: trans.posCharge,
-              estimatedCharge: trans.estimatedCharge,
               customerName: trans.customerName,
               customerEmail: trans.customerEmail,
               customerPhone: trans.customerPhone,

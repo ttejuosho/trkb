@@ -37,14 +37,6 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
-    estimatedCharge: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    },
-    transactionCharge: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    },
     customerName: {
       type: DataTypes.STRING,
       allowNull: true,
