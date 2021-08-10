@@ -30,6 +30,13 @@ exports.GetHomePage = (req, res) => {
   });
 };
 
+exports.GetTransactionLibrary = (req, res) => {
+  return res.render("transactionLibrary", {
+    companyName: req.session.userInfo.companyName,
+    companyId: req.session.userInfo.companyId,
+  });
+};
+
 exports.GetTransactionDetails = (req, res) => {
   db.Transaction.findOne({
     where: {

@@ -5,6 +5,7 @@ const Security = require("../services/security/security.js");
 module.exports = function (app) {
   app.get("/api/health", finRecController.CheckApi);
   app.get("/", Security.isLoggedIn, finRecController.GetHomePage);
+  app.get("/transaction/library", Security.isLoggedIn, finRecController.GetTransactionLibrary);
 
   app.get(
     "/transaction/new/:transactionType",

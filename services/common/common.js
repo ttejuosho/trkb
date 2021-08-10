@@ -7,32 +7,50 @@ exports.validateEmail = (email) =>{
     return (false)
 }
 
-exports.getCompanyNamebyUID = (companyUID) => {
-    // db.Company.findOne({
-    //     where: {
-    //         companyUID: companyUID
-    //     },
-    //     raw: true,
-    //     attributes: ['companyName']
-    // }).then((dbCompany) => {
-    //     return dbCompany.companyName;
-    // });
+exports.getCompanyNamebyUID = async (companyUID) => {
+    try {
+        const cc = await db.Company.findOne({
+            where: {
+                companyUID: companyUID
+            },
+            raw: true,
+            attributes: ['companyName']
+        });
+        return cc.companyName;
+    }
+    catch(err){
+        console.log(err);
+    };
+}
 
-    (async ()=>{
-        try {
-            const cc = await db.Company.findOne({
-                where: {
-                    companyUID: companyUID
-                },
-                raw: true,
-                attributes: ['companyName']
-            });
-            const companyName = cc.companyName;
-            console.log(32, companyName);
-            return companyName;
-        }
-        catch(err){
-            console.log(err);
-        }  
-        })();
+exports.getLocationNamebyUID = async (locationUID) => {
+    try {
+        const cc = await db.Location.findOne({
+            where: {
+                locationUID: locationUID
+            },
+            raw: true,
+            attributes: ['locationName']
+        });
+        return cc.locationName;
+    }
+    catch(err){
+        console.log(err);
+    };
+}
+
+exports.getCompanyLocations = async (companyUID) => {
+    try {
+        const cc = await db.Location.findAll({
+            where: {
+                companyUID: companyUID
+            },
+            raw: true,
+            attributes: ['locationName', 'locationUID', 'companyUID']
+        });
+        return cc;
+    }
+    catch(err){
+        console.log(err);
+    };
 }

@@ -2,37 +2,24 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
         <div class="container">
-            <h1 class="display-3 text-center mt-4">Transaction Library</h1>
-            <form>
-                <div class="form-row justify-content-center">
-                    <div class="col-12 col-md-6 mb-2 mb-md-0">
-                        <select id="searchBy" class="form-control mb-2" name="searchBy">
-                            <option value="All">All</option>
-                            <option value="transactionUID">Transaction Code</option>
-                            <option value="locationUID">Location Code</option>
-                            <option value="preparedBy">Agent Name</option>
-                            <option value="transactionTerminal">Terminal</option>
-                            <option value="transactionType">Transaction Type</option>
-                            <option value="customerName">Customer Name</option>
-                            <option value="customerPhone">Customer Phone</option>
-                            <option value="customerEmail">Customer Email</option>
-                        </select>
-                        <input type="text" id="searchQuery" name="searchQuery" class="form-control mb-2"
-                            placeholder="Search" value="{{searchQuery}}">
-                        {{#if errors}}
-                        {{#each errors}}
-                        {{#ifEquals param "searchQuery"}}
-                        <div class="messages text-danger mb-2">{{msg}}</div>
-                        {{/ifEquals}}
-                        {{/each}}
-                        {{/if}}
-                        <div id="newInputDiv"></div>
-                        <button type="button" class="btn btn-block btn-lg btn-dark" id="goSearch">Search</button>
-                        <p id="searchInfo" class=" text-secondary mt-3"></p>
-                        <p id="errorMessage" class="text-danger mt-3"></p>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-header">Recent Transactions</div>
+                        <div class="card-body">
+                            
+                        </div>
                     </div>
                 </div>
-            </form>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-header">Transactions Chart</div>
+                        <div class="card-body">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

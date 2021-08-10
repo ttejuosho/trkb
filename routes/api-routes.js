@@ -3,8 +3,9 @@ const moment = require("moment");
 const Sequelize = require("sequelize");
 const sequelize = require("sequelize");
 const Op = Sequelize.Op;
-const { authenticate } = require("../services/security/security.js");
-const { grantAccess } = require("../services/security/security.js");
+const { authenticate, grantAccess } = require("../services/security/security.js");
+const { getCompanyNamebyUID, getLocationNamebyUID, getCompanyLocations } = require("../services/common/common.js");
+//const { grantAccess } = require("../services/security/security.js");
 const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
 const { query } = require("express");
@@ -877,4 +878,67 @@ module.exports = (app) => {
       }
     }
   );
+
+  app.get("/api/transactions/getMostRecent",
+  authenticate,
+  async (req, res) => {
+    try{
+      let data = await db.Transaction.findAll({
+        where: {
+          companyUID: res.locals.companyUID,
+        },
+        limit: 10,
+        order: [['createdAt', 'DESC']],
+        attributes: ['transactionUID', 'locationUID', 'transactionTerminal', 'transactionType', 'amountReceived', 'amountPaid', 'posCharge', 'createdAt'],
+      });
+
+      var results = [];
+      for (let i = 0; i < data.length; i++){
+        const locationName = await getLocationNamebyUID(data[i].dataValues.locationUID);
+        data[i].dataValues.locationName = locationName;
+        results.push(data[i].dataValues);
+      }
+
+      return res.status(200).json(results);
+    } catch (errors) {
+      return res.json(errors);
+    }
+  });
+
+  app.get("/api/transactions/todayByLocation", 
+  authenticate, 
+  async (req,res)=> {
+    try{
+      let results = [];
+      let locations = await getCompanyLocations(res.locals.companyUID);
+      for(var i = 0; i < locations.length; i++){
+        let data = { 
+          locationName: locations[i].locationName,
+          locationCount: locations.length,
+          transactions: [] 
+        }
+
+        let transactions = await db.Transaction.findAll({
+          where: {
+            locationUID: locations[i].locationUID,
+            createdAt: {
+              [Op.gt]: new Date().setHours(0, 0, 0, 0),
+              [Op.lt]: new Date()
+            }
+          }
+        });
+
+        data.transactionCount = transactions.length;
+
+        for(var j = 0; j < transactions.length; j++){
+          data.transactions.push(transactions[i].dataValues);
+        }
+
+        results.push(data);
+      }
+      return res.status(200).json(results);
+    } catch (errors) {
+      return res.json(errors);
+    }
+  });
 };
