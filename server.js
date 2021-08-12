@@ -84,7 +84,7 @@ const hbs = exphbs.create({
     },
     formatDateTime: function (value) {
       if (value && moment(value).isValid()) {
-        var f = "MMM Do, YYYY HH:mm a";
+        var f = "MMMM Do YYYY, h:mm a";
         return moment(value).format(f);
       } else {
         return value; // moment plugin is not available, value does not have a truthy value, or value is not a valid date

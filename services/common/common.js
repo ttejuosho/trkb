@@ -30,7 +30,7 @@ exports.getLocationNamebyUID = async (locationUID) => {
                 locationUID: locationUID
             },
             raw: true,
-            attributes: ['locationName']
+            attributes: ['locationName', 'locationUID']
         });
         return cc.locationName;
     }

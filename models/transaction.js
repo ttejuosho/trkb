@@ -1,3 +1,4 @@
+const moment = require("moment");
 module.exports = function (sequelize, DataTypes) {
   const Transaction = sequelize.define("Transaction", {
     transactionId: {
@@ -53,6 +54,16 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: moment.utc().format('YYYY-MM-DD HH:mm:ss')
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: moment.utc().format('YYYY-MM-DD HH:mm:ss')
+    }
   });
 
   Transaction.associate = (models) => {

@@ -906,14 +906,15 @@ module.exports = (app) => {
   });
 
   app.get("/api/transactions/todayByLocation", 
-  authenticate, 
+  //authenticate, 
   async (req,res)=> {
     try{
       let results = [];
-      let locations = await getCompanyLocations(res.locals.companyUID);
+      let locations = await getCompanyLocations(28994);
       for(var i = 0; i < locations.length; i++){
         let data = { 
           locationName: locations[i].locationName,
+          locationUID: locations[i].locationUID,
           locationCount: locations.length,
           transactions: [] 
         }
@@ -922,8 +923,8 @@ module.exports = (app) => {
           where: {
             locationUID: locations[i].locationUID,
             createdAt: {
-              [Op.gt]: new Date().setHours(0, 0, 0, 0),
-              [Op.lt]: new Date()
+              [Op.gt]: new Date().setHours(0, 0, 0, 0).toISOString(),
+              [Op.lt]: new Date().toISOString()
             }
           }
         });
