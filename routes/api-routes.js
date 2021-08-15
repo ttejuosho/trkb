@@ -413,7 +413,11 @@ module.exports = (app) => {
     "/api/newAgent",
     authenticate,
     [
-      check("name").not().isEmpty().escape().withMessage("Name is required"),
+      check("name")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Name is required"),
       check("emailAddress")
         .not()
         .isEmpty()
@@ -430,7 +434,7 @@ module.exports = (app) => {
         .escape()
         .withMessage("Location is required"),
     ],
-    (req, res) => {
+    async (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         errors.name = req.body.name;
@@ -441,28 +445,44 @@ module.exports = (app) => {
         return res.json(data);
       } else {
         if (res.locals.role == "admin") {
-          db.User.create({
-            name: req.body.name,
-            emailAddress: req.body.emailAddress,
-            phoneNumber: req.body.phoneNumber,
-            locationUID: req.body.locationUID,
-            companyUID: res.locals.companyUID,
-            role: req.body.role == "on" ? "admin" : "basic",
-            password: 1234,
-          })
-            .then((dbUser) => {
-              delete dbUser.password;
-              delete dbUser.active;
-
-              var data = {
-                errors: [],
-                response: dbUser,
-              };
-              return res.json(data);
+          var checkAgent = await db.User.findOne({
+            where: {
+              emailAddress: req.body.emailAddress,
+              companyUID: res.locals.companyUID,
+            }
+          });
+          if(checkAgent == null){
+            db.User.create({
+              name: req.body.name,
+              emailAddress: req.body.emailAddress,
+              phoneNumber: req.body.phoneNumber,
+              locationUID: req.body.locationUID,
+              companyUID: res.locals.companyUID,
+              role: req.body.role == "on" ? "admin" : "basic",
+              password: 1234,
             })
-            .catch((err) => {
-              res.json(err.errors);
-            });
+              .then((dbUser) => {
+                delete dbUser.password;
+                delete dbUser.active;
+  
+                var data = {
+                  errors: [],
+                  response: dbUser,
+                };
+                return res.json(data);
+              })
+              .catch((err) => {
+                res.json(err.errors);
+              });
+
+          } else {
+          var data = {
+            errors: [{ param: 'message', msg: 'User already exists' }],
+            data: req.body,
+          };
+          return res.json(data);
+          
+          }
         } else {
           return res.json({
             errors: [
@@ -575,7 +595,7 @@ module.exports = (app) => {
         .escape()
         .withMessage("State is required"),
     ],
-    (req, res) => {
+    async (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         errors.locationName = req.body.locationName;
@@ -585,29 +605,44 @@ module.exports = (app) => {
         var data = { errors: errors.errors };
         return res.json(data);
       } else {
-        db.Location.create({
-          locationUID: Math.floor(Math.random() * 90000) + 10000,
-          locationName: req.body.locationName,
-          companyUID: res.locals.companyUID,
-          locationEmail: req.body.locationEmail,
-          locationAddress: req.body.locationAddress,
-          locationCity: req.body.locationCity,
-          locationState: req.body.locationState,
-          locationPhone: req.body.locationPhone,
-          locationContactName: req.body.locationContactName,
-          locationContactEmail: req.body.locationContactEmail,
-          locationContactPhone: req.body.locationContactPhone,
-        })
-          .then((dbLocation) => {
-            var data = {
-              errors: [],
-              response: dbLocation,
-            };
-            return res.json(data);
+        var checkLocation = await db.Location.findOne({
+          where: {
+            locationName: req.body.locationName,
+          }
+        });
+        
+        if (checkLocation == null){
+          db.Location.create({
+            locationUID: Math.floor(Math.random() * 90000) + 10000,
+            locationName: req.body.locationName,
+            companyUID: res.locals.companyUID,
+            locationEmail: req.body.locationEmail,
+            locationAddress: req.body.locationAddress,
+            locationCity: req.body.locationCity,
+            locationState: req.body.locationState,
+            locationPhone: req.body.locationPhone,
+            locationContactName: req.body.locationContactName,
+            locationContactEmail: req.body.locationContactEmail,
+            locationContactPhone: req.body.locationContactPhone,
+            CompanyCompanyId: res.locals.companyId
           })
-          .catch((err) => {
-            res.json(err.errors);
-          });
+            .then((dbLocation) => {
+              var data = {
+                errors: [],
+                response: dbLocation,
+              };
+              return res.json(data);
+            })
+            .catch((err) => {
+              res.json(err.errors);
+            });
+        } else {
+          var data = {
+            errors: [{ msg: 'Location already exists' }],
+            data: req.body,
+          };
+          return res.json(data);
+        }
       }
     }
   );
