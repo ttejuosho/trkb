@@ -207,23 +207,14 @@ $(document).ready(function () {
       .then((data) => {
         return data.json();
       })
-      .then((res) => {
-        //console.log(res);
-        // agentsTable.rows.add({
-        //   userId: res.response.userId,
-        //   role: res.response.role,
-        //   name: res.response.name,
-        //   emailAddress: res.response.emailAddress,
-        //   phoneNumber: res.response.phoneNumber,
-        //   locationUID: res.response.locationUID,
-        //   locationName: locationName,
-        // });
+      .then((res) => {       
         if (res.errors.length < 1) {
           if ($("#saveNewAgent").attr("action") == "update") {
             $(".message").text("Update Successful !!");
           } else {
             $(".message").text("New Agent Created !!");
           }
+          $(".messageError").text('');
           $("#newAgentForm")[0].reset();
           $("#locationUID")[0].selectize.setValue("");
           $("#active").attr("checked", false);
@@ -265,6 +256,7 @@ $(document).ready(function () {
         return data.json();
       })
       .then((res) => {
+        $(".errorMessage").text('');
         if (res.errors.length < 1) {
           $("#newLocationForm")[0].reset();
           if ($("#saveNewLocation").attr("action") == "update") {
@@ -274,7 +266,7 @@ $(document).ready(function () {
           }
         } else {
           res.errors.forEach((error) => {
-            $("." + error.param + "Error").text(error.msg);
+            $(".errorMessage").text(error.msg);
           });
         }
       });

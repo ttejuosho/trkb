@@ -99,7 +99,7 @@ exports.getCompanyRegistrationPage = (req, res) => {
   });
 };
 
-exports.newCompany = (req, res) => {
+exports.newCompany = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errors.companyName = req.body.companyName;
@@ -108,18 +108,35 @@ exports.newCompany = (req, res) => {
     return res.render("auth/auth", errors);
   }
   var companyUID = Math.floor(Math.random() * 90000) + 10000;
-  db.Company.create({
-    companyName: req.body.companyName,
-    companyUID: companyUID,
-  }).then((dbCompany) => {
-    return res.render("auth/auth", {
-      title: "Sign Up",
-      layout: "partials/prelogin",
-      newLocation: true,
-      companyUID: companyUID,
+  let checkCompany = db.Company.findOne({
+    where: {
       companyName: req.body.companyName,
-    });
+    }
   });
+
+  if (checkCompany == null){
+    db.Company.create({
+      companyName: req.body.companyName,
+      companyUID: companyUID,
+    }).then((dbCompany) => {
+      return res.render("auth/auth", {
+        title: "Sign Up",
+        layout: "partials/prelogin",
+        newLocation: true,
+        companyUID: companyUID,
+        companyName: req.body.companyName,
+      });
+    });
+  } else {
+    return res.render("auth/auth", {
+      title: "Register",
+      layout: "partials/prelogin",
+      companyRegistration: true,
+      companyName: req.body.companyName,
+      error: "Company already exists.",
+    });
+  }
+
 };
 
 exports.newLocation = (req, res) => {
