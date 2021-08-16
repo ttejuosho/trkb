@@ -232,8 +232,8 @@ module.exports = (app) => {
           "companyUID",
           "transactionTerminal",
           "transactionType",
-          "amountReceived",
-          "amountPaid",
+          "transactionAmount",
+          "transactionCharge",
           "posCharge",
           "customerName",
           "customerPhone",
@@ -289,8 +289,8 @@ module.exports = (app) => {
               locationUID: dbTransaction[i].locationUID,
               transactionTerminal: dbTransaction[i].transactionTerminal,
               transactionType: dbTransaction[i].transactionType,
-              amountReceived: dbTransaction[i].amountReceived,
-              amountPaid: dbTransaction[i].amountPaid,
+              transactionAmount: dbTransaction[i].transactionAmount,
+              transactionCharge: dbTransaction[i].transactionCharge,
               posCharge: dbTransaction[i].posCharge,
               customerName: dbTransaction[i].customerName,
               customerEmail: dbTransaction[i].customerEmail,
@@ -872,7 +872,7 @@ module.exports = (app) => {
     async (req, res) => {
       try {
         const data = await db.sequelize.query(
-          "SELECT `Transaction`.`transactionId`, `Transaction`.`transactionUID`,`Transaction`.`companyUID`,`Transaction`.`locationUID`,`Transaction`.`transactionTerminal`,`Transaction`.`transactionType`,`Transaction`.`amountReceived`,`Transaction`.`amountPaid`,`Transaction`.`posCharge`,`Transaction`.`customerName`,`Transaction`.`customerPhone`,`Transaction`.`customerEmail`,`Transaction`.`preparedBy`,`Transaction`.`createdAt`,`Location`.`locationId` AS `locationId`,`Location`.`locationUID` AS `locationUID`,`Location`.`locationName` AS `locationName`,`Location`.`locationAddress` AS `locationAddress`,`Location`.`locationCity` AS `locationCity`,`Location`.`locationState` AS `locationState`,`Location`.`locationPhone` AS `locationPhone` FROM `Transactions` AS `Transaction` LEFT OUTER JOIN `Locations` AS `Location` ON `Transaction`.`locationUID` = `Location`.`locationUID` WHERE `Transaction`.`locationUID` =" +
+          "SELECT `Transaction`.`transactionId`, `Transaction`.`transactionUID`,`Transaction`.`companyUID`,`Transaction`.`locationUID`,`Transaction`.`transactionTerminal`,`Transaction`.`transactionType`,`Transaction`.`transactionAmount`,`Transaction`.`transactionCharge`,`Transaction`.`posCharge`,`Transaction`.`customerName`,`Transaction`.`customerPhone`,`Transaction`.`customerEmail`,`Transaction`.`preparedBy`,`Transaction`.`createdAt`,`Location`.`locationId` AS `locationId`,`Location`.`locationUID` AS `locationUID`,`Location`.`locationName` AS `locationName`,`Location`.`locationAddress` AS `locationAddress`,`Location`.`locationCity` AS `locationCity`,`Location`.`locationState` AS `locationState`,`Location`.`locationPhone` AS `locationPhone` FROM `Transactions` AS `Transaction` LEFT OUTER JOIN `Locations` AS `Location` ON `Transaction`.`locationUID` = `Location`.`locationUID` WHERE `Transaction`.`locationUID` =" +
             req.params.locationUID,
           {
             type: sequelize.QueryTypes.SELECT,
@@ -895,8 +895,8 @@ module.exports = (app) => {
               companyUID: trans.companyUID,
               transactionTerminal: trans.transactionTerminal,
               transactionType: trans.transactionType,
-              amountPaid: trans.amountPaid,
-              amountReceived: trans.amountReceived,
+              transactionCharge: trans.transactionCharge,
+              transactionAmount: trans.transactionAmount,
               posCharge: trans.posCharge,
               customerName: trans.customerName,
               customerEmail: trans.customerEmail,
@@ -924,7 +924,7 @@ module.exports = (app) => {
         },
         limit: 10,
         order: [['createdAt', 'DESC']],
-        attributes: ['transactionUID', 'locationUID', 'transactionTerminal', 'transactionType', 'amountReceived', 'amountPaid', 'posCharge', 'createdAt'],
+        attributes: ['transactionUID', 'locationUID', 'transactionTerminal', 'transactionType', 'transactionAmount', 'transactionCharge', 'posCharge', 'createdAt'],
       });
 
       var results = [];

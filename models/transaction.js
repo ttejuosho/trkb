@@ -1,4 +1,3 @@
-const moment = require("moment");
 module.exports = function (sequelize, DataTypes) {
   const Transaction = sequelize.define("Transaction", {
     transactionId: {
@@ -26,15 +25,19 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    amountReceived: {
+    transactionAmount: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
-    amountPaid: {
+    transactionCharge: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
     posCharge: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    estimatedProfit: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
@@ -53,16 +56,6 @@ module.exports = function (sequelize, DataTypes) {
     preparedBy: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: moment.utc().format('YYYY-MM-DD HH:mm:ss')
-    },
-    updatedAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: moment.utc().format('YYYY-MM-DD HH:mm:ss')
     }
   });
 

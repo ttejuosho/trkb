@@ -108,12 +108,12 @@ exports.newCompany = async (req, res) => {
     return res.render("auth/auth", errors);
   }
   var companyUID = Math.floor(Math.random() * 90000) + 10000;
-  let checkCompany = db.Company.findOne({
+  let checkCompany = await db.Company.findOne({
     where: {
       companyName: req.body.companyName,
     }
   });
-
+console.log(checkCompany);
   if (checkCompany == null){
     db.Company.create({
       companyName: req.body.companyName,

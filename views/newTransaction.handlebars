@@ -42,7 +42,6 @@
 
                         <fieldset class="form-group mb-0">
                             <div class="row ml-0">
-
                                 <div class="col-sm-12 pl-0">
                                     <select id="transactionTerminal" class="form-control mb-2"
                                         name="transactionTerminal">
@@ -51,9 +50,10 @@
                                         {{else}}
                                         <option value="">Choose Transaction Terminal</option>
                                         {{/if}}
-                                        <option value="Pay Center">Pay Center</option>
-                                        <option value="OPay">OPay</option>
                                         <option value="Kolo Money">Kolo Money</option>
+                                        <option value="Monipoint">Monipoint</option>
+                                        <option value="OPay">OPay</option>
+                                        <option value="Pay Center">Pay Center</option>
                                     </select>
                                 </div>
                                 {{#if errors}}
@@ -67,17 +67,17 @@
                         </fieldset>
 
                         <div class="mb-2">
-                            <label class="sr-only" for="amountReceived">Amount Received</label>
+                            <label class="sr-only" for="transactionAmount">Transaction Amount</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">&#8358;</div>
                                 </div>
-                                <input type="text" class="form-control" id="amountReceived" name="amountReceived"
-                                    placeholder="Amount Received" value="{{amountReceived}}">
+                                <input type="text" class="form-control" id="transactionAmount" name="transactionAmount"
+                                    placeholder="Transaction Amount" value="{{transactionAmount}}">
                             </div>
                             {{#if errors}}
                             {{#each errors}}
-                            {{#ifEquals param "amountReceived"}}
+                            {{#ifEquals param "transactionAmount"}}
                             <div class="messages text-danger mb-2">{{msg}}</div>
                             {{/ifEquals}}
                             {{/each}}
@@ -85,17 +85,17 @@
                         </div>
 
                         <div class="mb-2">
-                            <label class="sr-only" for="amountPaid">Amount Paid</label>
+                            <label class="sr-only" for="transactionCharge">Transaction Charge</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">&#8358;</div>
                                 </div>
-                                <input type="text" class="form-control" id="amountPaid" name="amountPaid"
-                                    placeholder="Amount Paid" value="{{amountPaid}}">
+                                <input type="text" class="form-control" id="transactionCharge" name="transactionCharge"
+                                    placeholder="Transaction Charge" value="{{transactionCharge}}">
                             </div>
                             {{#if errors}}
                             {{#each errors}}
-                            {{#ifEquals param "amountPaid"}}
+                            {{#ifEquals param "transactionCharge"}}
                             <div class="messages text-danger mb-2">{{msg}}</div>
                             {{/ifEquals}}
                             {{/each}}
