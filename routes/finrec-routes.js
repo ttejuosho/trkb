@@ -32,18 +32,18 @@ module.exports = function (app) {
         .isEmpty()
         .escape()
         .withMessage("Please choose a transaction type"),
-      check("amountReceived")
+      check("transactionAmount")
         .not()
         .isEmpty()
         .escape()
         .isNumeric()
-        .withMessage("Amount received error"),
-      check("amountPaid")
+        .withMessage("Transaction Amount Error"),
+      check("transactionCharge")
         .not()
         .isEmpty()
         .escape()
         .isNumeric()
-        .withMessage("Please enter amount paid"),
+        .withMessage("Transaction Charge Error"),
       check("posCharge")
         .not()
         .isEmpty()

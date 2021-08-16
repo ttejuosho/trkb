@@ -1,4 +1,3 @@
-const moment = require("moment");
 module.exports = function(sequelize, DataTypes){
     const Company = sequelize.define("Company", {
         companyId: {
@@ -52,16 +51,6 @@ module.exports = function(sequelize, DataTypes){
             isEmail: true,
             allowNull: true
         },
-        createdAt: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: moment.utc().format('YYYY-MM-DD HH:mm:ss')
-          },
-        updatedAt: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: moment.utc().format('YYYY-MM-DD HH:mm:ss')
-        }
     });
 
     Company.associate = (models) => {

@@ -55,8 +55,8 @@ exports.SaveNewTransaction = (req, res) => {
   if (!errors.isEmpty()) {
     errors.transactionTerminal = req.body.transactionTerminal;
     errors.transactionType = req.body.transactionType;
-    errors.amountReceived = req.body.amountReceived;
-    errors.amountPaid = req.body.amountPaid;
+    errors.transactionAmount = req.body.transactionAmount;
+    errors.transactionCharge = req.body.transactionCharge;
     errors.posCharge = req.body.posCharge;
     errors.customerName = req.body.customerName;
     errors.customerPhone = req.body.customerPhone;
@@ -77,12 +77,13 @@ exports.SaveNewTransaction = (req, res) => {
     UserUserId: res.locals.userId,
     transactionTerminal: req.body.transactionTerminal,
     transactionType: req.body.transactionType,
-    amountPaid: parseFloat(req.body.amountPaid),
-    amountReceived: parseFloat(req.body.amountReceived),
+    transactionCharge: parseFloat(req.body.transactionCharge),
+    transactionAmount: parseFloat(req.body.transactionAmount),
     posCharge: parseFloat(req.body.posCharge),
     customerName: req.body.customerName,
     customerPhone: req.body.customerPhone,
     customerEmail: req.body.customerEmail,
+    estimatedProfit: parseFloat(req.body.transactionCharge) - parseFloat(req.body.posCharge)
   }).then((dbTransaction) => {
     if (
       common.validateEmail(req.body.customerEmail) &&
@@ -168,8 +169,8 @@ exports.search = (req, res) => {
             transactionId: dbTransaction[i].transactionUID,
             transactionTerminal: dbTransaction[i].transactionTerminal,
             transactionType: dbTransaction[i].transactionType,
-            amountReceived: dbTransaction[i].amountReceived,
-            amountPaid: dbTransaction[i].amountPaid,
+            transactionAmount: dbTransaction[i].transactionAmount,
+            transactionCharge: dbTransaction[i].transactionCharge,
             posCharge: dbTransaction[i].posCharge,
             customerName: dbTransaction[i].customerName,
             customerEmail: dbTransaction[i].customerEmail,
@@ -227,18 +228,6 @@ exports.GetSettingsPage = async (req, res) => {
       },
       raw: true,
     });
-
-    // const locationInfo = await db.Location.findOne({
-    //     where: {
-    //         locationUID: res.locals.locationUID
-    //     }, raw: true
-    // });
-
-    // const agents = await db.User.findAll({
-    //     where: {
-    //         companyUID: res.locals.companyUID
-    //     }, raw: true
-    // });
 
     const hbsObject = {
       companyInfo: companyInfo,

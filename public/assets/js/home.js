@@ -1,5 +1,22 @@
 localStorage.removeItem("activeTab");
 
+fetch(`/api/transactions/todayByLocation`)
+    .then((data) => {
+      return data.json();
+    })
+    .then((res) => {
+      console.log(res);
+    });
+
+fetch(`/api/transactions/getMostRecent`)
+    .then((data) => {
+      return data.json();
+    })
+    .then((res) => {
+      console.log(res);
+    });
+
+
 $("#searchBy").selectize({
   onChange: function (value) {
     if (value.length > 0) {
@@ -68,8 +85,8 @@ function appendSearchInput() {
             "locationUID",
             "transactionType",
             "transactionTerminal",
-            "amountReceived",
-            "amountPaid",
+            "transactionAmount",
+            "transactionCharge",
             "customerName",
             "preparedBy",
           ],
