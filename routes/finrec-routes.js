@@ -5,7 +5,17 @@ const Security = require("../services/security/security.js");
 module.exports = function (app) {
   app.get("/api/health", finRecController.CheckApi);
   app.get("/", Security.isLoggedIn, finRecController.GetHomePage);
-  app.get("/transaction/library", Security.isLoggedIn, finRecController.GetTransactionLibrary);
+  app.get(
+    "/transaction/library",
+    Security.isLoggedIn,
+    finRecController.GetTransactionLibrary
+  );
+
+  app.get(
+    "/transaction/locations",
+    Security.isLoggedIn,
+    finRecController.GetTransactionsPage
+  );
 
   app.get(
     "/transaction/new/:transactionType",

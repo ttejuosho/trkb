@@ -19,7 +19,7 @@ exports.GetNewTransactionForm = (req, res) => {
   return res.render("newTransaction", {
     companyName: req.session.userInfo.companyName,
     companyId: req.session.userInfo.companyId,
-    transactionType: req.params.transactionType
+    transactionType: req.params.transactionType,
   });
 };
 
@@ -32,6 +32,13 @@ exports.GetHomePage = (req, res) => {
 
 exports.GetTransactionLibrary = (req, res) => {
   return res.render("transactionLibrary", {
+    companyName: req.session.userInfo.companyName,
+    companyId: req.session.userInfo.companyId,
+  });
+};
+
+exports.GetTransactionsPage = (req, res) => {
+  return res.render("transactions", {
     companyName: req.session.userInfo.companyName,
     companyId: req.session.userInfo.companyId,
   });
@@ -83,7 +90,8 @@ exports.SaveNewTransaction = (req, res) => {
     customerName: req.body.customerName,
     customerPhone: req.body.customerPhone,
     customerEmail: req.body.customerEmail,
-    estimatedProfit: parseFloat(req.body.transactionCharge) - parseFloat(req.body.posCharge)
+    estimatedProfit:
+      parseFloat(req.body.transactionCharge) - parseFloat(req.body.posCharge),
   }).then((dbTransaction) => {
     if (
       common.validateEmail(req.body.customerEmail) &&
@@ -91,10 +99,16 @@ exports.SaveNewTransaction = (req, res) => {
     ) {
       const subject = `Your ${req.body.transactionType} Transaction Confirmation`;
       const emailBody = `
-                    <p>Hello ${req.body.customerName.split(" ").length > 1 ? req.body.customerName.split(" ")[0] : req.body.customerName},</p>
+                    <p>Hello ${
+                      req.body.customerName.split(" ").length > 1
+                        ? req.body.customerName.split(" ")[0]
+                        : req.body.customerName
+                    },</p>
                     <p>Thank you for visiting our store.</p>
                     <p>Your ${req.body.transactionType.toLowerCase()} transaction is complete. Your transaction code is 
-                    <span><strong>${ dbTransaction.dataValues.transactionUID }</strong></span>.
+                    <span><strong>${
+                      dbTransaction.dataValues.transactionUID
+                    }</strong></span>.
                     Please use this code to reference this transaction in future communications with us regarding this transaction.</p>    
                     
                     <p>Click <a href="https://trkb.herokuapp.com/">here</a> to visit us online.</p>

@@ -3,8 +3,15 @@ const moment = require("moment");
 const Sequelize = require("sequelize");
 const sequelize = require("sequelize");
 const Op = Sequelize.Op;
-const { authenticate, grantAccess } = require("../services/security/security.js");
-const { getCompanyNamebyUID, getLocationNamebyUID, getCompanyLocations } = require("../services/common/common.js");
+const {
+  authenticate,
+  grantAccess,
+} = require("../services/security/security.js");
+const {
+  getCompanyNamebyUID,
+  getLocationNamebyUID,
+  getCompanyLocations,
+} = require("../services/common/common.js");
 //const { grantAccess } = require("../services/security/security.js");
 const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
@@ -413,11 +420,7 @@ module.exports = (app) => {
     "/api/newAgent",
     authenticate,
     [
-      check("name")
-        .not()
-        .isEmpty()
-        .escape()
-        .withMessage("Name is required"),
+      check("name").not().isEmpty().escape().withMessage("Name is required"),
       check("emailAddress")
         .not()
         .isEmpty()
@@ -449,9 +452,9 @@ module.exports = (app) => {
             where: {
               emailAddress: req.body.emailAddress,
               companyUID: res.locals.companyUID,
-            }
+            },
           });
-          if(checkAgent == null){
+          if (checkAgent == null) {
             db.User.create({
               name: req.body.name,
               emailAddress: req.body.emailAddress,
@@ -464,7 +467,7 @@ module.exports = (app) => {
               .then((dbUser) => {
                 delete dbUser.password;
                 delete dbUser.active;
-  
+
                 var data = {
                   errors: [],
                   response: dbUser,
@@ -474,14 +477,12 @@ module.exports = (app) => {
               .catch((err) => {
                 res.json(err.errors);
               });
-
           } else {
-          var data = {
-            errors: [{ param: 'message', msg: 'User already exists' }],
-            data: req.body,
-          };
-          return res.json(data);
-          
+            var data = {
+              errors: [{ param: "message", msg: "User already exists" }],
+              data: req.body,
+            };
+            return res.json(data);
           }
         } else {
           return res.json({
@@ -608,10 +609,10 @@ module.exports = (app) => {
         var checkLocation = await db.Location.findOne({
           where: {
             locationName: req.body.locationName,
-          }
+          },
         });
-        
-        if (checkLocation == null){
+
+        if (checkLocation == null) {
           db.Location.create({
             locationUID: Math.floor(Math.random() * 90000) + 10000,
             locationName: req.body.locationName,
@@ -624,7 +625,7 @@ module.exports = (app) => {
             locationContactName: req.body.locationContactName,
             locationContactEmail: req.body.locationContactEmail,
             locationContactPhone: req.body.locationContactPhone,
-            CompanyCompanyId: res.locals.companyId
+            CompanyCompanyId: res.locals.companyId,
           })
             .then((dbLocation) => {
               var data = {
@@ -638,7 +639,7 @@ module.exports = (app) => {
             });
         } else {
           var data = {
-            errors: [{ msg: 'Location already exists' }],
+            errors: [{ msg: "Location already exists" }],
             data: req.body,
           };
           return res.json(data);
@@ -914,22 +915,33 @@ module.exports = (app) => {
     }
   );
 
-  app.get("/api/transactions/getMostRecent",
-  authenticate,
-  async (req, res) => {
-    try{
+  app.get("/api/transactions/getMostRecent", authenticate, async (req, res) => {
+    try {
       let data = await db.Transaction.findAll({
         where: {
           companyUID: res.locals.companyUID,
         },
         limit: 10,
-        order: [['createdAt', 'DESC']],
-        attributes: ['transactionUID', 'locationUID', 'transactionTerminal', 'transactionType', 'transactionAmount', 'transactionCharge', 'posCharge', 'createdAt'],
+        order: [["createdAt", "DESC"]],
+        attributes: [
+          "transactionUID",
+          "locationUID",
+          "transactionTerminal",
+          "transactionType",
+          "transactionAmount",
+          "transactionCharge",
+          "estimatedProfit",
+          "posCharge",
+          "preparedBy",
+          "createdAt",
+        ],
       });
 
       var results = [];
-      for (let i = 0; i < data.length; i++){
-        const locationName = await getLocationNamebyUID(data[i].dataValues.locationUID);
+      for (let i = 0; i < data.length; i++) {
+        const locationName = await getLocationNamebyUID(
+          data[i].dataValues.locationUID
+        );
         data[i].dataValues.locationName = locationName;
         results.push(data[i].dataValues);
       }
@@ -940,44 +952,61 @@ module.exports = (app) => {
     }
   });
 
-  app.get("/api/transactions/todayByLocation", 
-  authenticate, 
-  async (req,res)=> {
-    try{
-      let results = [];
-      let locations = await getCompanyLocations(res.locals.companyUID);
-      let startDate = new Date().setHours(0, 0, 0, 0);
-      let endDate = new Date().toISOString();
+  app.get(
+    "/api/transactions/todayByLocation",
+    authenticate,
+    async (req, res) => {
+      try {
+        let results = [];
+        let locations = await getCompanyLocations(res.locals.companyUID);
+        let startDate = new Date().setHours(0, 0, 0, 0);
+        let endDate = new Date().toISOString();
 
-      for(var i = 0; i < locations.length; i++){
-        let data = { 
-          locationName: locations[i].locationName,
-          locationUID: locations[i].locationUID,
-          locationCount: locations.length,
-          transactions: [] 
-        }
-
-        let transactions = await db.Transaction.findAll({
-          where: {
+        for (var i = 0; i < locations.length; i++) {
+          let data = {
+            locationName: locations[i].locationName,
             locationUID: locations[i].locationUID,
-            createdAt: {
-              [Op.between]: [startDate, endDate]
-            }
-          },
-          attributes: ['transactionUID', 'companyUID', 'locationUID', 'transactionTerminal', 'transactionType', 'transactionAmount', 'transactionCharge', 'posCharge', 'estimatedProfit', 'customerName', 'customerPhone', 'customerEmail', 'preparedBy', 'createdAt' ]
-        });
+            locationCount: locations.length,
+            transactions: [],
+          };
 
-        data.transactionCount = transactions.length;
+          let transactions = await db.Transaction.findAll({
+            where: {
+              locationUID: locations[i].locationUID,
+              createdAt: {
+                [Op.between]: [startDate, endDate],
+              },
+            },
+            attributes: [
+              "transactionUID",
+              "companyUID",
+              "locationUID",
+              "transactionTerminal",
+              "transactionType",
+              "transactionAmount",
+              "transactionCharge",
+              "posCharge",
+              "estimatedProfit",
+              "customerName",
+              "customerPhone",
+              "customerEmail",
+              "preparedBy",
+              "createdAt",
+            ],
+          });
 
-        for(var j = 0; j < transactions.length; j++){
-          data.transactions.push(transactions[j].dataValues);
+          data.transactionCount = transactions.length;
+
+          for (var j = 0; j < transactions.length; j++) {
+            data.transactions.push(transactions[j].dataValues);
+          }
+
+          results.push(data);
         }
-
-        results.push(data);
+        return res.status(200).json(results);
+      } catch (errors) {
+        return res.json(errors);
       }
-      return res.status(200).json(results);
-    } catch (errors) {
-      return res.json(errors);
     }
-  });
+  );
 };
