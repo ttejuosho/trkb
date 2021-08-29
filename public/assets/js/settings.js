@@ -38,6 +38,8 @@ $(document).ready(function () {
       data: data,
       rowId: "locationId",
       responsive: true,
+      dom: "lBfrtip",
+      buttons: ["pdf", "excel", "print"],
       columns: [
         {
           className: "locationName",
@@ -207,18 +209,34 @@ $(document).ready(function () {
       .then((data) => {
         return data.json();
       })
-      .then((res) => {       
+      .then((res) => {
         if (res.errors.length < 1) {
           if ($("#saveNewAgent").attr("action") == "update") {
             $(".message").text("Update Successful !!");
           } else {
             $(".message").text("New Agent Created !!");
           }
-          $(".messageError").text('');
+          $(".messageError").text("");
           $("#newAgentForm")[0].reset();
           $("#locationUID")[0].selectize.setValue("");
           $("#active").attr("checked", false);
           $("#role").attr("checked", false);
+
+          $("#agentsTable")
+            .DataTable()
+            .row.add({
+              name: agentData.name,
+              locationName: agentData.locationName,
+              locationUID: agentData.locationUID,
+              emailAddress: agentData.emailAddress,
+              phoneNumber: agentData.phoneNumber,
+              userId: res.response.userId,
+              active: 1,
+              role: agentData.role,
+            })
+            .draw(false);
+
+          $("#newAgentModal").modal("hide");
         } else {
           res.errors.forEach((error) => {
             $("." + error.param + "Error").text(error.msg);
@@ -256,7 +274,7 @@ $(document).ready(function () {
         return data.json();
       })
       .then((res) => {
-        $(".errorMessage").text('');
+        $(".errorMessage").text("");
         if (res.errors.length < 1) {
           $("#newLocationForm")[0].reset();
           if ($("#saveNewLocation").attr("action") == "update") {
@@ -264,6 +282,24 @@ $(document).ready(function () {
           } else {
             $(".message").text("Location saved !!");
           }
+
+          $("#locationsTable")
+            .DataTable()
+            .row.add({
+              locationId: res.response.locationId,
+              locationUID: res.response.locationUID,
+              locationName: locationData.locationName,
+              locationAddress: locationData.locationAddress,
+              locationCity: locationData.locationCity,
+              locationState: locationData.locationState,
+              locationEmail: locationData.locationEmail,
+              locationPhone: locationData.locationPhone,
+              locationContactName: locationData.locationContactName,
+              locationContactPhone: locationData.locationContactPhone,
+              locationContactEmail: locationData.locationContactEmail,
+            })
+            .draw(false);
+          $("#newLocationModal").modal("hide");
         } else {
           res.errors.forEach((error) => {
             $(".errorMessage").text(error.msg);
@@ -322,6 +358,9 @@ $(document).ready(function () {
     var agentId = $(this).data("value");
     $("#continueDelete").attr("data-option", "User");
     $("#continueDelete").attr("data-id", agentId);
+    $("#actionMessage").text(`This operation can not be reversed. Please
+    make sure to reassign other agents to the location which this agent is currently
+    assigned before proceeding.`);
     $("#deleteConfirmationModal").modal("show");
   });
 
@@ -329,6 +368,9 @@ $(document).ready(function () {
     var locationId = $(this).data("value");
     $("#continueDelete").attr("data-option", "Location");
     $("#continueDelete").attr("data-id", locationId);
+    $("#actionMessage").text(`This operation can not be reversed. Please
+    make sure to reassign or remove agents if they are currently
+    assigned to this location before proceeding.`);
     $("#deleteConfirmationModal").modal("show");
   });
 
@@ -343,9 +385,10 @@ $(document).ready(function () {
   });
 
   $("#continueDelete").on("click", () => {
+    var tableName = $("#continueDelete").attr("data-option");
     var apiParamId = $("#continueDelete").attr("data-id");
     var apiRouteUrl = "/api/deleteUser/" + apiParamId;
-    if ($("#continueDelete").attr("data-option") == "Location") {
+    if (tableName === "Location") {
       apiRouteUrl = "/api/deleteLocation/" + apiParamId;
     }
     fetch(apiRouteUrl)
@@ -362,6 +405,12 @@ $(document).ready(function () {
           $("#deleteSuccessConfirmationModalLabel").removeClass("d-none");
           $("#continueDelete").addClass("d-none");
           $("#deleteConfirmationModalLabel").addClass("d-none");
+          if (tableName === "User") {
+            $("#agentsTable").DataTable().row().remove(apiParamId).draw();
+          }
+          if (tableName === "Location") {
+            $("#locationsTable").DataTable().row().remove(apiParamId).draw();
+          }
         }
       });
   });

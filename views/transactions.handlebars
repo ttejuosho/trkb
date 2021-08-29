@@ -2,13 +2,60 @@
   <div class="jumbotron">
     <div class="container">
       <h1 class="display-3 text-center mt-4">Transactions Today</h1>
-      {{! <p><button id="refreshDataBtn" class="btn btn-sm btn-outline-dark">Refresh Data</button></p> }}
-      <div class="form-row justify-content-center">
-        <div id="tabContents" class="col-12 mb-2 mb-md-0">
-          <nav id="locationTabLinks" class="nav nav-pills nav-justified"></nav>
-          <div class="tab-content" id="locationsContent"></div>
+      <center>
+        <div class="col-sm-12 col-md-6">
+          <select
+            id="locationName"
+            class="form-control mb-2"
+            name="locationName"
+          ></select>
+
+          <select
+            id="transactionFilter"
+            class="form-control mb-2"
+            name="transactionFilter"
+          >
+            <option value="">Choose Filter</option>
+            <option value="Today">Today</option>
+            <option value="Week">This Week</option>
+            <option value="Month">This Month</option>
+            <option value="Year">This Year</option>
+          </select>
         </div>
+        <p id="infoBtn" class="d-none">
+          <button
+            id="transactionCount"
+            class="btn btn-sm btn-outline-dark mr-2"
+          ></button>
+          <button
+            id="estimatedProfit"
+            class="btn btn-sm btn-outline-success"
+          ></button>
+        </p>
+      </center>
+
+      <div id="results" class="form-row justify-content-center d-none">
+        <table
+          id="transactionsTable"
+          class="table table-striped"
+          style="width: 100%;"
+        >
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Terminal</th>
+              <th scope="col">Type</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Charge</th>
+              <th scope="col">Pos Charge</th>
+              <th scope="col">Recorded By</th>
+              <th scope="col">Time</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
+
     </div>
   </div>
   <script type="text/javascript" src="/assets/js/transactions.js"></script>

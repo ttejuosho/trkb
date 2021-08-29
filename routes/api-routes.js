@@ -11,11 +11,13 @@ const {
   getCompanyNamebyUID,
   getLocationNamebyUID,
   getCompanyLocations,
+  sendNewAccountPasswordResetEmail,
 } = require("../services/common/common.js");
 //const { grantAccess } = require("../services/security/security.js");
 const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
 const { query } = require("express");
+const crypto = require("crypto");
 
 module.exports = (app) => {
   app.get("/api/getTransactions", (req, res) => {
@@ -174,16 +176,16 @@ module.exports = (app) => {
     }
   );
 
-  app.get("/api/getDistinct/:columnName", authenticate, (req, res) => {
+  app.get("/api/location/getDistinct/:columnName", authenticate, (req, res) => {
     var queryParams = {
       companyUID: res.locals.companyUID,
     };
 
     if (res.locals.role == "basic") {
-      queryParams.UserUserId = res.locals.userId;
+      queryParams.locationUID = res.locals.locationUID;
     }
 
-    db.Transaction.findAll({
+    db.Location.findAll({
       where: queryParams,
       attributes: [
         [
@@ -199,6 +201,36 @@ module.exports = (app) => {
         return res.json(err.message);
       });
   });
+
+  app.get(
+    "/api/transaction/getDistinct/:columnName",
+    authenticate,
+    (req, res) => {
+      var queryParams = {
+        companyUID: res.locals.companyUID,
+      };
+
+      if (res.locals.role == "basic") {
+        queryParams.UserUserId = res.locals.userId;
+      }
+
+      db.Transaction.findAll({
+        where: queryParams,
+        attributes: [
+          [
+            Sequelize.fn("DISTINCT", Sequelize.col(req.params.columnName)),
+            "value",
+          ],
+        ],
+      })
+        .then((dbData) => {
+          return res.json(dbData);
+        })
+        .catch((err) => {
+          return res.json(err.message);
+        });
+    }
+  );
 
   app.get("/api/getUsers", (req, res) => {
     db.User.findAll({
@@ -369,6 +401,7 @@ module.exports = (app) => {
       where: {
         companyUID: res.locals.companyUID,
       },
+      //attributes: ["locationId", "locationUID", "locationName"],
     })
       .then((dbLocation) => {
         res.json(dbLocation);
@@ -447,7 +480,7 @@ module.exports = (app) => {
         var data = { errors: errors.errors };
         return res.json(data);
       } else {
-        if (res.locals.role == "admin") {
+        if (res.locals.role === "admin") {
           var checkAgent = await db.User.findOne({
             where: {
               emailAddress: req.body.emailAddress,
@@ -455,22 +488,35 @@ module.exports = (app) => {
             },
           });
           if (checkAgent == null) {
+            const token = crypto.randomBytes(20).toString("hex");
             db.User.create({
               name: req.body.name,
               emailAddress: req.body.emailAddress,
               phoneNumber: req.body.phoneNumber,
               locationUID: req.body.locationUID,
               companyUID: res.locals.companyUID,
-              role: req.body.role == "on" ? "admin" : "basic",
+              resetPasswordToken: token,
+              resetPasswordExpires: Date.now() + 3600000,
+              role: req.body.role === "on" ? "admin" : "basic",
               password: 1234,
             })
               .then((dbUser) => {
                 delete dbUser.password;
                 delete dbUser.active;
+                const userData = {
+                  userId: dbUser.userId,
+                };
+                sendNewAccountPasswordResetEmail(
+                  req.body.name.split(" ")[0],
+                  res.locals.name,
+                  req.session.userInfo.companyName,
+                  req.body.emailAddress,
+                  token
+                );
 
                 var data = {
                   errors: [],
-                  response: dbUser,
+                  response: userData,
                 };
                 return res.json(data);
               })
@@ -479,7 +525,12 @@ module.exports = (app) => {
               });
           } else {
             var data = {
-              errors: [{ param: "message", msg: "User already exists" }],
+              errors: [
+                {
+                  param: "message",
+                  msg: "User with this email already exists",
+                },
+              ],
               data: req.body,
             };
             return res.json(data);
@@ -630,7 +681,10 @@ module.exports = (app) => {
             .then((dbLocation) => {
               var data = {
                 errors: [],
-                response: dbLocation,
+                response: {
+                  locationId: dbLocation.locationId,
+                  locationUID: dbLocation.locatioUID,
+                },
               };
               return res.json(data);
             })
@@ -793,7 +847,10 @@ module.exports = (app) => {
   });
 
   app.get("/api/deleteUser/:userId", authenticate, (req, res) => {
-    if (res.locals.role == "admin") {
+    if (
+      res.locals.role === "admin" &&
+      dbUser.dataValues.userId !== res.locals.userId
+    ) {
       db.User.findOne({
         where: {
           userId: req.params.userId,
@@ -968,6 +1025,7 @@ module.exports = (app) => {
             locationUID: locations[i].locationUID,
             locationCount: locations.length,
             transactions: [],
+            daysEstimatedProfit: 0,
           };
 
           let transactions = await db.Transaction.findAll({
@@ -998,12 +1056,69 @@ module.exports = (app) => {
           data.transactionCount = transactions.length;
 
           for (var j = 0; j < transactions.length; j++) {
+            data.daysEstimatedProfit += transactions[j].estimatedProfit;
             data.transactions.push(transactions[j].dataValues);
           }
 
           results.push(data);
         }
         return res.status(200).json(results);
+      } catch (errors) {
+        return res.json(errors);
+      }
+    }
+  );
+
+  app.get(
+    "/api/transaction/getTransactions/:locationUID/:transactionFilter",
+    async (req, res) => {
+      try {
+        let startDate;
+        let endDate;
+        let data = {
+          locationName: req.params.locationName,
+          transactions: [],
+          estimatedProfit: 0,
+        };
+
+        if (req.params.transactionFilter.toLowerCase() === "today") {
+          startDate = new Date().setHours(0, 0, 0, 0);
+          endDate = new Date().toISOString();
+        }
+
+        let transactions = await db.Transaction.findAll({
+          where: {
+            locationUID: req.params.locationUID,
+            createdAt: {
+              [Op.between]: [startDate, endDate],
+            },
+          },
+          attributes: [
+            "transactionUID",
+            "companyUID",
+            "locationUID",
+            "transactionTerminal",
+            "transactionType",
+            "transactionAmount",
+            "transactionCharge",
+            "posCharge",
+            "estimatedProfit",
+            "customerName",
+            "customerPhone",
+            "customerEmail",
+            "preparedBy",
+            "createdAt",
+          ],
+        });
+
+        data.transactionCount = transactions.length;
+
+        for (var j = 0; j < transactions.length; j++) {
+          data.estimatedProfit += transactions[j].estimatedProfit;
+          data.transactions.push(transactions[j].dataValues);
+        }
+
+        return res.status(200).json(data);
       } catch (errors) {
         return res.json(errors);
       }

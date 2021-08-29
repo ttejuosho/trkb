@@ -111,10 +111,10 @@ exports.newCompany = async (req, res) => {
   let checkCompany = await db.Company.findOne({
     where: {
       companyName: req.body.companyName,
-    }
+    },
   });
-console.log(checkCompany);
-  if (checkCompany == null){
+
+  if (checkCompany == null) {
     db.Company.create({
       companyName: req.body.companyName,
       companyUID: companyUID,
@@ -136,7 +136,6 @@ console.log(checkCompany);
       error: "Company already exists.",
     });
   }
-
 };
 
 exports.newLocation = (req, res) => {

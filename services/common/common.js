@@ -1,4 +1,7 @@
 const db = require("../../models");
+const sendEmail = require("../email/email");
+const bCrypt = require("bcrypt-nodejs");
+const crypto = require("crypto");
 
 exports.validateEmail = (email) => {
   if (
@@ -59,6 +62,30 @@ exports.getCompanyLocations = async (companyUID) => {
     return cc;
   } catch (err) {
     console.log(err);
-    return res.status(401).json({ message: err });
+    return { message: err };
+  }
+};
+
+exports.sendNewAccountPasswordResetEmail = async (
+  firstName,
+  managerName,
+  companyName,
+  emailAddress,
+  token
+) => {
+  try {
+    const emailSubject = "Your New ToroKobo Account";
+    const emailBody = `
+    <p>Hello ${firstName},</p>
+    <p>Your Account has been set up.</p>
+    <p>Click <a href="https://trkb.herokuapp.com/passwordreset/${token}">here to reset your password</a> to begin.</p>
+    <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
+    <p>${managerName}<p>
+    <span style="font-size: 1rem;color: black;"><strong>${companyName}</strong></span>
+    `;
+
+    await sendEmail(companyName, emailBody, emailSubject, emailAddress);
+  } catch (err) {
+    return { message: err };
   }
 };

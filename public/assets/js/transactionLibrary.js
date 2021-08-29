@@ -28,7 +28,7 @@ $("#searchQuery").selectize({
 
 function getDropdownData(columnName) {
   $("#newInputDiv").empty();
-  fetch(`/api/getDistinct/${columnName}`)
+  fetch(`/api/transaction/getDistinct/${columnName}`)
     .then((data) => {
       return data.json();
     })
