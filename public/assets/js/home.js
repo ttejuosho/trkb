@@ -1,10 +1,5 @@
 localStorage.removeItem("activeTab");
 
-function getTransactionCount(obj) {
-  console.log(obj);
-  return obj.transactionCount;
-}
-
 var dynamicColors = function () {
   var r = Math.floor(Math.random() * 255);
   var g = Math.floor(Math.random() * 255);
