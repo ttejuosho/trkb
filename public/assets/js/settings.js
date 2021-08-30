@@ -215,26 +215,25 @@ $(document).ready(function () {
             $(".message").text("Update Successful !!");
           } else {
             $(".message").text("New Agent Created !!");
+            $("#agentsTable")
+              .DataTable()
+              .row.add({
+                name: agentData.name,
+                locationName: agentData.locationName,
+                locationUID: agentData.locationUID,
+                emailAddress: agentData.emailAddress,
+                phoneNumber: agentData.phoneNumber,
+                userId: res.response.userId,
+                active: 1,
+                role: agentData.role,
+              })
+              .draw(false);
           }
           $(".messageError").text("");
           $("#newAgentForm")[0].reset();
           $("#locationUID")[0].selectize.setValue("");
           $("#active").attr("checked", false);
           $("#role").attr("checked", false);
-
-          $("#agentsTable")
-            .DataTable()
-            .row.add({
-              name: agentData.name,
-              locationName: agentData.locationName,
-              locationUID: agentData.locationUID,
-              emailAddress: agentData.emailAddress,
-              phoneNumber: agentData.phoneNumber,
-              userId: res.response.userId,
-              active: 1,
-              role: agentData.role,
-            })
-            .draw(false);
 
           $("#newAgentModal").modal("hide");
         } else {

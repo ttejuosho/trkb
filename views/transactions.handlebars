@@ -2,38 +2,42 @@
   <div class="jumbotron">
     <div class="container">
       <h1 class="display-3 text-center mt-4">Transactions Today</h1>
-      <center>
-        <div class="col-sm-12 col-md-6">
-          <select
-            id="locationName"
-            class="form-control mb-2"
-            name="locationName"
-          ></select>
+      <form>
+        <div class="form-row justify-content-center">
+          <div class="col-12 col-md-6 mb-2 mb-md-0">
 
-          <select
-            id="transactionFilter"
-            class="form-control mb-2"
-            name="transactionFilter"
-          >
-            <option value="">Choose Filter</option>
-            <option value="Today">Today</option>
-            <option value="Week">This Week</option>
-            <option value="Month">This Month</option>
-            <option value="Year">This Year</option>
-          </select>
+            <select
+              id="locationName"
+              class="form-control mb-2"
+              name="locationName"
+            ></select>
+
+            <select
+              id="transactionFilter"
+              class="form-control mb-2"
+              name="transactionFilter"
+            >
+              <option value="">Choose Filter</option>
+              <option value="Today">Today</option>
+              <option value="Week">This Week</option>
+              <option value="Month">This Month</option>
+              <option value="Year">This Year</option>
+            </select>
+            <center>
+              <p id="infoBtn" class="d-none">
+                <button
+                  id="transactionCount"
+                  class="btn btn-sm btn-outline-dark mr-2"
+                ></button>
+                <button
+                  id="estimatedProfit"
+                  class="btn btn-sm btn-outline-success"
+                ></button>
+              </p>
+            </center>
+          </div>
         </div>
-        <p id="infoBtn" class="d-none">
-          <button
-            id="transactionCount"
-            class="btn btn-sm btn-outline-dark mr-2"
-          ></button>
-          <button
-            id="estimatedProfit"
-            class="btn btn-sm btn-outline-success"
-          ></button>
-        </p>
-      </center>
-
+      </form>
       <div id="results" class="form-row justify-content-center d-none">
         <table
           id="transactionsTable"
