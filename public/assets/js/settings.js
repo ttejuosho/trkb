@@ -213,6 +213,13 @@ $(document).ready(function () {
         if (res.errors.length < 1) {
           if ($("#saveNewAgent").attr("action") == "update") {
             $(".message").text("Update Successful !!");
+            agentData.userId = $("#userId").val();
+            agentData.locationName = $("#agentLocationName").val();
+            $("#agentsTable")
+              .DataTable()
+              .row("#" + agentData.userId)
+              .data(agentData)
+              .draw();
           } else {
             $(".message").text("New Agent Created !!");
             $("#agentsTable")
@@ -313,6 +320,8 @@ $(document).ready(function () {
 
     $("#newAgentModalLabel").text(data.name);
     $("#saveNewAgent").text("Update");
+    $("#userId").val(data.userId);
+    $("#agentLocationName").val(data.locationName);
     $("#name").val(data.name);
     $("#emailAddress").val(data.emailAddress);
     $("#phoneNumber").val(data.phoneNumber);
@@ -332,7 +341,7 @@ $(document).ready(function () {
   $("#locationsTable tbody").on("click", ".editLocation", function () {
     var rowId = $(this).data("value");
     var data = locationsTable.row($("#" + rowId)).data();
-    //console.log(data);
+    console.log(data);
     $("#newLocationModalLabel").text(data.locationName);
     $("#saveNewLocation").text("Update");
     $("#saveNewLocation").attr("action", "update");
