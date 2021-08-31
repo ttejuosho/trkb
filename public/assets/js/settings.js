@@ -214,7 +214,7 @@ $(document).ready(function () {
           if ($("#saveNewAgent").attr("action") == "update") {
             $(".message").text("Update Successful !!");
             agentData.userId = $("#userId").val();
-            agentData.locationName = $("#agentLocationName").val();
+            agentData.locationName = locationName;
             $("#agentsTable")
               .DataTable()
               .row("#" + agentData.userId)
