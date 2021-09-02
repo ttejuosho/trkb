@@ -193,6 +193,9 @@ $(document).ready(function () {
       phoneNumber: $("#phoneNumber").val(),
       role: $("input[name=role]").prop("checked") === true ? "admin" : "basic",
       active: $("input[name=active]").prop("checked") === true ? false : true,
+      locationName: $("#locationUID")[0]
+        .selectize.getItem($("#locationUID").val())
+        .text(),
     };
 
     var apiUrl = "/api/newAgent";
@@ -211,17 +214,14 @@ $(document).ready(function () {
       })
       .then((res) => {
         if (res.errors.length < 1) {
-          if ($("#saveNewAgent").attr("action") == "update") {
-            $(".message").text("Update Successful !!");
+          if ($("#saveNewAgent").attr("action") === "update") {
             agentData.userId = $("#userId").val();
-            agentData.locationName = locationName;
             $("#agentsTable")
               .DataTable()
               .row("#" + agentData.userId)
               .data(agentData)
               .draw();
           } else {
-            $(".message").text("New Agent Created !!");
             $("#agentsTable")
               .DataTable()
               .row.add({
@@ -237,11 +237,11 @@ $(document).ready(function () {
               .draw(false);
           }
           $(".messageError").text("");
+          $("#message").text("");
           $("#newAgentForm")[0].reset();
           $("#locationUID")[0].selectize.setValue("");
           $("#active").attr("checked", false);
           $("#role").attr("checked", false);
-
           $("#newAgentModal").modal("hide");
         } else {
           res.errors.forEach((error) => {
@@ -283,11 +283,6 @@ $(document).ready(function () {
         $(".errorMessage").text("");
         if (res.errors.length < 1) {
           $("#newLocationForm")[0].reset();
-          if ($("#saveNewLocation").attr("action") == "update") {
-            $(".message").text("Update Successful !!");
-          } else {
-            $(".message").text("Location saved !!");
-          }
 
           $("#locationsTable")
             .DataTable()
@@ -308,7 +303,7 @@ $(document).ready(function () {
           $("#newLocationModal").modal("hide");
         } else {
           res.errors.forEach((error) => {
-            $(".errorMessage").text(error.msg);
+            $("." + error.param + "Error").text(error.msg);
           });
         }
       });
@@ -341,7 +336,6 @@ $(document).ready(function () {
   $("#locationsTable tbody").on("click", ".editLocation", function () {
     var rowId = $(this).data("value");
     var data = locationsTable.row($("#" + rowId)).data();
-    console.log(data);
     $("#newLocationModalLabel").text(data.locationName);
     $("#saveNewLocation").text("Update");
     $("#saveNewLocation").attr("action", "update");
@@ -413,6 +407,8 @@ $(document).ready(function () {
           $("#deleteSuccessConfirmationModalLabel").removeClass("d-none");
           $("#continueDelete").addClass("d-none");
           $("#deleteConfirmationModalLabel").addClass("d-none");
+          $("#actionMessage").text("");
+          $(".message").text("");
           if (tableName === "User") {
             $("#agentsTable").DataTable().row().remove(apiParamId).draw();
           }
@@ -442,7 +438,7 @@ $(document).ready(function () {
     $("#locationUID")[0].selectize.setValue("");
     $(".message").text("");
     $(".newAgentServerMessages").text("");
-    $(".errorMessage").text("");
+    $(".messageError").text("");
     $("#activeCheckbox").addClass("d-none");
     $("#newAgentModal").modal("hide");
   });
@@ -451,7 +447,7 @@ $(document).ready(function () {
     $("#newLocationForm")[0].reset();
     $(".message").text("");
     $(".newLocationServerMessages").text("");
-    $(".errorMessage").text("");
+    $(".messageError").text("");
     $("#newLocationModal").modal("hide");
   });
 

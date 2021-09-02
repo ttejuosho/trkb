@@ -849,7 +849,7 @@ module.exports = (app) => {
   app.get("/api/deleteUser/:userId", authenticate, (req, res) => {
     if (
       res.locals.role === "admin" &&
-      dbUser.dataValues.userId !== res.locals.userId
+      req.params.userId !== res.locals.userId
     ) {
       db.User.findOne({
         where: {
@@ -1084,6 +1084,45 @@ module.exports = (app) => {
         if (req.params.transactionFilter.toLowerCase() === "today") {
           startDate = new Date().setHours(0, 0, 0, 0);
           endDate = new Date().toISOString();
+        }
+
+        if (req.params.transactionFilter.toLowerCase() === "week") {
+          var currentDate = new Date();
+          startDate = new Date(
+            currentDate.setDate(currentDate.getDate() - currentDate.getDay())
+          ).toISOString();
+          endDate = new Date(
+            currentDate.setDate(
+              currentDate.getDate() - currentDate.getDay() + 7
+            )
+          ).toISOString();
+          console.log(startDate, endDate);
+        }
+
+        if (req.params.transactionFilter.toLowerCase() === "month") {
+          var currentDate = new Date();
+          startDate = new Date(
+            currentDate.setDate(currentDate.getDate() - currentDate.getDay())
+          ).toISOString();
+          endDate = new Date(
+            currentDate.setDate(
+              currentDate.getDate() - currentDate.getDay() + 30
+            )
+          ).toISOString();
+          console.log(startDate, endDate);
+        }
+
+        if (req.params.transactionFilter.toLowerCase() === "year") {
+          var currentDate = new Date();
+          startDate = new Date(
+            currentDate.setDate(currentDate.getDate() - currentDate.getDay())
+          ).toISOString();
+          endDate = new Date(
+            currentDate.setDate(
+              currentDate.getDate() - currentDate.getDay() + 365
+            )
+          ).toISOString();
+          console.log(startDate, endDate);
         }
 
         let transactions = await db.Transaction.findAll({

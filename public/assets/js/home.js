@@ -1,5 +1,9 @@
 localStorage.removeItem("activeTab");
 
+$("#1day").click(() => {
+  $("#1day").css("background-color", "red");
+});
+
 var dynamicColors = function () {
   var r = Math.floor(Math.random() * 255);
   var g = Math.floor(Math.random() * 255);
@@ -27,7 +31,7 @@ fetch(`/api/transactions/todayByLocation`)
         datasets: [
           {
             label: "Transactions By Locations",
-            data: transactionCounts,
+            data: [15, 10],
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(54, 162, 235, 0.2)",
