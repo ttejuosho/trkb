@@ -12,6 +12,8 @@ const cookieParser = require(`cookie-parser`);
 const passport = require("passport");
 const session = require("express-session");
 const rateLimit = require("express-rate-limit");
+const morgan = require("morgan");
+const winston = require("./services/winston/winston");
 
 require("dotenv").config();
 
@@ -30,6 +32,10 @@ const apiLimiter = rateLimit({
 
 //  apply to all requests
 app.use("/api/", apiLimiter);
+
+// Logger uncomment next line to enable winston
+app.use(morgan("combined", { stream: winston.stream }));
+//app.use(morgan("dev"));
 
 // Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static(__dirname + "/public"));
@@ -106,8 +112,6 @@ app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
 app.use((req, res, next) => {
-  // add this line to include winston logging uncomment next line to enable winston
-  // winston.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
   if (req.isAuthenticated) {
     res.locals.isAuthenticated = req.isAuthenticated();
     if (req.user !== undefined) {

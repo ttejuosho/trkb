@@ -1084,6 +1084,7 @@ module.exports = (app) => {
         if (req.params.transactionFilter.toLowerCase() === "today") {
           startDate = new Date().setHours(0, 0, 0, 0);
           endDate = new Date().toISOString();
+          console.log("DAY", startDate, endDate);
         }
 
         if (req.params.transactionFilter.toLowerCase() === "week") {
@@ -1096,7 +1097,7 @@ module.exports = (app) => {
               currentDate.getDate() - currentDate.getDay() + 7
             )
           ).toISOString();
-          console.log(startDate, endDate);
+          console.log("WEEK", startDate, endDate);
         }
 
         if (req.params.transactionFilter.toLowerCase() === "month") {
@@ -1109,7 +1110,7 @@ module.exports = (app) => {
               currentDate.getDate() - currentDate.getDay() + 30
             )
           ).toISOString();
-          console.log(startDate, endDate);
+          console.log("MONTH", startDate, endDate);
         }
 
         if (req.params.transactionFilter.toLowerCase() === "year") {
@@ -1122,7 +1123,7 @@ module.exports = (app) => {
               currentDate.getDate() - currentDate.getDay() + 365
             )
           ).toISOString();
-          console.log(startDate, endDate);
+          console.log("YEAR", startDate, endDate);
         }
 
         let transactions = await db.Transaction.findAll({
