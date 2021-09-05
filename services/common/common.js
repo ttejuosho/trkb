@@ -89,3 +89,58 @@ exports.sendNewAccountPasswordResetEmail = async (
     return { message: err };
   }
 };
+
+exports.getStartDate = async (time) => {
+  const currentDate = new Date();
+  let startDate;
+  time = time.toLowerCase();
+
+  if (time === "day") {
+    startDate = new Date().toISOString();
+    console.log("DAY", startDate);
+  }
+
+  if (time === "week") {
+    startDate = new Date(
+      currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 7)
+    ).toISOString();
+    console.log("WEEK", startDate);
+  }
+
+  if (time === "month") {
+    startDate = new Date(
+      currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 30)
+    ).toISOString();
+    console.log("Month", startDate);
+  }
+
+  if (time === "3months") {
+    startDate = new Date(
+      currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 90)
+    ).toISOString();
+    console.log("3 Months", startDate);
+  }
+
+  if (time === "6months") {
+    startDate = new Date(
+      currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 180)
+    ).toISOString();
+    console.log("6 Months", startDate);
+  }
+
+  if (time === "9months") {
+    startDate = new Date(
+      currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 270)
+    ).toISOString();
+    console.log("9 Months", startDate);
+  }
+
+  if (time === "year") {
+    startDate = new Date(
+      currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 365)
+    ).toISOString();
+    console.log("Year", startDate);
+  }
+
+  return startDate;
+};

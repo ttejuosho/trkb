@@ -1,9 +1,5 @@
 localStorage.removeItem("activeTab");
 
-$("#1day").click(() => {
-  $("#1day").css("background-color", "red");
-});
-
 var dynamicColors = function () {
   var r = Math.floor(Math.random() * 255);
   var g = Math.floor(Math.random() * 255);
@@ -11,68 +7,77 @@ var dynamicColors = function () {
   return "rgb(" + r + "," + g + "," + b + ")";
 };
 
-fetch(`/api/transactions/todayByLocation`)
-  .then((data) => {
-    return data.json();
-  })
-  .then((res) => {
-    var locationNames = res.map((l) => {
-      return l.locationName;
-    });
-    var transactionCounts = res.map((t) => {
-      return t.transactionCount;
-    });
+$("input[name='dataOption']").click(function () {
+  var time = $("input[name='dataOption']:checked").val();
+  if (time) {
+    getLocationChartsData(time);
+  }
+});
 
-    var ctx = $("#LocationTransactionsChart");
-    var locationTransactionsChart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: locationNames,
-        datasets: [
-          {
-            label: "Transactions By Locations",
-            data: [15, 10],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
-            ],
-            borderColor: "rgba(255, 99, 132, 1)",
-          },
-        ],
-      },
-      options: {
-        scales: {
-          yAxes: [
+getLocationChartsData = (time) => {
+  fetch(`/api/transactions/chart/byLocation/${time}`)
+    .then((data) => {
+      return data.json();
+    })
+    .then((res) => {
+      var locationNames = res.map((l) => {
+        return l.locationName;
+      });
+      var transactionCounts = res.map((t) => {
+        return t.transactionCount;
+      });
+
+      var ctx = $("#LocationTransactionsChart");
+      var locationTransactionsChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: locationNames,
+          datasets: [
             {
-              ticks: {
-                beginAtZero: true,
-              },
-            },
-          ],
-          xAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-              },
+              label: "Transactions By Locations",
+              data: transactionCounts,
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
+              ],
+              borderColor: "rgba(255, 99, 132, 1)",
             },
           ],
         },
-        responsive: true,
-      },
+        options: {
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                },
+              },
+            ],
+            xAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                },
+              },
+            ],
+          },
+          responsive: true,
+        },
+      });
     });
-  });
+};
 
 fetch(`/api/transactions/getMostRecent`)
   .then((data) => {
@@ -125,3 +130,5 @@ fetch(`/api/transactions/getMostRecent`)
       },
     });
   });
+
+getLocationChartsData("day");

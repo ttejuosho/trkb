@@ -12,6 +12,7 @@ const {
   getLocationNamebyUID,
   getCompanyLocations,
   sendNewAccountPasswordResetEmail,
+  getStartDate,
 } = require("../services/common/common.js");
 //const { grantAccess } = require("../services/security/security.js");
 const { check } = require("express-validator");
@@ -1010,13 +1011,13 @@ module.exports = (app) => {
   });
 
   app.get(
-    "/api/transactions/todayByLocation",
+    "/api/transactions/chart/byLocation/:time",
     authenticate,
     async (req, res) => {
       try {
         let results = [];
         let locations = await getCompanyLocations(res.locals.companyUID);
-        let startDate = new Date().setHours(0, 0, 0, 0);
+        let startDate = await getStartDate(req.params.time);
         let endDate = new Date().toISOString();
 
         for (var i = 0; i < locations.length; i++) {
@@ -1071,60 +1072,17 @@ module.exports = (app) => {
 
   app.get(
     "/api/transaction/getTransactions/:locationUID/:transactionFilter",
+    authenticate,
     async (req, res) => {
       try {
-        let startDate;
-        let endDate;
+        let startDate = await getStartDate(req.params.transactionFilter);
+        let endDate = new Date().toISOString();
+        let locationName = await getLocationNamebyUID(req.params.locationUID);
         let data = {
-          locationName: req.params.locationName,
+          locationName: locationName,
           transactions: [],
           estimatedProfit: 0,
         };
-
-        if (req.params.transactionFilter.toLowerCase() === "today") {
-          startDate = new Date().setHours(0, 0, 0, 0);
-          endDate = new Date().toISOString();
-          console.log("DAY", startDate, endDate);
-        }
-
-        if (req.params.transactionFilter.toLowerCase() === "week") {
-          var currentDate = new Date();
-          startDate = new Date(
-            currentDate.setDate(currentDate.getDate() - currentDate.getDay())
-          ).toISOString();
-          endDate = new Date(
-            currentDate.setDate(
-              currentDate.getDate() - currentDate.getDay() + 7
-            )
-          ).toISOString();
-          console.log("WEEK", startDate, endDate);
-        }
-
-        if (req.params.transactionFilter.toLowerCase() === "month") {
-          var currentDate = new Date();
-          startDate = new Date(
-            currentDate.setDate(currentDate.getDate() - currentDate.getDay())
-          ).toISOString();
-          endDate = new Date(
-            currentDate.setDate(
-              currentDate.getDate() - currentDate.getDay() + 30
-            )
-          ).toISOString();
-          console.log("MONTH", startDate, endDate);
-        }
-
-        if (req.params.transactionFilter.toLowerCase() === "year") {
-          var currentDate = new Date();
-          startDate = new Date(
-            currentDate.setDate(currentDate.getDate() - currentDate.getDay())
-          ).toISOString();
-          endDate = new Date(
-            currentDate.setDate(
-              currentDate.getDate() - currentDate.getDay() + 365
-            )
-          ).toISOString();
-          console.log("YEAR", startDate, endDate);
-        }
 
         let transactions = await db.Transaction.findAll({
           where: {

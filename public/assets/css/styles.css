@@ -140,6 +140,19 @@ a.nav-link {
   color: #343a40;
 }
 
+.btn-light {
+  background-color: #e2e6eb;
+  border-color: #e2e6eb;
+}
+
+.btn-light:not(:disabled):not(.disabled).active,
+.btn-light:not(:disabled):not(.disabled):active,
+.show > .btn-light.dropdown-toggle {
+  color: #212529;
+  background-color: #b1b5b9;
+  border-color: #b1b5b9;
+}
+
 @media (max-width: 800px) {
   .main-panel > .partial-content {
     padding: 70px 10px 0px 20px;
