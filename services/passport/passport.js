@@ -34,14 +34,14 @@ module.exports = function (passport, user) {
         passwordField: "password",
         passReqToCallback: true, // allows us to pass back the entire request to the callback
       },
-      function (req, email, password, done) {
+      function (req, emailAddress, password, done) {
         const generateHash = function (password) {
           return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
         };
 
         User.findOne({
           where: {
-            emailAddress: email,
+            emailAddress: emailAddress,
           },
         }).then(function (user) {
           if (user) {
@@ -51,7 +51,7 @@ module.exports = function (passport, user) {
           } else {
             const userPassword = generateHash(password);
             const data = {
-              emailAddress: email,
+              emailAddress: emailAddress,
               password: userPassword,
               name: req.body.name,
               phoneNumber: req.body.phoneNumber,
@@ -72,7 +72,11 @@ module.exports = function (passport, user) {
               .then(() => {
                 //Send Confirmation Email to new user
                 const emailBody = `
-          <p>Hello ${req.body.name},</p>
+          <p>Hello ${
+            req.body.name.split(" ").length > 1
+              ? req.body.name.split(" ")[0]
+              : req.body.name
+          },</p>
           <p style="color: black;">Your account is set and you're all good to go. Click <a href="https://trkb.herokuapp.com/">here</a> to sign in to manage your business finances.</p>
           <p> <span style="font-size: 1rem;color: black;"><strong>The TRKB Team</strong></span></p>
           `;
@@ -80,7 +84,7 @@ module.exports = function (passport, user) {
                   "TrKB Financial",
                   emailBody,
                   "Welcome to Torokobo!",
-                  email
+                  emailAddress
                 );
               });
           }
@@ -100,7 +104,7 @@ module.exports = function (passport, user) {
         passReqToCallback: true, // allows us to pass back the entire request to the callback
         failureFlash: true,
       },
-      function (req, email, password, done) {
+      function (req, emailAddress, password, done) {
         const User = user;
         const isValidPassword = function (inputPassword, hashedPassword) {
           return bCrypt.compareSync(inputPassword, hashedPassword);
@@ -108,7 +112,7 @@ module.exports = function (passport, user) {
 
         User.findOne({
           where: {
-            emailAddress: email,
+            emailAddress: emailAddress,
           },
         })
           .then(function (user) {
