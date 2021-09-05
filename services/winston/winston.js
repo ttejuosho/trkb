@@ -41,6 +41,12 @@ var logger = new winston.createLogger({
 
 logger.stream = {
   write: function (message, encoding) {
+    // console.log("DateTime: \n", message.split('"')[3].trim().substring(9,29));
+    // console.log("API Endpoint: \n", message.split('"')[4].substring(1));
+    // console.log("Http Code: \n", message.split('"')[5].trim().substring(0,3));
+    // console.log("Device/Browser: \n",message.split('"')[8]);
+    // console.log("Log Level: \n", message.split('"')[13]);
+
     logger.info(message);
   },
 };
