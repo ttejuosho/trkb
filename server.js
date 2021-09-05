@@ -1,6 +1,4 @@
 var express = require("express");
-
-// bring in the models
 var app = express();
 const cors = require("cors");
 var db = require("./models");
@@ -23,7 +21,7 @@ app.use(helmet());
 app.options("*", cors());
 
 // Enable before deployment to Heroku
-// app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -39,7 +37,6 @@ app.use(morgan("combined", { stream: winston.stream }));
 
 // Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static(__dirname + "/public"));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());
@@ -108,9 +105,7 @@ const hbs = exphbs.create({
 });
 
 app.engine("handlebars", hbs.engine);
-
 app.set("view engine", "handlebars");
-
 app.use((req, res, next) => {
   if (req.isAuthenticated) {
     res.locals.isAuthenticated = req.isAuthenticated();
