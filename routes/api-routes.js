@@ -2,6 +2,7 @@ const db = require("../models");
 const moment = require("moment");
 const Sequelize = require("sequelize");
 const sequelize = require("sequelize");
+const { lookup } = require('geoip-lite');
 const Op = Sequelize.Op;
 const {
   authenticate,
@@ -1075,6 +1076,10 @@ module.exports = (app) => {
     authenticate,
     async (req, res) => {
       try {
+          const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+          console.log(ip); // ip address of the user
+          console.log(lookup(ip)); // location of the user
+
         let startDate = await getStartDate(req.params.transactionFilter);
         let endDate = new Date().toISOString();
         let locationName = await getLocationNamebyUID(req.params.locationUID);
