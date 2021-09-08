@@ -96,7 +96,7 @@ exports.getStartDate = async (time) => {
   time = time.toLowerCase();
 
   if (time === "day") {
-    startDate = new Date().toISOString();
+    startDate = new Date().getDay();
   }
 
   if (time === "week") {
