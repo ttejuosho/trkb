@@ -15,7 +15,6 @@ const {
   sendNewAccountPasswordResetEmail,
   getStartDate,
 } = require("../services/common/common.js");
-//const { grantAccess } = require("../services/security/security.js");
 const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
 const { query } = require("express");
@@ -499,7 +498,7 @@ module.exports = (app) => {
               companyUID: res.locals.companyUID,
               resetPasswordToken: token,
               resetPasswordExpires: Date.now() + 3600000,
-              role: req.body.role === "on" ? "admin" : "basic",
+              role: req.body.role === "admin" ? "admin" : "basic",
               password: 1234,
             })
               .then((dbUser) => {
