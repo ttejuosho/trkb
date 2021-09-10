@@ -302,7 +302,7 @@ module.exports = (app) => {
     } else {
       queryObj = {
         transactionUID: { [Op.like]: "%" + searchQuery + "%" },
-        locatioUID: { [Op.like]: "%" + searchQuery + "%" },
+        locationUID: { [Op.like]: "%" + searchQuery + "%" },
         transactionTerminal: { [Op.like]: "%" + searchQuery + "%" },
         transactionType: { [Op.like]: "%" + searchQuery + "%" },
         customerName: { [Op.like]: "%" + searchQuery + "%" },
@@ -582,7 +582,7 @@ module.exports = (app) => {
         return res.json(data);
       } else {
         if (res.locals.role == "admin") {
-          res.locals.locatioUID = req.body.locationUID;
+          res.locals.locationUID = req.body.locationUID;
           db.User.update(
             {
               name: req.body.name,
@@ -684,7 +684,7 @@ module.exports = (app) => {
                 errors: [],
                 response: {
                   locationId: dbLocation.locationId,
-                  locationUID: dbLocation.locatioUID,
+                  locationUID: dbLocation.locationUID,
                 },
               };
               return res.json(data);

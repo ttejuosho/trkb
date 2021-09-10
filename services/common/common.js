@@ -96,7 +96,8 @@ exports.getStartDate = async (time) => {
   time = time.toLowerCase();
 
   if (time === "day") {
-    startDate = new Date().getDay();
+    startDate = new Date().setHours(0,0,0,0);
+    console.log(startDate);
   }
 
   if (time === "week") {
