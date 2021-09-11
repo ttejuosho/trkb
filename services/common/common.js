@@ -1,7 +1,5 @@
 const db = require("../../models");
 const sendEmail = require("../email/email");
-const bCrypt = require("bcrypt-nodejs");
-const crypto = require("crypto");
 
 exports.validateEmail = (email) => {
   if (
@@ -97,7 +95,6 @@ exports.getStartDate = async (time) => {
 
   if (time === "day") {
     startDate = new Date().setHours(0,0,0,0);
-    console.log(startDate);
   }
 
   if (time === "week") {

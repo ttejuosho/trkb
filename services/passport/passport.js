@@ -135,11 +135,11 @@ module.exports = function (passport, user) {
                 message: "Incorrect password.",
               });
             }
+            
             const userInfo = user.get();
             return done(null, userInfo);
           })
           .catch(function (err) {
-            //console.log("Error:", err);
             return done(null, false, {
               message: "Something went wrong with your Signin",
             });
