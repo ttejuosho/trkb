@@ -3,6 +3,8 @@ const Sequelize = require("sequelize");
 const { validationResult } = require("express-validator");
 const sendEmail = require("../services/email/email.js");
 const common = require("../services/common/common.js");
+const { lookup } = require('geoip-lite');
+
 
 exports.CheckApi = (req, res) => {
   return res.json({
@@ -24,9 +26,14 @@ exports.GetNewTransactionForm = (req, res) => {
 };
 
 exports.GetHomePage = (req, res) => {
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const location = lookup(ip);
+  console.log(ip); // ip address of the user
+  console.log(lookup(ip)); // location of the user
   return res.render("index", {
     companyName: req.session.userInfo.companyName,
     companyId: req.session.userInfo.companyId,
+    location: location
   });
 };
 
