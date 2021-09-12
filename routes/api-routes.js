@@ -2,7 +2,6 @@ const db = require("../models");
 const moment = require("moment");
 const Sequelize = require("sequelize");
 const sequelize = require("sequelize");
-const { lookup } = require("geoip-lite");
 const Op = Sequelize.Op;
 const {
   authenticate,
@@ -16,7 +15,6 @@ const {
 } = require("../services/common/common.js");
 const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
-const { query } = require("express");
 const crypto = require("crypto");
 const { logThis } = require("../services/logger/log.js");
 

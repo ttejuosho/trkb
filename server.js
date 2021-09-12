@@ -21,7 +21,7 @@ app.use(helmet());
 app.options("*", cors());
 
 // Enable before deployment to Heroku
-app.set("trust proxy", 1);
+//app.set("trust proxy", 1);
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
