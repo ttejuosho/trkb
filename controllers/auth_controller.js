@@ -4,13 +4,13 @@ const { validationResult } = require("express-validator");
 const bCrypt = require("bcrypt-nodejs");
 const crypto = require("crypto");
 const sendEmail = require("../services/email/email.js");
-const Log = require("../services/logger/log.js");
+const { logThis } = require("../services/logger/log.js");
 const { lookup } = require("geoip-lite");
 const common = require("../services/common/common.js");
 
 // Render Signin page
 exports.getSigninPage = async (req, res) => {
-  await Log.logThis(
+  await logThis(
     "INFO",
     "Unknown UserId",
     "Unknown Email",
@@ -345,7 +345,7 @@ exports.signin = async (req, res, next) => {
         return res.render("auth/auth", msg);
       }
 
-      await Log.logThis(
+      await logThis(
         "INFO",
         req.user.userId,
         req.user.emailAddress,
@@ -548,7 +548,7 @@ exports.ResetPassword = (req, res) => {
 };
 
 exports.signout = async (req, res) => {
-  await Log.logThis(
+  await logThis(
     "INFO",
     res.locals.userId,
     res.locals.emailAddress,

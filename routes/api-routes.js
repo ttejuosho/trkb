@@ -18,7 +18,7 @@ const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
 const { query } = require("express");
 const crypto = require("crypto");
-const Log = require("../services/logger/log.js");
+const { logThis } = require("../services/logger/log.js");
 
 module.exports = (app) => {
   app.get("/api/getTransactions", (req, res) => {
@@ -974,7 +974,7 @@ module.exports = (app) => {
 
   app.get("/api/transactions/getMostRecent", authenticate, async (req, res) => {
     try {
-      await Log.logThis(
+      await logThis(
         "INFO",
         res.locals.userId,
         res.locals.emailAddress,
@@ -1017,7 +1017,7 @@ module.exports = (app) => {
 
       return res.status(200).json(results);
     } catch (errors) {
-      await Log.logThis(
+      await logThis(
         "ERROR",
         res.locals.userId,
         res.locals.emailAddress,
@@ -1038,7 +1038,7 @@ module.exports = (app) => {
     authenticate,
     async (req, res) => {
       try {
-        await Log.logThis(
+        await logThis(
           "INFO",
           res.locals.userId,
           res.locals.emailAddress,
@@ -1100,7 +1100,7 @@ module.exports = (app) => {
         }
         return res.status(200).json(results);
       } catch (errors) {
-        await Log.logThis(
+        await logThis(
           "ERROR",
           res.locals.userId,
           res.locals.emailAddress,
@@ -1121,7 +1121,7 @@ module.exports = (app) => {
     authenticate,
     async (req, res) => {
       try {
-        await Log.logThis(
+        await logThis(
           "INFO",
           res.locals.userId,
           res.locals.emailAddress,
@@ -1179,7 +1179,7 @@ module.exports = (app) => {
 
         return res.status(200).json(data);
       } catch (errors) {
-        await Log.logThis(
+        await logThis(
           "ERROR",
           res.locals.userId,
           res.locals.emailAddress,
