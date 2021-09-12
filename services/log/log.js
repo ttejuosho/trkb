@@ -23,7 +23,7 @@ exports.logThis = async (
     level: level,
     apiEndpoint: apiEndpoint,
     ipAddress: ipAddress,
-    location: `${locationData.city}, ${locationData.region}, ${locationData.country}`,
+    location: `${locationData.city}, ${locationData.state}, ${locationData.country}`,
     action: action,
     notes: notes,
   });
