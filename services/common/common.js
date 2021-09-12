@@ -95,42 +95,72 @@ exports.getStartDate = async (time) => {
   time = time.toLowerCase();
 
   if (time === "day") {
-    startDate = new Date(new Date().setHours(0, 0, 0, 0)).toLocaleString();
+    startDate = new Date(new Date().setUTCHours(0, 0, 0, 0)).toISOString();
   }
 
   if (time === "week") {
     startDate = new Date(
-      currentDate.setDate(currentDate.getDate() - 7)
+      new Date(currentDate.setDate(currentDate.getDate() - 7)).setUTCHours(
+        0,
+        0,
+        0,
+        0
+      )
     ).toISOString();
   }
 
   if (time === "month") {
     startDate = new Date(
-      currentDate.setDate(currentDate.getDate() - 30)
+      new Date(currentDate.setDate(currentDate.getDate() - 30)).setUTCHours(
+        0,
+        0,
+        0,
+        0
+      )
     ).toISOString();
   }
 
   if (time === "3months") {
     startDate = new Date(
-      currentDate.setDate(currentDate.getDate() - 90)
+      new Date(currentDate.setDate(currentDate.getDate() - 90)).setUTCHours(
+        0,
+        0,
+        0,
+        0
+      )
     ).toISOString();
   }
 
   if (time === "6months") {
     startDate = new Date(
-      currentDate.setDate(currentDate.getDate() - 180)
+      new Date(currentDate.setDate(currentDate.getDate() - 180)).setUTCHours(
+        0,
+        0,
+        0,
+        0
+      )
     ).toISOString();
   }
 
   if (time === "9months") {
     startDate = new Date(
-      currentDate.setDate(currentDate.getDate() - 270)
+      new Date(currentDate.setDate(currentDate.getDate() - 270)).setUTCHours(
+        0,
+        0,
+        0,
+        0
+      )
     ).toISOString();
   }
 
   if (time === "year") {
     startDate = new Date(
-      currentDate.setDate(currentDate.getDate() - 365)
+      new Date(currentDate.setDate(currentDate.getDate() - 365)).setUTCHours(
+        0,
+        0,
+        0,
+        0
+      )
     ).toISOString();
   }
 
