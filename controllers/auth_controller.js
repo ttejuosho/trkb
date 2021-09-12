@@ -4,7 +4,7 @@ const { validationResult } = require("express-validator");
 const bCrypt = require("bcrypt-nodejs");
 const crypto = require("crypto");
 const sendEmail = require("../services/email/email.js");
-const { logThis } = require("../services/logger/log.js");
+const { logThis } = require("../services/log/log.js");
 const common = require("../services/common/common.js");
 
 // Render Signin page

@@ -16,7 +16,7 @@ const {
 const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
 const crypto = require("crypto");
-const { logThis } = require("../services/logger/log.js");
+const { logThis } = require("../services/log/log.js");
 
 module.exports = (app) => {
   app.get("/api/getTransactions", (req, res) => {
