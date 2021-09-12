@@ -17,7 +17,7 @@ exports.getSigninPage = async (req, res) => {
     "Unknown CompanyUID",
     "Unknown LocationUID",
     "/signin",
-    req.socket.remoteAddress,
+    req.headers["x-forwarded-for"],
     "authController.getSigninPage",
     "sign: true"
   );
@@ -308,7 +308,7 @@ exports.signup = (req, res, next) => {
 
 exports.signin = async (req, res, next) => {
   const locationData = await common.getUserLocationData(
-    req.headers["x-forwarded-for"] || req.socket.remoteAddress
+    req.headers["x-forwarded-for"]
   );
 
   passport.authenticate("local-signin", function (err, user, info) {
@@ -363,8 +363,7 @@ exports.signin = async (req, res, next) => {
       req.session.userInfo.companyId = companyInfo.companyId;
       req.session.userInfo.companyUID = companyInfo.companyUID;
       req.session.userInfo.companyName = companyInfo.companyName;
-      req.session.userInfo.ipAddress =
-        req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+      req.session.userInfo.ipAddress = req.headers["x-forwarded-for"];
       req.session.userInfo.userLocationCity = locationData.city;
       req.session.userInfo.userLocationState = locationData.state;
       console.log(req.session.userInfo);
