@@ -395,10 +395,16 @@ module.exports = (app) => {
   });
 
   app.get("/api/getLocations", authenticate, (req, res) => {
+    const queryParams = {
+      companyUID: res.locals.companyUID,
+    };
+
+    if (res.locals.role === "basic") {
+      queryParams.locationUID = res.locals.locationUID;
+    }
+
     db.Location.findAll({
-      where: {
-        companyUID: res.locals.companyUID,
-      },
+      where: queryParams,
       //attributes: ["locationId", "locationUID", "locationName"],
     })
       .then((dbLocation) => {
