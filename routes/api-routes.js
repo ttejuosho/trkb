@@ -1053,7 +1053,9 @@ module.exports = (app) => {
         let results = [];
         let locations = await getCompanyLocations(res.locals.companyUID);
         let startDate = await getStartDate(req.params.time);
-        let endDate = new Date().toISOString();
+        let endDate = new Date(
+          new Date().setUTCHours(23, 59, 59, 999)
+        ).toISOString();
 
         for (var i = 0; i < locations.length; i++) {
           let data = {
@@ -1136,9 +1138,11 @@ module.exports = (app) => {
           ""
         );
         let startDate = await getStartDate(req.params.transactionFilter);
-        let endDate = new Date().toISOString();
+        let endDate = new Date(
+          new Date().setUTCHours(23, 59, 59, 999)
+        ).toISOString();
         let locationName = await getLocationNamebyUID(req.params.locationUID);
-        console.log(startDate);
+
         let data = {
           locationName: locationName,
           transactions: [],
