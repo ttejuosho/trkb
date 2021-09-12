@@ -62,6 +62,9 @@ getLocationChartsData = (time) => {
               {
                 ticks: {
                   beginAtZero: true,
+                  min: 0,
+                  suggestedMax: 5,
+                  stepSize: 0.5,
                 },
               },
             ],
