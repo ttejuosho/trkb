@@ -4,9 +4,23 @@ const { validationResult } = require("express-validator");
 const bCrypt = require("bcrypt-nodejs");
 const crypto = require("crypto");
 const sendEmail = require("../services/email/email.js");
+const Log = require("../services/logger/log.js");
+const { lookup } = require("geoip-lite");
+const common = require("../services/common/common.js");
 
 // Render Signin page
-exports.getSigninPage = (req, res) => {
+exports.getSigninPage = async (req, res) => {
+  await Log.logThis(
+    "INFO",
+    "Unknown UserId",
+    "Unknown Email",
+    "Unknown CompanyUID",
+    "Unknown LocationUID",
+    "/signin",
+    req.socket.remoteAddress,
+    "authController.getSigninPage",
+    "sign: true"
+  );
   return res.render("auth/auth", {
     title: "Sign In",
     layout: "partials/prelogin",
@@ -292,7 +306,11 @@ exports.signup = (req, res, next) => {
   });
 };
 
-exports.signin = (req, res, next) => {
+exports.signin = async (req, res, next) => {
+  const locationData = await common.getUserLocationData(
+    req.headers["x-forwarded-for"] || req.socket.remoteAddress
+  );
+
   passport.authenticate("local-signin", function (err, user, info) {
     if (err) {
       return next(err); // will generate a 500 error
@@ -317,7 +335,7 @@ exports.signin = (req, res, next) => {
       return res.render("auth/auth", msg);
     }
 
-    req.login(user, (loginErr) => {
+    req.login(user, async (loginErr) => {
       if (loginErr) {
         const msg = {
           error: "Authentication Failed",
@@ -327,17 +345,30 @@ exports.signin = (req, res, next) => {
         return res.render("auth/auth", msg);
       }
 
-      db.Company.findOne({
-        where: {
-          companyUID: user.companyUID,
-        },
-        raw: true,
-      }).then((dbCompany) => {
-        req.session.userInfo = {};
-        req.session.userInfo.companyId = dbCompany.companyId;
-        req.session.userInfo.companyName = dbCompany.companyName;
-        return res.redirect("/");
-      });
+      await Log.logThis(
+        "INFO",
+        req.user.userId,
+        req.user.emailAddress,
+        req.user.companyUID,
+        req.user.locationUID,
+        "/signin",
+        locationData.ipAddress,
+        "AuthController.Signin called.",
+        `${req.user.name} signed in at ${new Date().toLocaleString()}`
+      );
+
+      const companyInfo = await common.getCompanyByUID(user.companyUID);
+
+      req.session.userInfo = {};
+      req.session.userInfo.companyId = companyInfo.companyId;
+      req.session.userInfo.companyUID = companyInfo.companyUID;
+      req.session.userInfo.companyName = companyInfo.companyName;
+      req.session.userInfo.ipAddress =
+        req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+      req.session.userInfo.userLocationCity = locationData.city;
+      req.session.userInfo.userLocationState = locationData.state;
+      console.log(req.session.userInfo);
+      return res.redirect("/");
     });
   })(req, res, next);
 };
@@ -516,7 +547,17 @@ exports.ResetPassword = (req, res) => {
   }
 };
 
-exports.signout = (req, res) => {
+exports.signout = async (req, res) => {
+  await Log.logThis(
+    "INFO",
+    res.locals.userId,
+    res.locals.emailAddress,
+    res.locals.companyUID,
+    res.locals.locationUID,
+    "/signout",
+    "AuthController.Signout called.",
+    `${res.locals.name} signed out at ${new Date().toLocaleString()}`
+  );
   req.session.destroy(function (err) {
     res.redirect("/signin");
   });

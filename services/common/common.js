@@ -1,5 +1,6 @@
 const db = require("../../models");
 const sendEmail = require("../email/email");
+const { lookup } = require("geoip-lite");
 
 exports.validateEmail = (email) => {
   if (
@@ -12,16 +13,16 @@ exports.validateEmail = (email) => {
   return false;
 };
 
-exports.getCompanyNamebyUID = async (companyUID) => {
+exports.getCompanyByUID = async (companyUID) => {
   try {
-    const cc = await db.Company.findOne({
+    const companyInfo = await db.Company.findOne({
       where: {
         companyUID: companyUID,
       },
       raw: true,
-      attributes: ["companyName"],
+      attributes: ["companyId", "companyName", "companyUID"],
     });
-    return cc.companyName;
+    return companyInfo;
   } catch (err) {
     console.log(err);
   }
@@ -94,44 +95,60 @@ exports.getStartDate = async (time) => {
   time = time.toLowerCase();
 
   if (time === "day") {
-    startDate = new Date().setHours(0,0,0,0);
+    startDate = new Date(new Date().setHours(0, 0, 0, 0)).toLocaleString();
   }
 
   if (time === "week") {
     startDate = new Date(
-      currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 7)
+      currentDate.setDate(currentDate.getDate() - 7)
     ).toISOString();
   }
 
   if (time === "month") {
     startDate = new Date(
-      currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 30)
+      currentDate.setDate(currentDate.getDate() - 30)
     ).toISOString();
   }
 
   if (time === "3months") {
     startDate = new Date(
-      currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 90)
+      currentDate.setDate(currentDate.getDate() - 90)
     ).toISOString();
   }
 
   if (time === "6months") {
     startDate = new Date(
-      currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 180)
+      currentDate.setDate(currentDate.getDate() - 180)
     ).toISOString();
   }
 
   if (time === "9months") {
     startDate = new Date(
-      currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 270)
+      currentDate.setDate(currentDate.getDate() - 270)
     ).toISOString();
   }
 
   if (time === "year") {
     startDate = new Date(
-      currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 365)
+      currentDate.setDate(currentDate.getDate() - 365)
     ).toISOString();
   }
 
   return startDate;
+};
+
+exports.getUserLocationData = async (ipAddress) => {
+  const location = lookup(ipAddress);
+  const locationData = {
+    ipAddress: ipAddress,
+    //range: `${location && location.range[0]} - ${location && location.range[1]}`,
+    country: location ? location.country : "-",
+    timezone: location ? location.timezone : "-",
+    city: location ? location.city : "-",
+    state: location ? location.region : "-",
+    longitude: location ? location.ll[0] : "-",
+    latitude: location ? location.ll[1] : "-",
+  };
+
+  return locationData;
 };

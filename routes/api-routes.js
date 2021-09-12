@@ -2,14 +2,13 @@ const db = require("../models");
 const moment = require("moment");
 const Sequelize = require("sequelize");
 const sequelize = require("sequelize");
-const { lookup } = require('geoip-lite');
+const { lookup } = require("geoip-lite");
 const Op = Sequelize.Op;
 const {
   authenticate,
   grantAccess,
 } = require("../services/security/security.js");
 const {
-  getCompanyNamebyUID,
   getLocationNamebyUID,
   getCompanyLocations,
   sendNewAccountPasswordResetEmail,
@@ -19,6 +18,7 @@ const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
 const { query } = require("express");
 const crypto = require("crypto");
+const Log = require("../services/logger/log.js");
 
 module.exports = (app) => {
   app.get("/api/getTransactions", (req, res) => {
@@ -148,7 +148,6 @@ module.exports = (app) => {
                   },
                 }
               ).then((dbTransaction) => {
-                console.log(dbTransaction);
                 res.json(dbTransaction);
               });
             }
@@ -975,6 +974,18 @@ module.exports = (app) => {
 
   app.get("/api/transactions/getMostRecent", authenticate, async (req, res) => {
     try {
+      await Log.logThis(
+        "INFO",
+        res.locals.userId,
+        res.locals.emailAddress,
+        res.locals.companyUID,
+        res.locals.locationUID,
+        "/api/transactions/chart/getMostRecent",
+        req.session.userInfo.ipAddress,
+        "",
+        ""
+      );
+
       let data = await db.Transaction.findAll({
         where: {
           companyUID: res.locals.companyUID,
@@ -1006,6 +1017,18 @@ module.exports = (app) => {
 
       return res.status(200).json(results);
     } catch (errors) {
+      await Log.logThis(
+        "ERROR",
+        res.locals.userId,
+        res.locals.emailAddress,
+        res.locals.companyUID,
+        res.locals.locationUID,
+        "/api/transactions/chart/getMostRecent",
+        "",
+        "Api call failed",
+        errors.message
+      );
+
       return res.json(errors);
     }
   });
@@ -1015,6 +1038,18 @@ module.exports = (app) => {
     authenticate,
     async (req, res) => {
       try {
+        await Log.logThis(
+          "INFO",
+          res.locals.userId,
+          res.locals.emailAddress,
+          res.locals.companyUID,
+          res.locals.locationUID,
+          "/api/transactions/chart/byLocation/" + req.params.time,
+          req.session.userInfo.ipAddress,
+          "",
+          ""
+        );
+
         let results = [];
         let locations = await getCompanyLocations(res.locals.companyUID);
         let startDate = await getStartDate(req.params.time);
@@ -1026,7 +1061,7 @@ module.exports = (app) => {
             locationUID: locations[i].locationUID,
             locationCount: locations.length,
             transactions: [],
-            daysEstimatedProfit: 0,
+            estimatedProfit: 0,
           };
 
           let transactions = await db.Transaction.findAll({
@@ -1057,7 +1092,7 @@ module.exports = (app) => {
           data.transactionCount = transactions.length;
 
           for (var j = 0; j < transactions.length; j++) {
-            data.daysEstimatedProfit += transactions[j].estimatedProfit;
+            data.estimatedProfit += transactions[j].estimatedProfit;
             data.transactions.push(transactions[j].dataValues);
           }
 
@@ -1065,6 +1100,17 @@ module.exports = (app) => {
         }
         return res.status(200).json(results);
       } catch (errors) {
+        await Log.logThis(
+          "ERROR",
+          res.locals.userId,
+          res.locals.emailAddress,
+          res.locals.companyUID,
+          res.locals.locationUID,
+          "/api/transactions/chart/byLocation/" + req.params.time,
+          "",
+          "Api call failed",
+          errors.message
+        );
         return res.json(errors);
       }
     }
@@ -1075,13 +1121,24 @@ module.exports = (app) => {
     authenticate,
     async (req, res) => {
       try {
-          const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-          console.log(ip); // ip address of the user
-          console.log(lookup(ip)); // location of the user
-
+        await Log.logThis(
+          "INFO",
+          res.locals.userId,
+          res.locals.emailAddress,
+          res.locals.companyUID,
+          res.locals.locationUID,
+          "/api/transaction/getTransactions/" +
+            req.params.locationUID +
+            "/" +
+            req.params.transactionFilter,
+          req.session.userInfo.ipAddress,
+          "",
+          ""
+        );
         let startDate = await getStartDate(req.params.transactionFilter);
         let endDate = new Date().toISOString();
         let locationName = await getLocationNamebyUID(req.params.locationUID);
+        console.log(startDate);
         let data = {
           locationName: locationName,
           transactions: [],
@@ -1122,8 +1179,36 @@ module.exports = (app) => {
 
         return res.status(200).json(data);
       } catch (errors) {
+        await Log.logThis(
+          "ERROR",
+          res.locals.userId,
+          res.locals.emailAddress,
+          res.locals.companyUID,
+          res.locals.locationUID,
+          "/api/transaction/getTransactions/" +
+            req.params.locationUID +
+            "/" +
+            req.params.transactionFilter,
+          "",
+          "Api call failed",
+          errors.message
+        );
         return res.json(errors);
       }
     }
   );
+
+  app.get("/api/clearlogs", (req, res) => {
+    db.Log.destroy({
+      where: {},
+    }).then((dbLog) => {
+      res.json("Logs has been cleared");
+    });
+  });
+
+  app.get("/api/getlogs", (req, res) => {
+    db.Log.findAll().then((dbLog) => {
+      res.json(dbLog);
+    });
+  });
 };

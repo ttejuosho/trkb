@@ -126,7 +126,7 @@ function renderTransactionsTable(data) {
         type: "date",
         render: function (data, type, row) {
           if (data !== null) {
-            return moment(data).format("MM/DD/YYYY HH:mm");
+            return moment(data).format("MM/DD/YYYY h:mm a");
           } else {
             return "";
           }

@@ -2,9 +2,10 @@ const db = require("../models");
 const Sequelize = require("sequelize");
 const { validationResult } = require("express-validator");
 const sendEmail = require("../services/email/email.js");
-const common = require("../services/common/common.js");
-const { lookup } = require('geoip-lite');
-
+const {
+  getLocationNamebyUID,
+  validateEmail,
+} = require("../services/common/common.js");
 
 exports.CheckApi = (req, res) => {
   return res.json({
@@ -26,14 +27,9 @@ exports.GetNewTransactionForm = (req, res) => {
 };
 
 exports.GetHomePage = (req, res) => {
-  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  const location = lookup(ip);
-  console.log(ip); // ip address of the user
-  console.log(lookup(ip)); // location of the user
   return res.render("index", {
     companyName: req.session.userInfo.companyName,
     companyId: req.session.userInfo.companyId,
-    location: location
   });
 };
 
@@ -101,7 +97,7 @@ exports.SaveNewTransaction = (req, res) => {
       parseFloat(req.body.transactionCharge) - parseFloat(req.body.posCharge),
   }).then((dbTransaction) => {
     if (
-      common.validateEmail(req.body.customerEmail) &&
+      validateEmail(req.body.customerEmail) &&
       req.body.emailReceipt === "on"
     ) {
       const subject = `Your ${req.body.transactionType} Transaction Confirmation`;
@@ -211,24 +207,13 @@ exports.search = (req, res) => {
 
 exports.GetProfilePage = async (req, res) => {
   try {
-    const userInfo = await db.User.findByPk(res.locals.userId, { raw: true });
-    const companyInfo = await db.Company.findOne({
-      where: {
-        companyUID: userInfo.companyUID,
-      },
-      raw: true,
-    });
-    const locationInfo = await db.Location.findOne({
-      where: {
-        locationUID: res.locals.locationUID,
-      },
-      raw: true,
-    });
+    const locationName = await getLocationNamebyUID(res.locals.locationUID);
 
     const hbsObject = {
       name: res.locals.name,
       companyUID: res.locals.companyUID,
       locationUID: res.locals.locationUID,
+      locationName: locationName,
       emailAddress: res.locals.emailAddress,
       phoneNumber: res.locals.phoneNumber,
       companyName: req.session.userInfo.companyName,
@@ -242,7 +227,6 @@ exports.GetProfilePage = async (req, res) => {
 
 exports.GetSettingsPage = async (req, res) => {
   try {
-    // const userInfo = await db.User.findByPk(res.locals.userId, { raw: true });
     const companyInfo = await db.Company.findOne({
       where: {
         companyUID: res.locals.companyUID,
