@@ -1,6 +1,4 @@
 const db = require("../../models");
-const sendEmail = require("../email/email");
-const { lookup } = require("geoip-lite");
 const { getUserLocationData } = require("../common/common");
 
 exports.logThis = async (
