@@ -366,7 +366,7 @@ exports.signin = async (req, res, next) => {
         req.headers["x-forwarded-for"] || req.socket.remoteAddress;
       req.session.userInfo.userLocationCity = locationData.city;
       req.session.userInfo.userLocationState = locationData.state;
-      console.log(req.session.userInfo);
+
       return res.redirect("/");
     });
   })(req, res, next);
