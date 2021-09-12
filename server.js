@@ -12,7 +12,7 @@ const session = require("express-session");
 const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
 const winston = require("./services/winston/winston");
-
+const path = require("path");
 require("dotenv").config();
 
 // cors setup
@@ -122,11 +122,14 @@ app.use((req, res, next) => {
   next();
 });
 
-require("./routes/api-routes.js")(app);
-require("./routes/finrec-routes.js")(app);
-require("./routes/auth-routes.js")(app);
+require(path.join(__dirname, "./routes/api-routes.js"))(app);
+require(path.join(__dirname, "./routes/finrec-routes.js"))(app);
+require(path.join(__dirname, "./routes/auth-routes.js"))(app);
 
 // load passport strategies
-require("./services/passport/passport.js")(passport, db.User);
+require(path.join(__dirname, "./services/passport/passport.js"))(
+  passport,
+  db.User
+);
 
 module.exports = app;
