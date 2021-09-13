@@ -410,6 +410,20 @@ exports.sendPasswordResetEmail = (req, res) => {
           <span style="font-size: 1rem;color: black;"><strong>Kowope Enterprises.</strong></span>
           `;
 
+    logThis(
+      "INFO",
+      res.locals.userId,
+      res.locals.emailAddress,
+      res.locals.companyUID,
+      res.locals.locationUID,
+      "authController/sendPasswordResetEmail",
+      req.socket.remoteAddress,
+      `Password Reset email sent to ${userInfo.emailAddress}`,
+      `Token ${token}, Expires at ${new Date(
+        userInfo.resetPasswordExpires
+      ).toLocaleString()}`
+    );
+
     return new Promise((resolve, reject) => {
       sendEmail("TrKB Financials", emailBody, subject, userInfo.emailAddress);
       db.User.update(
