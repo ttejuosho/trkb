@@ -52,11 +52,26 @@ module.exports = function (sequelize, DataTypes) {
     customerEmail: {
       type: DataTypes.STRING,
       allowNull: true,
+      isEmail: true,
     },
     preparedBy: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
+    },
+    amended: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    amendedBy: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    forReview: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   });
 
   Transaction.associate = (models) => {

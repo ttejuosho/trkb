@@ -1214,9 +1214,24 @@ module.exports = (app) => {
     });
   });
 
-  app.get("/api/getlogs", (req, res) => {
-    db.Log.findAll().then((dbLog) => {
-      res.json(dbLog);
-    });
+  app.get("/api/getlogs/:searchParam?/:searchValue?", (req, res) => {
+    if (
+      req.params.searchParam !== undefined &&
+      req.params.searchValue !== undefined
+    ) {
+      const queryParams = {};
+      queryParams[req.params.searchParam] = req.params.searchValue;
+      db.Log.findAll({
+        where: queryParams,
+      }).then((dbLog) => {
+        res.json(dbLog);
+      });
+      return;
+    } else {
+      db.Log.findAll().then((dbLog) => {
+        res.json(dbLog);
+      });
+      return;
+    }
   });
 };

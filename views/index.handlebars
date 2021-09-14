@@ -1,9 +1,9 @@
 <main role="main">
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6 mb-2">
+        <div class="container mt-4">
+            <div class="row mt-4">
+                <div class="col-sm-6 mt-4 mb-2">
                     <div class="card">
                         <div class="card-header">Recent Transactions</div>
                         <div class="card-body">
@@ -11,36 +11,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6 mb-2">
+                <div class="col-sm-6 mt-4 mb-2">
                     <div id="chartCard" class="card">
                         <div class="card-header">Transactions Chart</div>
                         <div class="card-body">
-                            {{!-- <div class="row justify-content-around mb-2">
-                                <button type="button" class="btn btn-light timeBtn" id="1day" data-value="1d">1D</button>
-                                <button type="button" class="btn btn-light timeBtn" id="1week" data-value="1w">1W</button>
-                                <button type="button" class="btn btn-light timeBtn" id="1month">1M</button>
-                                <button type="button" class="btn btn-light timeBtn" id="3months">3M</button>
-                                <button type="button" class="btn btn-light timeBtn" id="6months">6M</button>
-                                <button type="button" class="btn btn-light timeBtn" id="1year">1Y</button>
-                            </div> --}}
-
-                            <div class="btn-group btn-group-toggle mx-5 mx-md-2 mx-lg-5" data-toggle="buttons">
-                                <label class="btn btn-light active mx-2 mx-md-0 mx-lg-2">
+                            <div class="btn-group btn-group-toggle mx-sm-2 mx-md-2 mx-lg-5" data-toggle="buttons">
+                                <label class="btn btn-light active mx-sm-2 mx-md-0 mx-lg-2">
                                     <input type="radio" name="dataOption" id="dayData" value="day" checked> 1D
                                 </label>
-                                <label class="btn btn-light mx-2 mx-md-0 mx-lg-2">
+                                <label class="btn btn-light mx-sm-2 mx-md-0 mx-lg-2">
                                     <input type="radio" name="dataOption" id="weekData" value="week"> 1W
                                 </label>
-                                <label class="btn btn-light mx-2 mx-md-0 mx-lg-2">
+                                <label class="btn btn-light mx-sm-2 mx-md-0 mx-lg-2">
                                     <input type="radio" name="dataOption" id="monthData" value="month"> 1M
                                 </label>
-                                <label class="btn btn-light mx-2 mx-md-0 mx-lg-2">
+                                <label class="btn btn-light mx-sm-2 mx-md-0 mx-lg-2">
                                     <input type="radio" name="dataOption" id="3monthsData" value="3months"> 3M
                                 </label>
-                                <label class="btn btn-light mx-2 mx-md-0 mx-lg-2">
+                                <label class="btn btn-light mx-sm-2 mx-md-0 mx-lg-2">
                                     <input type="radio" name="dataOption" id="6monthsData" value="6months"> 6M
                                 </label>
-                                <label class="btn btn-light mx-2 mx-md-0 mx-lg-2">
+                                <label class="btn btn-light mx-sm-2 mx-md-0 mx-lg-2">
                                     <input type="radio" name="dataOption" id="yearData" value="year"> 1Y
                                 </label>
                             </div>
@@ -49,11 +40,11 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">Recent Activity</div>
-                        <div class="card-body">
+                        <div class="card-body scrollable-table-wrapper">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>

@@ -145,6 +145,15 @@ a.nav-link {
   border-color: #e2e6eb;
 }
 
+div.scrollable-table-wrapper {
+  overflow: auto;
+}
+
+thead tr th {
+  position: sticky;
+  top: 0;
+}
+
 .btn-light:not(:disabled):not(.disabled).active,
 .btn-light:not(:disabled):not(.disabled):active,
 .show > .btn-light.dropdown-toggle {

@@ -16,7 +16,7 @@ exports.logThis = async (
   db.Log.create({
     notes: notes,
     userId: userId,
-    userEmailAddress: emailAddress,
+    emailAddress: emailAddress,
     time: new Date().toLocaleString(),
     companyUID: companyUID,
     locationUID: locationUID,
