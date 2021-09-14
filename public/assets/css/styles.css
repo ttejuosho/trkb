@@ -11,6 +11,10 @@
   width: 350px;
 }
 
+body {
+  background-color: #e9ecef;
+}
+
 .tab-content {
   min-height: 300px;
 }
