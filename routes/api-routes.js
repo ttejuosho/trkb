@@ -1241,6 +1241,192 @@ module.exports = (app) => {
     }
   );
 
+  app.post("/api/expense", async (req, res) => {
+    try {
+      await logThis(
+        "INFO",
+        res.locals.userId,
+        res.locals.emailAddress,
+        res.locals.companyUID,
+        res.locals.locationUID,
+        "/api/transactions/chart/revenue/",
+        req.session.userInfo.ipAddress,
+        "",
+        ""
+      );
+      let newExpenseData = {
+        item: req.body.item,
+        amount: req.body.amount,
+        category: req.body.category,
+        notes: req.body.notes,
+        expenseDate: req.body.expenseDate,
+      };
+      db.Expense.create(newExpenseData).then((dbExpense) => {
+        res.json(dbExpense);
+      });
+    } catch (errors) {
+      await logThis(
+        "ERROR",
+        res.locals.userId,
+        res.locals.emailAddress,
+        res.locals.companyUID,
+        res.locals.locationUID,
+        "/api/expense POST",
+        "",
+        "Api call failed",
+        errors.message
+      );
+      res.json(errors);
+    }
+  });
+
+  app.get("/api/expense/:expenseId", async (req, res) => {
+    try {
+      // await logThis(
+      //   "INFO",
+      //   res.locals.userId,
+      //   res.locals.emailAddress,
+      //   res.locals.companyUID,
+      //   res.locals.locationUID,
+      //   "GET /api/expense/" + req.params.expenseId,
+      //   req.session.userInfo.ipAddress,
+      //   "",
+      //   ""
+      // );
+
+      db.Expense.findByPk(req.params.expenseId).then((dbExpense) => {
+        return res.json(dbExpense);
+      });
+    } catch (errors) {
+      await logThis(
+        "ERROR",
+        res.locals.userId,
+        res.locals.emailAddress,
+        res.locals.companyUID,
+        res.locals.locationUID,
+        "GET /api/expense" + req.params.expenseId,
+        "",
+        "Api call failed",
+        errors.message
+      );
+      res.json(errors.message);
+    }
+  });
+
+  app.get("/api/expense", async (req, res) => {
+    try {
+      await logThis(
+        "INFO",
+        res.locals.userId,
+        res.locals.emailAddress,
+        res.locals.companyUID,
+        res.locals.locationUID,
+        "GET /api/expense/",
+        req.session.userInfo.ipAddress,
+        "",
+        ""
+      );
+
+      db.Expense.findAll({}).then((dbExpense) => {
+        res.json(dbExpense);
+      });
+    } catch (errors) {
+      await logThis(
+        "ERROR",
+        res.locals.userId,
+        res.locals.emailAddress,
+        res.locals.companyUID,
+        res.locals.locationUID,
+        "GET /api/expense",
+        "",
+        "Api call failed",
+        errors.message
+      );
+      res.json(errors);
+    }
+  });
+
+  app.post("/api/expense/:expenseId", async (req, res) => {
+    try {
+      await logThis(
+        "INFO",
+        res.locals.userId,
+        res.locals.emailAddress,
+        res.locals.companyUID,
+        res.locals.locationUID,
+        "/api/transactions/chart/revenue/",
+        req.session.userInfo.ipAddress,
+        "",
+        ""
+      );
+      let expenseData = {
+        item: req.body.item,
+        amount: req.body.amount,
+        category: req.body.category,
+        notes: req.body.notes,
+        expenseDate: req.body.expenseDate,
+      };
+
+      let exp = await db.Expense.findByPk(req.params.expenseId);
+
+      if (exp) {
+        db.Expense.update(expenseData).then((dbExpense) => {
+          res.json(dbExpense);
+        });
+      }
+    } catch (errors) {
+      await logThis(
+        "ERROR",
+        res.locals.userId,
+        res.locals.emailAddress,
+        res.locals.companyUID,
+        res.locals.locationUID,
+        "/api/expense/" + req.params.expenseId,
+        "",
+        "Api call failed",
+        errors.message
+      );
+      res.json(errors);
+    }
+  });
+
+  app.post("/api/expense/:expenseId", async (req, res) => {
+    try {
+      await logThis(
+        "INFO",
+        res.locals.userId,
+        res.locals.emailAddress,
+        res.locals.companyUID,
+        res.locals.locationUID,
+        "/api/expense/" + req.params.expenseId,
+        req.session.userInfo.ipAddress,
+        "Delete Expense Id " + req.params.expenseId,
+        ""
+      );
+
+      db.Expense.delete({
+        where: {
+          expenseId: req.params.expenseId,
+        },
+      }).then((dbExpense) => {
+        res.json(dbExpense);
+      });
+    } catch (errors) {
+      await logThis(
+        "ERROR",
+        res.locals.userId,
+        res.locals.emailAddress,
+        res.locals.companyUID,
+        res.locals.locationUID,
+        "DELETE /api/expense" + req.params.expenseId,
+        "",
+        "Api call failed",
+        errors.message
+      );
+      res.json(errors);
+    }
+  });
+
   app.get("/api/clearlogs", (req, res) => {
     db.Log.destroy({
       where: {},
