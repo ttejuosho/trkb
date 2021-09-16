@@ -18,7 +18,7 @@ exports.getSigninPage = async (req, res) => {
     "/signin",
     req.socket.remoteAddress,
     "authController.getSigninPage",
-    "sign: true"
+    "signin: true"
   );
   return res.render("auth/auth", {
     title: "Sign In",

@@ -1068,6 +1068,9 @@ module.exports = (app) => {
             locationCount: locations.length,
             transactions: [],
             estimatedProfit: 0,
+            transactionAmount: 0,
+            transactionCharge: 0,
+            posCharge: 0,
           };
 
           let transactions = await db.Transaction.findAll({
@@ -1098,6 +1101,9 @@ module.exports = (app) => {
           data.transactionCount = transactions.length;
 
           for (var j = 0; j < transactions.length; j++) {
+            data.transactionAmount += transactions[j].transactionAmount;
+            data.transactionCharge += transactions[j].transactionCharge;
+            data.posCharge += transactions[j].posCharge;
             data.estimatedProfit += transactions[j].estimatedProfit;
             data.transactions.push(transactions[j].dataValues);
           }
@@ -1121,6 +1127,35 @@ module.exports = (app) => {
       }
     }
   );
+
+  // app.get("/api/transactions/chart/revenue", async (req, res) => {
+  //   try {
+  //     await logThis(
+  //       "INFO",
+  //       res.locals.userId,
+  //       res.locals.emailAddress,
+  //       res.locals.companyUID,
+  //       res.locals.locationUID,
+  //       "/api/transactions/chart/revenue/",
+  //       req.session.userInfo.ipAddress,
+  //       "",
+  //       ""
+  //     );
+  //   } catch (errors) {
+  //     await logThis(
+  //       "ERROR",
+  //       res.locals.userId,
+  //       res.locals.emailAddress,
+  //       res.locals.companyUID,
+  //       res.locals.locationUID,
+  //       "/api/transactions/chart/revenue",
+  //       "",
+  //       "Api call failed",
+  //       errors.message
+  //     );
+  //     res.json(errors);
+  //   }
+  // });
 
   app.get(
     "/api/transaction/getTransactions/:locationUID/:transactionFilter",

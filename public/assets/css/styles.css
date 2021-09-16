@@ -145,8 +145,13 @@ a.nav-link {
 }
 
 .btn-light {
-  background-color: #e2e6eb;
-  border-color: #e2e6eb;
+  background-color: #d3d6da;
+  border-color: #d3d6da;
+}
+
+.btn-group.btn-group-toggle {
+  border: 1px solid black;
+  border-radius: 4px;
 }
 
 div.scrollable-table-wrapper {
