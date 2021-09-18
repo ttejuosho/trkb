@@ -40,7 +40,6 @@
                     <div id="chartCard" class="card">
                         <div class="card-header">Transactions Chart</div>
                         <div class="card-body">
-                            
                             <canvas id="transactionsChart" width="200px" height="200px"></canvas>
                         </div>
                     </div>
@@ -55,13 +54,13 @@
                             <canvas id="chargesChart" width="100px" height="100px"></canvas>
                         </div>
                     </div>
-                </div>            
+                </div>          
                 <div class="col-sm-6 mt-4 mb-2">
                     <div class="card">
-                    <div class="card-header">Transaction Amounts Chart</div>
-                    <div class="card-body">
-                        <canvas id="transactionAmountsChart" width="100px" height="100px"></canvas>
-                    </div>
+                        <div class="card-header">Transaction Amounts Chart</div>
+                        <div class="card-body">
+                            <canvas id="transactionAmountsChart" width="100px" height="100px"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -69,8 +68,11 @@
             <div class="row mt-4">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">Recent Activity</div>
-                        <div class="card-body scrollable-table-wrapper">
+                        <div class="card-header">
+                            <a class="btn btn-outline-secondary mr-1" data-toggle="collapse" href="#collapseRecentActivity" role="button" aria-expanded="false"
+                                aria-controls="collapseRecentActivity">
+                            <i class="fas fa-chevron-right"></i></a> Recent Activity</div>
+                        <div class="card-body scrollable-table-wrapper collapse show" id="collapseRecentActivity">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -88,7 +90,36 @@
                     </div>
                 </div>
             </div>
+
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <a class="btn btn-outline-secondary mr-1" data-toggle="collapse" href="#collapseExpenses" role="button"
+                            aria-expanded="false" aria-controls="collapseExpenses">
+                            <i class="fas fa-chevron-right"></i></a> Expenses
+                    </div>
+                    <div class="card-body scrollable-table-wrapper collapse show" id="collapseExpenses">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Location</th>
+                                    <th scope="col">Terminal</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Transaction</th>
+                                    <th scope="col">Prepared By</th>
+                                    <th scope="col">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expenses"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
+        </div>
+                </div>
 
     <div class="container">
         <div class="row" id="resultsDiv"></div>

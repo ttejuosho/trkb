@@ -1256,8 +1256,8 @@ module.exports = (app) => {
       );
       let newExpenseData = {
         item: req.body.item,
-        amount: req.body.amount,
-        category: req.body.category,
+        expenseAmount: req.body.expenseAmount,
+        expenseCategory: req.body.expenseCategory,
         notes: req.body.notes,
         expenseDate: req.body.expenseDate,
       };
@@ -1271,11 +1271,7 @@ module.exports = (app) => {
         res.locals.emailAddress,
         res.locals.companyUID,
         res.locals.locationUID,
-<<<<<<< HEAD
         "/api/expense POST",
-=======
-        "/api/transactions/chart/revenue",
->>>>>>> c0de25fd067f8398f7d9823c7358df2e908a6f4f
         "",
         "Api call failed",
         errors.message
@@ -1286,7 +1282,6 @@ module.exports = (app) => {
 
   app.get("/api/expense/:expenseId", async (req, res) => {
     try {
-<<<<<<< HEAD
       // await logThis(
       //   "INFO",
       //   res.locals.userId,
@@ -1301,22 +1296,6 @@ module.exports = (app) => {
 
       db.Expense.findByPk(req.params.expenseId).then((dbExpense) => {
         return res.json(dbExpense);
-=======
-      await logThis(
-        "INFO",
-        res.locals.userId,
-        res.locals.emailAddress,
-        res.locals.companyUID,
-        res.locals.locationUID,
-        "/api/expense/" + req.params.expenseId,
-        req.session.userInfo.ipAddress,
-        "",
-        ""
-      );
-
-      db.Expense.findByPk(req.params.expenseId).then((dbExpense) => {
-        res.json(dbExpense);
->>>>>>> c0de25fd067f8398f7d9823c7358df2e908a6f4f
       });
     } catch (errors) {
       await logThis(
@@ -1325,20 +1304,12 @@ module.exports = (app) => {
         res.locals.emailAddress,
         res.locals.companyUID,
         res.locals.locationUID,
-<<<<<<< HEAD
         "GET /api/expense" + req.params.expenseId,
-=======
-        "/api/expense",
->>>>>>> c0de25fd067f8398f7d9823c7358df2e908a6f4f
         "",
         "Api call failed",
         errors.message
       );
-<<<<<<< HEAD
       res.json(errors.message);
-=======
-      res.json(errors);
->>>>>>> c0de25fd067f8398f7d9823c7358df2e908a6f4f
     }
   });
 
@@ -1350,11 +1321,7 @@ module.exports = (app) => {
         res.locals.emailAddress,
         res.locals.companyUID,
         res.locals.locationUID,
-<<<<<<< HEAD
         "GET /api/expense/",
-=======
-        "/api/expense/" + req.params.expenseId,
->>>>>>> c0de25fd067f8398f7d9823c7358df2e908a6f4f
         req.session.userInfo.ipAddress,
         "",
         ""
@@ -1370,11 +1337,7 @@ module.exports = (app) => {
         res.locals.emailAddress,
         res.locals.companyUID,
         res.locals.locationUID,
-<<<<<<< HEAD
         "GET /api/expense",
-=======
-        "/api/transactions/chart/revenue",
->>>>>>> c0de25fd067f8398f7d9823c7358df2e908a6f4f
         "",
         "Api call failed",
         errors.message
@@ -1427,11 +1390,7 @@ module.exports = (app) => {
     }
   });
 
-<<<<<<< HEAD
   app.post("/api/expense/:expenseId", async (req, res) => {
-=======
-  app.delete("/api/expense/:expenseId", async (req, res) => {
->>>>>>> c0de25fd067f8398f7d9823c7358df2e908a6f4f
     try {
       await logThis(
         "INFO",
@@ -1445,11 +1404,7 @@ module.exports = (app) => {
         ""
       );
 
-<<<<<<< HEAD
       db.Expense.delete({
-=======
-      db.Expense.destroy({
->>>>>>> c0de25fd067f8398f7d9823c7358df2e908a6f4f
         where: {
           expenseId: req.params.expenseId,
         },
@@ -1463,11 +1418,7 @@ module.exports = (app) => {
         res.locals.emailAddress,
         res.locals.companyUID,
         res.locals.locationUID,
-<<<<<<< HEAD
         "DELETE /api/expense" + req.params.expenseId,
-=======
-        "/api/transactions/chart/revenue",
->>>>>>> c0de25fd067f8398f7d9823c7358df2e908a6f4f
         "",
         "Api call failed",
         errors.message

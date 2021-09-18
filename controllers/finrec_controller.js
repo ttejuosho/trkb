@@ -296,3 +296,10 @@ exports.UpdateCompanyInfo = async (req, res) => {
     console.log("There was an error: ", error);
   }
 };
+
+exports.GetExpenseTracker = async (req, res) => {
+  return res.render("expenseTracker", {
+    companyName: req.session.userInfo.companyName,
+    companyId: req.session.userInfo.companyId,
+  });
+};

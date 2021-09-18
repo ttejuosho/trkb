@@ -9,11 +9,11 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    category: {
+    expenseCategory: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    amount: {
+    expenseAmount: {
       type: DataTypes.BIGINT,
       allowNull: false,
     },

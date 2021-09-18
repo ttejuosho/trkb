@@ -123,4 +123,10 @@ module.exports = function (app) {
     Security.isLoggedIn,
     finRecController.UpdateCompanyInfo
   );
+
+  app.get(
+    "/expenseTracker",
+    Security.isLoggedIn,
+    finRecController.GetExpenseTracker
+  );
 };

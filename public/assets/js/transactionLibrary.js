@@ -151,7 +151,7 @@ function appendDataTable(dataObject) {
                         <tr>
                             <th scope="row">Transaction Date:</th>
                             <td>${moment(dataObject.transactionDate).format(
-                              "MMMM Do YYYY, h:mm:ss a"
+                              "MMMM Do YYYY, h:mm a"
                             )}</td>
                         </tr>
                         <tr>
