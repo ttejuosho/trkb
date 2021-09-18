@@ -1,4 +1,3 @@
-console.log("Ex-Trak");
 let expenseTable;
 
 fetch(`/api/expense`)
@@ -27,13 +26,18 @@ $("#saveNewExpense").on("click", () => {
   };
 
   var apiUrl = "/api/expense";
+  let update = false;
 
-  if ($("#saveNewExpense").attr("action") == "update") {
+  if ($("#saveNewExpense").attr("action") === "update") {
+    update = true;
+  }
+
+  if (update === true) {
     apiUrl = $("#newExpenseForm").attr("action");
   }
 
   fetch(apiUrl, {
-    method: "POST",
+    method: update === true ? "PUT" : "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(expenseData),
   })
@@ -42,24 +46,25 @@ $("#saveNewExpense").on("click", () => {
     })
     .then((res) => {
       $(".errorMessage").text("");
-      if (res.errors.length < 1) {
-        $("#newExpenseForm")[0].reset();
+      //if (res) {
+      $("#newExpenseForm")[0].reset();
 
-        // $("#expenseTable")
-        //   .DataTable()
-        //   .row.add({
-        //     locationId: res.response.locationId,
-        //     locationUID: res.response.locationUID,
-        //     locationName: expenseData.locationName,
-        //     locationAddress: expenseData.locationAddress,
-        //   })
-        //   .draw(false);
-        $("#newExpenseModal").modal("hide");
-      } else {
-        res.errors.forEach((error) => {
-          $("." + error.param + "Error").text(error.msg);
-        });
-      }
+      $("#expenseTable")
+        .DataTable()
+        .row.add({
+          item: res.item,
+          expenseAmount: res.expenseAmount,
+          expenseCategory: res.expenseCategory,
+          expenseDate: res.expenseDate,
+          notes: res.notes,
+        })
+        .draw(false);
+      $("#newExpenseModal").modal("hide");
+      //   } else {
+      //     res.errors.forEach((error) => {
+      //       $("." + error.param + "Error").text(error.msg);
+      //     });
+      //   }
     });
 });
 
@@ -91,7 +96,7 @@ function renderExpenseTable(data) {
         data: "expenseDate",
         render: function (data, type, row) {
           if (data !== null) {
-            return moment(data).format("MM/DD/YYYY h:mm a");
+            return moment(data).format("MM/DD/YYYY");
           } else {
             return "";
           }
@@ -118,3 +123,48 @@ function renderExpenseTable(data) {
     ],
   });
 }
+
+$("#expenseTable tbody").on("click", ".editExpense", function () {
+  var rowId = $(this).data("value");
+  var data = expenseTable.row($("#" + rowId)).data();
+
+  $("#newExpenseModalLabel").text(data.item);
+  $("#saveNewExpense").text("Update");
+  $("#item").val(data.item);
+  $("#expenseId").val(data.expenseId);
+  $("#expenseAmount").val(data.expenseAmount);
+  $("#expenseCategory").val(data.expenseCategory);
+  $("#notes").val(data.notes);
+  $("#expenseDate").val(moment(data.expenseDate).format("MM/DD/YYYY"));
+
+  $("#newExpenseForm").attr("action", "/api/expense/" + data.expenseId);
+  $("#saveNewExpense").attr("action", "update");
+
+  $("#newExpenseModal").modal("show");
+});
+
+$("#expenseTable tbody").on("click", ".deleteExpense", function () {
+  var expenseId = $(this).data("value");
+  $("#continueDelete").attr("data-option", "Expense");
+  $("#continueDelete").attr("data-id", expenseId);
+  $("#actionMessage").text(`This operation can not be reversed. Please
+    make sure to reassign other agents to the location which this agent is currently
+    assigned before proceeding.`);
+  $("#deleteConfirmationModal").modal("show");
+});
+
+$("#newExpenseBtn").on("click", () => {
+  $("#newExpenseModalLabel").text("New Expense");
+  $("#newExpenseForm").attr("action", "/api/expense");
+  $("#saveNewExpense").text("Save");
+});
+
+$("#closeDeleteConfirmationModal").on("click", () => {
+  $("#confirmDeleteErrorMesaage").text("");
+  $("#confirmDeleteSuccessMesaage").addClass("d-none");
+  $("#deleteModalBody").removeClass("d-none");
+  $("#deleteSuccessConfirmationModalLabel").addClass("d-none");
+  $("#deleteConfirmationModalLabel").removeClass("d-none");
+  $("#continueDelete").removeClass("d-none");
+  $("#deleteConfirmationModal").modal("hide");
+});

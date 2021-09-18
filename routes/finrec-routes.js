@@ -125,7 +125,7 @@ module.exports = function (app) {
   );
 
   app.get(
-    "/expenseTracker",
+    "/expensetracker",
     Security.isLoggedIn,
     finRecController.GetExpenseTracker
   );

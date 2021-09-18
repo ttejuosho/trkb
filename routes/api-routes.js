@@ -1346,7 +1346,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post("/api/expense/:expenseId", async (req, res) => {
+  app.put("/api/expense/:expenseId", async (req, res) => {
     try {
       await logThis(
         "INFO",
@@ -1361,8 +1361,8 @@ module.exports = (app) => {
       );
       let expenseData = {
         item: req.body.item,
-        amount: req.body.amount,
-        category: req.body.category,
+        expenseAmount: req.body.expenseAmount,
+        expenseCategory: req.body.expenseCategory,
         notes: req.body.notes,
         expenseDate: req.body.expenseDate,
       };
@@ -1370,7 +1370,9 @@ module.exports = (app) => {
       let exp = await db.Expense.findByPk(req.params.expenseId);
 
       if (exp) {
-        db.Expense.update(expenseData).then((dbExpense) => {
+        db.Expense.update(expenseData, {
+          where: { expenseId: req.params.expenseId },
+        }).then((dbExpense) => {
           res.json(dbExpense);
         });
       }

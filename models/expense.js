@@ -22,7 +22,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true,
     },
     expenseDate: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
   });
