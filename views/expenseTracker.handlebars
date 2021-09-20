@@ -48,6 +48,12 @@
                 <div class="col-12 justify-content-center">
                   <p class="text-success mb-0 mb-2 message"></p>
                   <p class="text-danger mb-0 mb-2 errorMessage"></p>
+                  <input
+                    type="hidden"
+                    value="{{expenseId}}"
+                    id="expenseId"
+                    name="expenseId"
+                  />
                   <div class="mb-2">
                     <label
                       class="font-weight-bold mb-0 required"
@@ -70,13 +76,45 @@
                       class="font-weight-bold mb-0 required"
                       for="expenseCategory"
                     >Category</label>
-                    <input
+                    {{!-- <input
                       type="text"
                       class="form-control"
                       id="expenseCategory"
                       name="expenseCategory"
                       value="{{expenseCategory}}"
-                    />
+                    /> --}}
+                    <select
+                      id="expenseCategory"
+                      class="form-control mb-2"
+                      name="expenseCategory"
+                    >
+                      {{#if expenseCategory}}
+                        <option
+                          value="{{expenseCategory}}"
+                        >{{expenseCategory}}</option>
+                      {{else}}
+                        <option value="">Choose Category</option>
+                      {{/if}}
+                      {{#unless expenseCategory}}
+                        <option value="Food">Food</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Housing">Housing</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Household">Household</option>
+                        <option value="Education">Education</option>
+                        <option
+                          value="Gifts & Donations"
+                        >Gifts/Donations</option>
+                        <option value="Insurance">Insurance</option>
+                        <option value="Medical">Medical</option>
+                        <option value="Investing">Investing</option>
+                        <option value="Savings">Savings</option>
+                        <option value="Debt Payment">Debt Payment</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Miscellaneous">Miscellaneous</option>
+                      {{/unless}}
+                    </select>
                     <div
                       class="newExpenseServerMessages text-danger expenseCategoryError mb-2"
                     >
@@ -104,13 +142,28 @@
                       class="font-weight-bold mb-0 required"
                       for="expenseDate"
                     >Date</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="expenseDate"
-                      name="expenseDate"
-                      value="{{expenseDate}}"
-                    />
+                    <div class="form-group">
+                      <div
+                        class="input-group date"
+                        id="expenseDate"
+                        data-target-input="nearest"
+                      >
+                        <input
+                          type="text"
+                          class="form-control datetimepicker-input"
+                          data-target="#expenseDate"
+                        />
+                        <div
+                          class="input-group-append"
+                          data-target="#expenseDate"
+                          data-toggle="datetimepicker"
+                        >
+                          <div class="input-group-text"><i
+                              class="fa fa-calendar"
+                            ></i></div>
+                        </div>
+                      </div>
+                    </div>
                     <div
                       class="newExpenseServerMessages text-danger expenseDateError mb-2"
                     >
@@ -179,13 +232,11 @@
               <p
                 id="confirmDeleteSuccessMesaage"
                 class="text-success d-none"
-              ><span id="userLocationSpan"></span>
+              ><span id="expenseItemSpan"></span>
                 deleted.</p>
               <p id="deleteModalBody" class="">Delete na bad thing, think am
                 well well o. Click Delete if your head correct or click Cancel
                 if your head correct.</p>
-
-              <p id="actionMessage" class="text-danger"></p>
             </div>
             <div class="modal-footer">
               <button
@@ -208,5 +259,6 @@
       {{! Delete Confirmation Modal End }}
     </div>
   </div>
+
   <script type="text/javascript" src="/assets/js/expenseTracker.js"></script>
 </main>

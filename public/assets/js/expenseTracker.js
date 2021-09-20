@@ -16,13 +16,23 @@ $("#closeNewExpenseModal").on("click", () => {
   $("#newExpenseModal").modal("hide");
 });
 
+// $("#newExpenseBtn").on("click", () => {
+//   $(function () {
+
+//   });
+// });
+
 $("#saveNewExpense").on("click", () => {
   var expenseData = {
+    expenseId: $("#expenseId").val(),
     item: $("#item").val(),
     notes: $("#notes").val(),
     expenseCategory: $("#expenseCategory").val(),
     expenseAmount: $("#expenseAmount").val(),
-    expenseDate: $("#expenseDate").val(),
+    expenseDate: $("#expenseDate")
+      .data("datetimepicker")
+      .date()
+      .format("MM/DD/YYYY"),
   };
 
   var apiUrl = "/api/expense";
@@ -33,7 +43,7 @@ $("#saveNewExpense").on("click", () => {
   }
 
   if (update === true) {
-    apiUrl = $("#newExpenseForm").attr("action");
+    apiUrl += "/" + expenseData.expenseId;
   }
 
   fetch(apiUrl, {
@@ -46,25 +56,28 @@ $("#saveNewExpense").on("click", () => {
     })
     .then((res) => {
       $(".errorMessage").text("");
-      //if (res) {
       $("#newExpenseForm")[0].reset();
-
-      $("#expenseTable")
-        .DataTable()
-        .row.add({
+      if (update === false) {
+        expenseData = {
+          expenseId: res.expenseId,
           item: res.item,
           expenseAmount: res.expenseAmount,
           expenseCategory: res.expenseCategory,
           expenseDate: res.expenseDate,
           notes: res.notes,
-        })
-        .draw(false);
+        };
+
+        $("#expenseTable").DataTable().row.add(expenseData).draw(false);
+      } else {
+        $("#expenseTable")
+          .DataTable()
+          .row("#" + expenseData.expenseId)
+          .data(expenseData)
+          .draw();
+      }
+
       $("#newExpenseModal").modal("hide");
-      //   } else {
-      //     res.errors.forEach((error) => {
-      //       $("." + error.param + "Error").text(error.msg);
-      //     });
-      //   }
+      $("#expenseDate").datetimepicker("destroy");
     });
 });
 
@@ -94,6 +107,7 @@ function renderExpenseTable(data) {
       {
         className: "expenseDate",
         data: "expenseDate",
+        type: "date",
         render: function (data, type, row) {
           if (data !== null) {
             return moment(data).format("MM/DD/YYYY");
@@ -128,6 +142,10 @@ $("#expenseTable tbody").on("click", ".editExpense", function () {
   var rowId = $(this).data("value");
   var data = expenseTable.row($("#" + rowId)).data();
 
+  $("#expenseDate").datetimepicker({
+    format: "MM/DD/YYYY",
+  });
+
   $("#newExpenseModalLabel").text(data.item);
   $("#saveNewExpense").text("Update");
   $("#item").val(data.item);
@@ -135,21 +153,19 @@ $("#expenseTable tbody").on("click", ".editExpense", function () {
   $("#expenseAmount").val(data.expenseAmount);
   $("#expenseCategory").val(data.expenseCategory);
   $("#notes").val(data.notes);
-  $("#expenseDate").val(moment(data.expenseDate).format("MM/DD/YYYY"));
+  var expenseDate = moment(data.expenseDate).format("MM/DD/YYYY");
+  //$("#expenseDate").val();
 
   $("#newExpenseForm").attr("action", "/api/expense/" + data.expenseId);
   $("#saveNewExpense").attr("action", "update");
-
   $("#newExpenseModal").modal("show");
+  $("#expenseDate").datetimepicker("date", expenseDate);
 });
 
 $("#expenseTable tbody").on("click", ".deleteExpense", function () {
   var expenseId = $(this).data("value");
   $("#continueDelete").attr("data-option", "Expense");
   $("#continueDelete").attr("data-id", expenseId);
-  $("#actionMessage").text(`This operation can not be reversed. Please
-    make sure to reassign other agents to the location which this agent is currently
-    assigned before proceeding.`);
   $("#deleteConfirmationModal").modal("show");
 });
 
@@ -157,6 +173,9 @@ $("#newExpenseBtn").on("click", () => {
   $("#newExpenseModalLabel").text("New Expense");
   $("#newExpenseForm").attr("action", "/api/expense");
   $("#saveNewExpense").text("Save");
+  $("#expenseDate").datetimepicker({
+    format: "MM/DD/YYYY",
+  });
 });
 
 $("#closeDeleteConfirmationModal").on("click", () => {
@@ -167,4 +186,24 @@ $("#closeDeleteConfirmationModal").on("click", () => {
   $("#deleteConfirmationModalLabel").removeClass("d-none");
   $("#continueDelete").removeClass("d-none");
   $("#deleteConfirmationModal").modal("hide");
+});
+
+$("#continueDelete").on("click", () => {
+  var expenseIdParam = $("#continueDelete").attr("data-id");
+  var apiRouteUrl = "/api/expense/" + expenseIdParam;
+
+  fetch(apiRouteUrl, {
+    method: "POST",
+  }).then((res) => {
+    //$("#confirmDeleteErrorMesaage").text(res.errors[0].message);
+
+    $("#expenseTable").DataTable().row().remove(expenseIdParam).draw();
+    $("#expenseItemSpan").text($("#continueDelete").attr("data-option"));
+    $("#confirmDeleteSuccessMesaage").removeClass("d-none");
+    $("#deleteModalBody").addClass("d-none");
+    $("#deleteSuccessConfirmationModalLabel").removeClass("d-none");
+    $("#continueDelete").addClass("d-none");
+    $("#deleteConfirmationModalLabel").addClass("d-none");
+    $(".message").text("");
+  });
 });

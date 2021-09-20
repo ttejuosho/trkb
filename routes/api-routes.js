@@ -1241,7 +1241,65 @@ module.exports = (app) => {
     }
   );
 
-  app.post("/api/expense", async (req, res) => {
+  app.post(
+    "/api/expense",
+    authenticate,
+    [
+      check("item").not().isEmpty().escape().withMessage("Item is required"),
+      check("expenseCategory")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Category is required"),
+      check("expenseAmount")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Amount is required"),
+    ],
+    async (req, res) => {
+      try {
+        let newExpenseData = {
+          item: req.body.item,
+          expenseAmount: req.body.expenseAmount,
+          expenseCategory: req.body.expenseCategory,
+          notes: req.body.notes,
+          expenseDate: new Date(req.body.expenseDate).toLocaleDateString(),
+        };
+
+        await logThis(
+          "INFO",
+          res.locals.userId,
+          res.locals.emailAddress,
+          res.locals.companyUID,
+          res.locals.locationUID,
+          "POST /api/expense",
+          req.session.userInfo.ipAddress,
+          "",
+          JSON.stringify(newExpenseData)
+        );
+
+        db.Expense.create(newExpenseData).then((dbExpense) => {
+          res.json(dbExpense);
+        });
+      } catch (errors) {
+        await logThis(
+          "ERROR",
+          res.locals.userId,
+          res.locals.emailAddress,
+          res.locals.companyUID,
+          res.locals.locationUID,
+          "/api/expense POST",
+          "",
+          "Api call failed",
+          errors.message
+        );
+        res.json(errors);
+      }
+    }
+  );
+
+  app.get("/api/expense/:expenseId", async (req, res) => {
     try {
       await logThis(
         "INFO",
@@ -1249,50 +1307,11 @@ module.exports = (app) => {
         res.locals.emailAddress,
         res.locals.companyUID,
         res.locals.locationUID,
-        "/api/transactions/chart/revenue/",
+        "GET /api/expense/" + req.params.expenseId,
         req.session.userInfo.ipAddress,
         "",
         ""
       );
-      let newExpenseData = {
-        item: req.body.item,
-        expenseAmount: req.body.expenseAmount,
-        expenseCategory: req.body.expenseCategory,
-        notes: req.body.notes,
-        expenseDate: req.body.expenseDate,
-      };
-      db.Expense.create(newExpenseData).then((dbExpense) => {
-        res.json(dbExpense);
-      });
-    } catch (errors) {
-      await logThis(
-        "ERROR",
-        res.locals.userId,
-        res.locals.emailAddress,
-        res.locals.companyUID,
-        res.locals.locationUID,
-        "/api/expense POST",
-        "",
-        "Api call failed",
-        errors.message
-      );
-      res.json(errors);
-    }
-  });
-
-  app.get("/api/expense/:expenseId", async (req, res) => {
-    try {
-      // await logThis(
-      //   "INFO",
-      //   res.locals.userId,
-      //   res.locals.emailAddress,
-      //   res.locals.companyUID,
-      //   res.locals.locationUID,
-      //   "GET /api/expense/" + req.params.expenseId,
-      //   req.session.userInfo.ipAddress,
-      //   "",
-      //   ""
-      // );
 
       db.Expense.findByPk(req.params.expenseId).then((dbExpense) => {
         return res.json(dbExpense);
@@ -1313,7 +1332,7 @@ module.exports = (app) => {
     }
   });
 
-  app.get("/api/expense", async (req, res) => {
+  app.get("/api/expense", authenticate, async (req, res) => {
     try {
       await logThis(
         "INFO",
@@ -1346,53 +1365,74 @@ module.exports = (app) => {
     }
   });
 
-  app.put("/api/expense/:expenseId", async (req, res) => {
-    try {
-      await logThis(
-        "INFO",
-        res.locals.userId,
-        res.locals.emailAddress,
-        res.locals.companyUID,
-        res.locals.locationUID,
-        "/api/transactions/chart/revenue/",
-        req.session.userInfo.ipAddress,
-        "",
-        ""
-      );
-      let expenseData = {
-        item: req.body.item,
-        expenseAmount: req.body.expenseAmount,
-        expenseCategory: req.body.expenseCategory,
-        notes: req.body.notes,
-        expenseDate: req.body.expenseDate,
-      };
+  app.put(
+    "/api/expense/:expenseId",
+    authenticate,
+    [
+      check("item").not().isEmpty().escape().withMessage("Item is required"),
+      check("expenseCategory")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Category is required"),
+      check("expenseAmount")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Amount is required"),
+    ],
+    async (req, res) => {
+      try {
+        await logThis(
+          "INFO",
+          res.locals.userId,
+          res.locals.emailAddress,
+          res.locals.companyUID,
+          res.locals.locationUID,
+          "PUT /api/expense/" + req.params.expenseId,
+          req.session.userInfo.ipAddress,
+          "API call to update expense " +
+            req.body.item +
+            "with iD " +
+            req.params.expenseId,
+          ""
+        );
 
-      let exp = await db.Expense.findByPk(req.params.expenseId);
+        let expenseData = {
+          item: req.body.item,
+          expenseAmount: req.body.expenseAmount,
+          expenseCategory: req.body.expenseCategory,
+          notes: req.body.notes,
+          expenseDate: new Date(req.body.expenseDate).toLocaleDateString(),
+        };
 
-      if (exp) {
-        db.Expense.update(expenseData, {
-          where: { expenseId: req.params.expenseId },
-        }).then((dbExpense) => {
-          res.json(dbExpense);
-        });
+        let exp = await db.Expense.findByPk(req.params.expenseId);
+
+        if (exp) {
+          db.Expense.update(expenseData, {
+            where: { expenseId: req.params.expenseId },
+          }).then((dbExpense) => {
+            res.json(dbExpense);
+          });
+        }
+      } catch (errors) {
+        await logThis(
+          "ERROR",
+          res.locals.userId,
+          res.locals.emailAddress,
+          res.locals.companyUID,
+          res.locals.locationUID,
+          "PUT /api/expense/" + req.params.expenseId,
+          "",
+          "UPDATE Api call failed",
+          errors.message
+        );
+        res.json(errors);
       }
-    } catch (errors) {
-      await logThis(
-        "ERROR",
-        res.locals.userId,
-        res.locals.emailAddress,
-        res.locals.companyUID,
-        res.locals.locationUID,
-        "/api/expense/" + req.params.expenseId,
-        "",
-        "Api call failed",
-        errors.message
-      );
-      res.json(errors);
     }
-  });
+  );
 
-  app.post("/api/expense/:expenseId", async (req, res) => {
+  app.post("/api/expense/:expenseId", authenticate, async (req, res) => {
     try {
       await logThis(
         "INFO",
@@ -1406,7 +1446,7 @@ module.exports = (app) => {
         ""
       );
 
-      db.Expense.delete({
+      db.Expense.destroy({
         where: {
           expenseId: req.params.expenseId,
         },
