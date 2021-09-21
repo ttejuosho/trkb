@@ -264,6 +264,25 @@ buildChargesChart = (locationNames, posCharges, transactionCharges) => {
   });
 };
 
+fetch(`/api/expense`)
+  .then((data) => {
+    return data.json();
+  })
+  .then((res) => {
+    res.forEach((expense) => {
+      var expenseData = `
+      <tr>
+        <td>${expense.item}</td>
+        <td>${expense.expenseCategory}</td>
+        <td>&#8358;${numeral(expense.expenseAmount).format("0,0.00")}</td>
+        <td>${moment(expense.expenseDate).format("MM/DD/YYYY")}</td>
+        <td>${expense.notes}</td>
+      </tr>
+      `;
+      $("#expenses").append(expenseData);
+    });
+  });
+
 fetch(`/api/transactions/getMostRecent`)
   .then((data) => {
     return data.json();
@@ -287,3 +306,23 @@ fetch(`/api/transactions/getMostRecent`)
   });
 
 getLocationChartsData("day");
+
+$("#expenseChevron").click(() => {
+  if ($("#expenseChevron").hasClass("fa-chevron-right") === true) {
+    $("#expenseChevron").removeClass("fa-chevron-right");
+    $("#expenseChevron").addClass("fa-chevron-down");
+  } else {
+    $("#expenseChevron").removeClass("fa-chevron-down");
+    $("#expenseChevron").addClass("fa-chevron-right");
+  }
+});
+
+$("#activityChevron").click(() => {
+  if ($("#activityChevron").hasClass("fa-chevron-right") === true) {
+    $("#activityChevron").removeClass("fa-chevron-right");
+    $("#activityChevron").addClass("fa-chevron-down");
+  } else {
+    $("#activityChevron").removeClass("fa-chevron-down");
+    $("#activityChevron").addClass("fa-chevron-right");
+  }
+});

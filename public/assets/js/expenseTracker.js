@@ -179,8 +179,8 @@ $("#newExpenseBtn").on("click", () => {
 });
 
 $("#closeDeleteConfirmationModal").on("click", () => {
-  $("#confirmDeleteErrorMesaage").text("");
-  $("#confirmDeleteSuccessMesaage").addClass("d-none");
+  $("#confirmDeleteErrorMessage").text("");
+  $("#confirmDeleteSuccessMessage").addClass("d-none");
   $("#deleteModalBody").removeClass("d-none");
   $("#deleteSuccessConfirmationModalLabel").addClass("d-none");
   $("#deleteConfirmationModalLabel").removeClass("d-none");
@@ -191,13 +191,11 @@ $("#closeDeleteConfirmationModal").on("click", () => {
 $("#continueDelete").on("click", () => {
   var expenseIdParam = $("#continueDelete").attr("data-id");
   var apiRouteUrl = "/api/expense/" + expenseIdParam;
-
   fetch(apiRouteUrl, {
     method: "POST",
   }).then((res) => {
-    //$("#confirmDeleteErrorMesaage").text(res.errors[0].message);
-
-    $("#expenseTable").DataTable().row().remove(expenseIdParam).draw();
+    //$("#confirmDeleteErrorMessage").text(res.errors[0].message);
+    $("#expenseTable").DataTable().row().remove(`${expenseIdParam}`).draw();
     $("#expenseItemSpan").text($("#continueDelete").attr("data-option"));
     $("#confirmDeleteSuccessMesaage").removeClass("d-none");
     $("#deleteModalBody").addClass("d-none");

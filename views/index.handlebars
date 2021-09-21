@@ -71,7 +71,7 @@
                         <div class="card-header">
                             <a class="btn btn-outline-secondary mr-1" data-toggle="collapse" href="#collapseRecentActivity" role="button" aria-expanded="false"
                                 aria-controls="collapseRecentActivity">
-                            <i class="fas fa-chevron-right"></i></a> Recent Activity</div>
+                            <i id="activityChevron" class="fas fa-chevron-down"></i></a> Recent Activity</div>
                         <div class="card-body scrollable-table-wrapper collapse show" id="collapseRecentActivity">
                             <table class="table table-striped">
                                 <thead>
@@ -98,18 +98,17 @@
                     <div class="card-header">
                         <a class="btn btn-outline-secondary mr-1" data-toggle="collapse" href="#collapseExpenses" role="button"
                             aria-expanded="false" aria-controls="collapseExpenses">
-                            <i class="fas fa-chevron-right"></i></a> Expenses
+                            <i id="expenseChevron" class="fas fa-chevron-down"></i></a> Recent Expenses
                     </div>
                     <div class="card-body scrollable-table-wrapper collapse show" id="collapseExpenses">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th scope="col">Location</th>
-                                    <th scope="col">Terminal</th>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Category</th>
                                     <th scope="col">Amount</th>
-                                    <th scope="col">Transaction</th>
-                                    <th scope="col">Prepared By</th>
-                                    <th scope="col">Time</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Notes</th>
                                 </tr>
                             </thead>
                             <tbody id="expenses"></tbody>
@@ -119,7 +118,7 @@
             </div>
         </div>
         </div>
-                </div>
+    </div>
 
     <div class="container">
         <div class="row" id="resultsDiv"></div>

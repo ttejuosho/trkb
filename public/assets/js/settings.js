@@ -377,7 +377,7 @@ $(document).ready(function () {
   });
 
   $("#closeDeleteConfirmationModal").on("click", () => {
-    $("#confirmDeleteErrorMesaage").text("");
+    $("#confirmDeleteErrorMessage").text("");
     $("#confirmDeleteSuccessMesaage").addClass("d-none");
     $("#deleteModalBody").removeClass("d-none");
     $("#deleteSuccessConfirmationModalLabel").addClass("d-none");
@@ -399,7 +399,7 @@ $(document).ready(function () {
       })
       .then((res) => {
         if (res.errors && res.errors.length > 0) {
-          $("#confirmDeleteErrorMesaage").text(res.errors[0].message);
+          $("#confirmDeleteErrorMessage").text(res.errors[0].message);
         } else {
           $("#userLocationSpan").text($("#continueDelete").attr("data-option"));
           $("#confirmDeleteSuccessMesaage").removeClass("d-none");
