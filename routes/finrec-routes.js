@@ -129,4 +129,16 @@ module.exports = function (app) {
     Security.isLoggedIn,
     finRecController.GetExpenseTracker
   );
+
+  app.get(
+    "/saleRecord/new",
+    Security.isLoggedIn,
+    finRecController.GetNewSaleRecordPage
+  );
+
+  app.post(
+    "/saleRecord/new",
+    Security.isLoggedIn,
+    finRecController.SaveNewSaleItem
+  );
 };

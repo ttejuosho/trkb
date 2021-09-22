@@ -1,0 +1,256 @@
+<main role="main">
+  <div class="jumbotron">
+    <div class="container">
+      {{#if saleRecordSaved}}
+        <h3 class="display-4 text-center text-success mt-4">Success !!</h3>
+        <p class="text-success text-center">Sales Record has been saved !!</p>
+        <p class="text-center"><a
+            class="btn btn-outline-secondary"
+            href="/salesRecord/detail/{{itemId}}"
+          >
+            View Sales Record details</a></p>
+        <p class="text-center"><a
+            class="btn btn-outline-primary"
+            href="/saleRecord/new"
+          >New Sale Record</a></p>
+      {{else}}
+        <h4 class="display-4 text-center mt-4">New Sale Record</h4>
+        <form id="newSaleRecordForm" action="/saleRecord/new" method="POST">
+          <div class="form-row justify-content-center">
+            <div class="col-12 col-md-6 mb-2 mb-md-0">
+              <legend class="col-form-label pt-0 font-weight-bold required">New
+                Sales Record Information
+              </legend>
+
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="itemName"
+                  name="itemName"
+                  placeholder="Item Name"
+                  value="{{itemName}}"
+                />
+              </div>
+
+              <fieldset class="form-group mb-0">
+                <div class="row ml-0">
+                  <div class="col-sm-12 pl-0">
+                    <select
+                      id="itemCategory"
+                      class="form-control mb-2"
+                      name="itemCategory"
+                    >
+                      {{#if itemCategory}}
+                        <option
+                          value="{{itemCategory}}"
+                        >{{itemCategory}}</option>
+                      {{else}}
+                        <option value="">Choose Category</option>
+                      {{/if}}
+                      {{#unless itemCategory}}
+                        <option value="Electronics">Electronics</option>
+                        <option value="Home & Garden">Home & Garden</option>
+                        <option value="Clothes">Clothes</option>
+                      {{/unless}}
+                    </select>
+                  </div>
+                  {{#if errors}}
+                    {{#each errors}}
+                      {{#ifEquals param "itemCategory"}}
+                        <div class="messages text-danger mb-2">{{msg}}</div>
+                      {{/ifEquals}}
+                    {{/each}}
+                  {{/if}}
+                </div>
+              </fieldset>
+
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="brandName"
+                  name="brandName"
+                  placeholder="Brand Name"
+                  value="{{brandName}}"
+                />
+              </div>
+
+              <fieldset class="form-group mb-0">
+                <div class="row ml-0">
+                  <div class="col-sm-12 pl-0">
+                    <select
+                      id="contactMedium"
+                      class="form-control mb-2"
+                      name="contactMedium"
+                    >
+                      {{#if contactMedium}}
+                        <option
+                          value="{{contactMedium}}"
+                        >{{contactMedium}}</option>
+                      {{else}}
+                        <option value="">Choose Contact Medium</option>
+                      {{/if}}
+                      <option value="FaceBook Market Place">FaceBook Market
+                        Place</option>
+                      <option value="OfferUp">OfferUp</option>
+                      <option value="Craigslist">Craigslist</option>
+                      <option value="Personal Contact">Personal Contact</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  {{#if errors}}
+                    {{#each errors}}
+                      {{#ifEquals param "contactMedium"}}
+                        <div class="messages text-danger">{{msg}}</div>
+                      {{/ifEquals}}
+                    {{/each}}
+                  {{/if}}
+                </div>
+              </fieldset>
+
+              <div class="mb-2">
+                <label class="sr-only" for="purchasePrice">Purchase Price</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">&#36;</div>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="purchasePrice"
+                    name="purchasePrice"
+                    placeholder="Purchase Price"
+                    value="{{purchasePrice}}"
+                  />
+                </div>
+                {{#if errors}}
+                  {{#each errors}}
+                    {{#ifEquals param "purchasePrice"}}
+                      <div class="messages text-danger mb-2">{{msg}}</div>
+                    {{/ifEquals}}
+                  {{/each}}
+                {{/if}}
+              </div>
+
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="purchaseDate"
+                  name="purchaseDate"
+                  placeholder="Purchase Date"
+                  value="{{purchaseDate}}"
+                />
+              </div>
+
+              <div class="mb-2">
+                <label class="sr-only" for="salePrice">Sale Price</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">&#36;</div>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="salePrice"
+                    name="salePrice"
+                    placeholder="Sale Price"
+                    value="{{salePrice}}"
+                  />
+                </div>
+                {{#if errors}}
+                  {{#each errors}}
+                    {{#ifEquals param "salePrice"}}
+                      <div class="messages text-danger mb-2">{{msg}}</div>
+                    {{/ifEquals}}
+                  {{/each}}
+                {{/if}}
+              </div>
+
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="saleDate"
+                  name="saleDate"
+                  placeholder="Sale Date"
+                  value="{{saleDate}}"
+                />
+              </div>
+
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="contactMedium"
+                  name="contactMedium"
+                  placeholder="Contact Medium"
+                  value="{{contactMedium}}"
+                />
+              </div>
+
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="meetingLocation"
+                  name="meetingLocation"
+                  placeholder="Meeting Location"
+                  value="{{meetingLocation}}"
+                />
+              </div>
+
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="buyerInfo"
+                  name="buyerInfo"
+                  placeholder="Buyer Info"
+                  value="{{buyerInfo}}"
+                />
+              </div>
+
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="sellerInfo"
+                  name="sellerInfo"
+                  placeholder="Seller Info"
+                  value="{{sellerInfo}}"
+                />
+              </div>
+
+              <div class="mb-2">
+                <label class="font-weight-bold mb-0" for="notes">Notes</label>
+                <textarea
+                  type="text"
+                  class="form-control"
+                  id="notes"
+                  name="notes"
+                  value="{{notes}}"
+                  rows="2"
+                ></textarea>
+              </div>
+
+              {{! <div class="mb-3">
+                            <input type="checkbox" class="ml-1 form-check-input checkbox-lg" name="emailReceipt" id="emailReceipt">
+                            <label class="form-check-label checkbox-label" for="emailReceipt">Email receipt to customer</label>
+                            <small class="form-text text-muted">Check this box to send a confirmation email to the customer</small>
+                        </div> }}
+
+              <button
+                type="submit"
+                class="btn btn-block btn-lg btn-dark"
+                id="saveRecord"
+              >Save</button>
+            </div>
+
+          </div>
+        </form>
+      {{/if}}
+    </div>
+  </div>
+</main>

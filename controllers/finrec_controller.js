@@ -303,3 +303,56 @@ exports.GetExpenseTracker = async (req, res) => {
     companyId: req.session.userInfo.companyId,
   });
 };
+
+exports.GetNewSaleRecordPage = async (req, res) => {
+  return res.render("newSaleRecord", {
+    companyName: req.session.userInfo.companyName,
+    companyId: req.session.userInfo.companyId,
+  });
+};
+
+exports.SaveNewSaleItem = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errors.itemName = req.body.itemName;
+    errors.itemCategory = req.body.itemCategory;
+    errors.brandName = req.body.brandName;
+    errors.purchasePrice = req.body.purchasePrice;
+    errors.purchaseDate = req.body.purchaseDate;
+    errors.contactMedium = req.body.contactMedium;
+    errors.meetingLocation = req.body.meetingLocation;
+
+    errors.companyName = req.session.userInfo.companyName;
+    errors.companyId = req.session.userInfo.companyId;
+    return res.render("newSaleRecord", errors);
+  }
+
+  let newSaleItem = {
+    itemName: req.body.itemName,
+    itemCategory: req.body.itemCategory,
+    brandName: req.body.brandName,
+    purchasePrice: req.body.purchasePrice,
+    purchaseDate: req.body.purchaseDate,
+    salePrice: req.body.salePrice,
+    saleDate: req.body.saleDate,
+    contactMedium: req.body.contactMedium,
+    meetingLocation: req.body.meetingLocation,
+    buyerInfo: req.body.buyerInfo,
+    sellerInfo: req.body.sellerInfo,
+    profit:
+      req.body.salePrice && req.body.purchasePrice
+        ? saleprice - purchasePrice
+        : 0,
+    sold: req.body.saleDate === null ? false : true,
+    notes: req.body.notes,
+  };
+  console.log(newSaleItem);
+  db.SaleRecord.create(newSaleItem).then((dbSaleItem) => {
+    let hbsObject = {
+      saleRecordSaved: true,
+      companyName: req.session.userInfo.companyName,
+      companyId: req.session.userInfo.companyId,
+    };
+    res.render("newSaleRecord", hbsObject);
+  });
+};
