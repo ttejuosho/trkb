@@ -138,6 +138,44 @@ module.exports = function (app) {
 
   app.post(
     "/saleRecord/new",
+    [
+      check("itemName")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Item name is required"),
+      check("itemCategory")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Item category is required"),
+      check("brandName")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Brand name is required"),
+      check("purchasePrice")
+        .not()
+        .isEmpty()
+        .escape()
+        .isNumeric()
+        .withMessage("Purchase price is required"),
+      // check("purchaseDate")
+      //   .not()
+      //   .isEmpty()
+      //   .escape()
+      //   .withMessage("Purchase date is required"),
+      check("contactMedium")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Contact medium is required"),
+      check("meetingLocation")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Meeting location is required"),
+    ],
     Security.isLoggedIn,
     finRecController.SaveNewSaleItem
   );

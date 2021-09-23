@@ -32,6 +32,13 @@
                   value="{{itemName}}"
                 />
               </div>
+              {{#if errors}}
+                {{#each errors}}
+                  {{#ifEquals param "itemName"}}
+                    <div class="messages text-danger mb-2">{{msg}}</div>
+                  {{/ifEquals}}
+                {{/each}}
+              {{/if}}
 
               <fieldset class="form-group mb-0">
                 <div class="row ml-0">
@@ -75,6 +82,13 @@
                   value="{{brandName}}"
                 />
               </div>
+              {{#if errors}}
+                {{#each errors}}
+                  {{#ifEquals param "brandName"}}
+                    <div class="messages text-danger mb-2">{{msg}}</div>
+                  {{/ifEquals}}
+                {{/each}}
+              {{/if}}
 
               <fieldset class="form-group mb-0">
                 <div class="row ml-0">
@@ -116,7 +130,7 @@
                     <div class="input-group-text">&#36;</div>
                   </div>
                   <input
-                    type="text"
+                    type="number"
                     class="form-control"
                     id="purchasePrice"
                     name="purchasePrice"
@@ -143,6 +157,13 @@
                   value="{{purchaseDate}}"
                 />
               </div>
+              {{#if errors}}
+                {{#each errors}}
+                  {{#ifEquals param "purchaseDate"}}
+                    <div class="messages text-danger mb-2">{{msg}}</div>
+                  {{/ifEquals}}
+                {{/each}}
+              {{/if}}
 
               <div class="mb-2">
                 <label class="sr-only" for="salePrice">Sale Price</label>
@@ -151,7 +172,7 @@
                     <div class="input-group-text">&#36;</div>
                   </div>
                   <input
-                    type="text"
+                    type="number"
                     class="form-control"
                     id="salePrice"
                     name="salePrice"
@@ -176,17 +197,6 @@
                   name="saleDate"
                   placeholder="Sale Date"
                   value="{{saleDate}}"
-                />
-              </div>
-
-              <div class="mb-2">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="contactMedium"
-                  name="contactMedium"
-                  placeholder="Contact Medium"
-                  value="{{contactMedium}}"
                 />
               </div>
 
