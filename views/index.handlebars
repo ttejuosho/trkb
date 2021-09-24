@@ -1,0 +1,131 @@
+<main role="main">
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="container mt-4">
+            <div class="row mt-4">
+                <div class="col">    
+                    <p>Reporting Period</p>           
+                    <div class="btn-group btn-group-toggle mx-3 mx-lg-0" data-toggle="buttons">
+                        <label class="btn btn-light active">
+                            <input type="radio" name="dataOption" id="dayData" value="day" checked> 1D
+                        </label>
+                        <label class="btn btn-light">
+                            <input type="radio" name="dataOption" id="weekData" value="week"> 1W
+                        </label>
+                        <label class="btn btn-light">
+                            <input type="radio" name="dataOption" id="monthData" value="month"> 1M
+                        </label>
+                        <label class="btn btn-light">
+                            <input type="radio" name="dataOption" id="3monthsData" value="3months"> 3M
+                        </label>
+                        <label class="btn btn-light">
+                            <input type="radio" name="dataOption" id="6monthsData" value="6months"> 6M
+                        </label>
+                        <label class="btn btn-light">
+                            <input type="radio" name="dataOption" id="yearData" value="year"> 1Y
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 mt-4 mb-2">
+                    <div class="card">
+                        <div class="card-header">Estimated Profits</div>
+                        <div class="card-body">
+                            <canvas id="estimatedProfitsChart" width="100px" height="100px"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 mt-4 mb-2">
+                    <div id="chartCard" class="card">
+                        <div class="card-header">Transactions Chart</div>
+                        <div class="card-body">
+                            <canvas id="transactionsChart" width="200px" height="200px"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-sm-6 mt-4 mb-2">
+                    <div class="card">
+                        <div class="card-header">Charges Chart</div>
+                        <div class="card-body">
+                            <canvas id="chargesChart" width="100px" height="100px"></canvas>
+                        </div>
+                    </div>
+                </div>          
+                <div class="col-sm-6 mt-4 mb-2">
+                    <div class="card">
+                        <div class="card-header">Transaction Amounts Chart</div>
+                        <div class="card-body">
+                            <canvas id="transactionAmountsChart" width="100px" height="100px"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="btn btn-outline-secondary mr-1" data-toggle="collapse" href="#collapseRecentActivity" role="button" aria-expanded="false"
+                                aria-controls="collapseRecentActivity">
+                            <i id="activityChevron" class="fas fa-chevron-down"></i></a> Recent Activity</div>
+                        <div class="card-body scrollable-table-wrapper collapse show" id="collapseRecentActivity">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">Terminal</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Transaction</th>
+                                        <th scope="col">Prepared By</th>
+                                        <th scope="col">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentActivity"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <a class="btn btn-outline-secondary mr-1" data-toggle="collapse" href="#collapseExpenses" role="button"
+                            aria-expanded="false" aria-controls="collapseExpenses">
+                            <i id="expenseChevron" class="fas fa-chevron-down"></i></a> Recent Expenses
+                    </div>
+                    <div class="card-body scrollable-table-wrapper collapse show" id="collapseExpenses">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expenses"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row" id="resultsDiv"></div>
+    </div>
+    <!-- this will show our spinner -->
+    <div hidden id="spinner"></div>
+    </div>
+    </div> <!-- /container -->
+</main>
+<script type="text/javascript" src="/assets/js/home.js"></script>
