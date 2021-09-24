@@ -9,6 +9,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    itemModel: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     itemCategory: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -27,17 +31,25 @@ module.exports = function (sequelize, DataTypes) {
     },
     salePrice: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      allowNull: true,
     },
     saleDate: {
       type: DataTypes.DATEONLY,
-      allowNull: false,
+      allowNull: true,
     },
-    contactMedium: {
+    purchaseContactMedium: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    meetingLocation: {
+    sellContactMedium: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    purchaseMeetingLocation: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    sellMeetingLocation: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -52,10 +64,11 @@ module.exports = function (sequelize, DataTypes) {
     sold: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
+      defaultValue: false,
     },
     profit: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      allowNull: true,
     },
     notes: {
       type: DataTypes.STRING,

@@ -77,6 +77,14 @@ const hbs = exphbs.create({
       let c = 0;
       return (c += 1);
     },
+    formatLocalDate: function (value) {
+      if (value && moment(value).isValid()) {
+        var f = "MM/DD/YYYY";
+        return moment(value).format(f);
+      } else {
+        return value; // moment plugin is not available, value does not have a truthy value, or value is not a valid date
+      }
+    },
     formatDate: function (value) {
       if (value && moment(value).isValid()) {
         var f = "MMM Do, YYYY";
