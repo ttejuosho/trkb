@@ -1,0 +1,79 @@
+<main role="main">
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3 text-center mt-4">Item Details</h1>
+      <div class="form-row justify-content-center">
+        <div class="col-12 col-md-6 mb-2 mb-md-0">
+          <table class="table table-striped">
+            <thead></thead>
+            <tbody>
+              <tr>
+                <th scope="row">Item Name:</th>
+                <td>{{itemName}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Item Model:</th>
+                <td>{{itemModel}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Category:</th>
+                <td>{{itemCategory}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Brand Name:</th>
+                <td>{{brandName}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Purchase Contact Medium:</th>
+                <td>{{purchaseContactMedium}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Purchase Price:</th>
+                <td><span>&#36;</span>{{purchasePrice}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Purchase Date:</th>
+                <td>{{#formatDate purchaseDate}}{{/formatDate}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Purchase Meeting Location:</th>
+                <td>{{purchaseMeetingLocation}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Seller Info:</th>
+                <td>{{sellerInfo}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Sell Contact Medium:</th>
+                <td>{{sellContactMedium}}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Sale Price:</th>
+                <td><span>&#36;</span>{{salePrice}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Sale Date:</th>
+                <td>{{#formatDateTime saleDate}}{{/formatDateTime}}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Sell Meeting Location:</th>
+                <td>{{sellMeetingLocation}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Buyer Info:</th>
+                <td>{{buyerInfo}}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Notes:</th>
+                <td>{{notes}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

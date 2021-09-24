@@ -131,19 +131,24 @@ module.exports = function (app) {
   );
 
   app.get(
-    "/saleRecord/new",
+    "/item/new",
     Security.isLoggedIn,
     finRecController.GetNewSaleRecordPage
   );
 
   app.post(
-    "/saleRecord/new",
+    "/item/new",
     [
       check("itemName")
         .not()
         .isEmpty()
         .escape()
         .withMessage("Item name is required"),
+      check("itemModel")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Item model is required"),
       check("itemCategory")
         .not()
         .isEmpty()
@@ -160,17 +165,68 @@ module.exports = function (app) {
         .escape()
         .isNumeric()
         .withMessage("Purchase price is required"),
-      // check("purchaseDate")
-      //   .not()
-      //   .isEmpty()
-      //   .escape()
-      //   .withMessage("Purchase date is required"),
-      check("contactMedium")
+      check("purchaseContactMedium")
         .not()
         .isEmpty()
         .escape()
         .withMessage("Contact medium is required"),
-      check("meetingLocation")
+      check("purchaseMeetingLocation")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Meeting location is required"),
+    ],
+    Security.isLoggedIn,
+    finRecController.SaveNewSaleItem
+  );
+
+  app.get(
+    "/item/details/:itemId",
+    Security.isLoggedIn,
+    finRecController.GetItemDetails
+  );
+
+  app.get(
+    "/item/:itemId",
+    Security.isLoggedIn,
+    finRecController.GetItemEditPage
+  );
+
+  app.post(
+    "/item/:itemId",
+    [
+      check("itemName")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Item name is required"),
+      check("itemModel")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Item model is required"),
+      check("itemCategory")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Item category is required"),
+      check("brandName")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Brand name is required"),
+      check("purchasePrice")
+        .not()
+        .isEmpty()
+        .escape()
+        .isNumeric()
+        .withMessage("Purchase price is required"),
+      check("purchaseContactMedium")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Contact medium is required"),
+      check("purchaseMeetingLocation")
         .not()
         .isEmpty()
         .escape()

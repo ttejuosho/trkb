@@ -315,44 +315,99 @@ exports.SaveNewSaleItem = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errors.itemName = req.body.itemName;
+    errors.itemModel = req.body.itemModel;
     errors.itemCategory = req.body.itemCategory;
     errors.brandName = req.body.brandName;
     errors.purchasePrice = req.body.purchasePrice;
-    errors.purchaseDate = req.body.purchaseDate;
-    errors.contactMedium = req.body.contactMedium;
-    errors.meetingLocation = req.body.meetingLocation;
-
-    errors.companyName = req.session.userInfo.companyName;
-    errors.companyId = req.session.userInfo.companyId;
+    errors.purchaseContactMedium = req.body.purchaseContactMedium;
     return res.render("newSaleRecord", errors);
   }
 
-  let newSaleItem = {
+  let itemData = {
     itemName: req.body.itemName,
+    itemModel: req.body.itemModel,
     itemCategory: req.body.itemCategory,
     brandName: req.body.brandName,
-    purchasePrice: req.body.purchasePrice,
+    purchasePrice: parseInt(req.body.purchasePrice),
     purchaseDate: req.body.purchaseDate,
-    salePrice: req.body.salePrice,
-    saleDate: req.body.saleDate,
-    contactMedium: req.body.contactMedium,
-    meetingLocation: req.body.meetingLocation,
+    salePrice: parseInt(req.body.salePrice),
+    saleDate: req.body.saleDate === "" ? null : req.body.saleDate,
+    purchaseContactMedium: req.body.purchaseContactMedium,
+    sellContactMedium: req.body.sellContactMedium,
+    purchaseMeetingLocation: req.body.purchaseMeetingLocation,
+    sellMeetingLocation: req.body.sellMeetingLocation,
     buyerInfo: req.body.buyerInfo,
     sellerInfo: req.body.sellerInfo,
-    profit:
-      req.body.salePrice && req.body.purchasePrice
-        ? saleprice - purchasePrice
-        : 0,
-    sold: req.body.saleDate === null ? false : true,
+    sold: req.body.sold === "Yes" ? true : false,
+    profit: parseInt(req.body.profit),
     notes: req.body.notes,
   };
-  console.log(newSaleItem);
-  db.SaleRecord.create(newSaleItem).then((dbSaleItem) => {
-    let hbsObject = {
-      saleRecordSaved: true,
-      companyName: req.session.userInfo.companyName,
-      companyId: req.session.userInfo.companyId,
-    };
-    res.render("newSaleRecord", hbsObject);
+  if (req.params.itemId) {
+    db.SaleRecord.update(itemData, {
+      where: {
+        itemId: req.params.itemId,
+      },
+    })
+      .then((dbSaleItem) => {
+        console.log(dbSaleItem);
+        let hbsObject = {
+          saleRecordSaved: true,
+          edit: true,
+          itemId: req.params.itemId,
+          companyName: req.session.userInfo.companyName,
+          companyId: req.session.userInfo.companyId,
+        };
+        res.render("newSaleRecord", hbsObject);
+      })
+      .catch(function (err) {
+        itemData.message = err.message;
+        itemData.companyName = req.session.userInfo.companyName;
+        itemData.companyId = req.session.userInfo.companyId;
+        res.status(500).render("newSaleRecord", itemData);
+      });
+  } else {
+    db.SaleRecord.create(itemData)
+      .then((dbSaleItem) => {
+        let hbsObject = {
+          saleRecordSaved: true,
+          itemId: dbSaleItem.dataValues.itemId,
+          companyName: req.session.userInfo.companyName,
+          companyId: req.session.userInfo.companyId,
+        };
+        res.render("newSaleRecord", hbsObject);
+      })
+      .catch(function (err) {
+        itemData.message = err.message;
+        itemData.companyName = req.session.userInfo.companyName;
+        itemData.companyId = req.session.userInfo.companyId;
+        res.status(500).render("newSaleRecord", itemData);
+      });
+  }
+};
+
+exports.GetItemDetails = async (req, res) => {
+  db.SaleRecord.findOne({
+    where: {
+      itemId: req.params.itemId,
+    },
+    raw: true,
+  }).then((dbSaleRecord) => {
+    dbSaleRecord.companyName = req.session.userInfo.companyName;
+    dbSaleRecord.companyId = req.session.userInfo.companyId;
+    return res.render("itemDetails", dbSaleRecord);
+  });
+};
+
+exports.GetItemEditPage = async (req, res) => {
+  db.SaleRecord.findOne({
+    where: {
+      itemId: req.params.itemId,
+    },
+    raw: true,
+  }).then((dbSaleRecord) => {
+    dbSaleRecord.edit = true;
+    dbSaleRecord.companyName = req.session.userInfo.companyName;
+    dbSaleRecord.companyId = req.session.userInfo.companyId;
+    return res.render("newSaleRecord", dbSaleRecord);
   });
 };
