@@ -339,7 +339,10 @@ exports.SaveNewSaleItem = async (req, res) => {
     buyerInfo: req.body.buyerInfo,
     sellerInfo: req.body.sellerInfo,
     sold: req.body.sold === "Yes" ? true : false,
-    profit: parseInt(req.body.profit),
+    profit:
+      parseInt(req.body.salePrice) > 0
+        ? parseInt(req.body.salePrice) - parseInt(req.body.purchasePrice)
+        : 0,
     notes: req.body.notes,
   };
   if (req.params.itemId) {

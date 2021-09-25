@@ -109,19 +109,30 @@
                 >Transaction</a></li>
             </ul>
           </li>
-          <li class="nav-item"><a
-              href="/transaction/library"
-              class="nav-link"
-            >Search</a></li>
-          <li class="nav-item"><a
-              href="/transaction/locations"
-              class="nav-link"
-            >Transactions</a></li>
-          <li class="nav-item"><a
-              href="/expensetracker"
-              class="nav-link"
-            >Ex-Trak</a></li>
-          <li class="nav-item"><a href="/item/new" class="nav-link">New Item</a></li>
+
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              data-toggle="dropdown"
+              href="#"
+              role="button"
+              aria-expanded="false"
+            >Utilities</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/expensetracker">Expense
+                  Tracker</a></li>
+              <li><a class="dropdown-item" href="/item/new">New Item Record</a></li>
+              <li><a
+                  class="dropdown-item"
+                  href="/transaction/locations"
+                >Locations Data</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a
+                  class="dropdown-item"
+                  href="/transaction/library"
+                >Transaction Library</a></li>
+            </ul>
+          </li>
           <li class="nav-item"><a
               href="/profile"
               class="nav-link"

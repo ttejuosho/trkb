@@ -19,15 +19,12 @@
             href="/item/new"
           >New Sale Record</a></p>
       {{else}}
-        <h4 class="display-4 text-center mt-4">{{#if edit}}Edit {{else}}New {{/if}} Sale Record</h4>
+        <h4 class="display-4 text-center mt-4">{{#if edit}}Edit {{else}}New {{/if}} Item Record</h4>
         <div class="messages text-danger mb-2">{{message}}</div>
         <form id="newSaleRecordForm" {{#if edit}} action="/item/{{itemId}}" {{else}} action="/item/new" {{/if}}  method="POST">
           <div class="form-row justify-content-center">
             <div class="col-12 col-md-6 mb-2 mb-md-0">
-              <legend class="col-form-label pt-0 font-weight-bold required">New
-                Sales Record Information
-              </legend>
-
+              <legend class="col-form-label pt-0 font-weight-bold required">Item Information</legend>
               <div class="mb-2">
                 <input
                   type="text"
@@ -301,17 +298,6 @@
                   name="buyerInfo"
                   placeholder="Buyer Info"
                   value="{{buyerInfo}}"
-                />
-              </div>
-
-              <div class="mb-2">
-                <input
-                  type="number"
-                  class="form-control"
-                  id="profit"
-                  name="profit"
-                  placeholder="Profit"
-                  value="{{profit}}"
                 />
               </div>
 
