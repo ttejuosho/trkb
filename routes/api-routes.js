@@ -525,8 +525,19 @@ module.exports = (app) => {
                 return res.json(data);
               })
               .catch((err) => {
-                res.json(err.errors);
+                res.json(err.message);
               });
+            await logThis(
+              "INFO",
+              res.locals.userId,
+              res.locals.emailAddress,
+              res.locals.companyUID,
+              res.locals.locationUID,
+              "/api/newAgent Sending Email to " + req.body.emailAddress,
+              "",
+              "Email sent ",
+              "Token: " + token
+            );
           } else {
             var data = {
               errors: [
