@@ -1,5 +1,5 @@
 const db = require("../../models");
-const { getUserLocationData } = require("../common/common");
+const { getUserLocationData } = require("../common/common.js");
 
 exports.logThis = async (
   level,

@@ -1,7 +1,6 @@
 const db = require("../../models");
 const sendEmail = require("../email/email");
 const { lookup } = require("geoip-lite");
-const { logThis } = require("../log/log.js");
 
 exports.validateEmail = (email) => {
   if (
@@ -24,8 +23,8 @@ exports.getCompanyByUID = async (companyUID) => {
       attributes: ["companyId", "companyName", "companyUID"],
     });
     return companyInfo;
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error.message);
   }
 };
 
@@ -85,30 +84,8 @@ exports.sendNewAccountPasswordResetEmail = async (
     `;
 
     await sendEmail(companyName, emailBody, emailSubject, emailAddress);
-    await logThis(
-      "INFO",
-      res.locals.userId,
-      res.locals.emailAddress,
-      res.locals.companyUID,
-      res.locals.locationUID,
-      "common.sendNewAccountPasswordResetEmail Token:" + token,
-      "",
-      "Email sent ",
-      "Token: " + token
-    );
-  } catch (err) {
-    await logThis(
-      "ERROR",
-      res.locals.userId,
-      res.locals.emailAddress,
-      res.locals.companyUID,
-      res.locals.locationUID,
-      "POST /api/newAgent/ failed for Location" + res.locals.locationUID,
-      "",
-      "common.sendNewAccountPasswordResetEmail failed",
-      errors.message
-    );
-    return { message: err };
+  } catch (errors) {
+    return { message: errors.message };
   }
 };
 

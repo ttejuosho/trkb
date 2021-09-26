@@ -113,7 +113,7 @@ buildTransactionsChart = (locationNames, transactionCounts) => {
               beginAtZero: true,
               min: 0,
               suggestedMax: 8,
-              stepSize: 0.5,
+              stepSize: 1,
             },
           },
         ],

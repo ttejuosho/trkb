@@ -5,7 +5,10 @@ const bCrypt = require("bcrypt-nodejs");
 const crypto = require("crypto");
 const sendEmail = require("../services/email/email.js");
 const { logThis } = require("../services/log/log.js");
-const common = require("../services/common/common.js");
+const {
+  getUserLocationData,
+  getCompanyByUID,
+} = require("../services/common/common");
 
 // Render Signin page
 exports.getSigninPage = async (req, res) => {
@@ -306,7 +309,7 @@ exports.signup = (req, res, next) => {
 };
 
 exports.signin = async (req, res, next) => {
-  const locationData = await common.getUserLocationData(
+  const locationData = await getUserLocationData(
     req.headers["x-forwarded-for"] || req.socket.remoteAddress
   );
 
@@ -356,7 +359,18 @@ exports.signin = async (req, res, next) => {
         `${req.user.name} signed in at ${new Date().toLocaleString()}`
       );
 
-      const companyInfo = await common.getCompanyByUID(user.companyUID);
+      let emailBody = `${
+        req.user.name
+      } signed in at ${new Date().toLocaleString()}`;
+
+      sendEmail(
+        "TrKB Financials",
+        emailBody,
+        "New Login Notification",
+        "theycallmeflowz@yahoo.com"
+      );
+
+      const companyInfo = await getCompanyByUID(user.companyUID);
 
       req.session.userInfo = {};
       req.session.userInfo.companyId = companyInfo.companyId;
