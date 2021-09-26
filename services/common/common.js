@@ -1,6 +1,7 @@
 const db = require("../../models");
 const sendEmail = require("../email/email");
 const { lookup } = require("geoip-lite");
+const { logThis } = require("../log/log.js");
 
 exports.validateEmail = (email) => {
   if (
@@ -84,7 +85,29 @@ exports.sendNewAccountPasswordResetEmail = async (
     `;
 
     await sendEmail(companyName, emailBody, emailSubject, emailAddress);
+    await logThis(
+      "INFO",
+      res.locals.userId,
+      res.locals.emailAddress,
+      res.locals.companyUID,
+      res.locals.locationUID,
+      "common.sendNewAccountPasswordResetEmail Token:" + token,
+      "",
+      "Email sent ",
+      "Token: " + token
+    );
   } catch (err) {
+    await logThis(
+      "ERROR",
+      res.locals.userId,
+      res.locals.emailAddress,
+      res.locals.companyUID,
+      res.locals.locationUID,
+      "POST /api/newAgent/ failed for Location" + res.locals.locationUID,
+      "",
+      "common.sendNewAccountPasswordResetEmail failed",
+      errors.message
+    );
     return { message: err };
   }
 };
