@@ -16,12 +16,6 @@ $("#closeNewExpenseModal").on("click", () => {
   $("#newExpenseModal").modal("hide");
 });
 
-// $("#newExpenseBtn").on("click", () => {
-//   $(function () {
-
-//   });
-// });
-
 $("#saveNewExpense").on("click", () => {
   var expenseData = {
     expenseId: $("#expenseId").val(),
