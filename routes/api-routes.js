@@ -1144,35 +1144,6 @@ module.exports = (app) => {
     }
   );
 
-  // app.get("/api/transactions/chart/revenue", async (req, res) => {
-  //   try {
-  //     await logThis(
-  //       "INFO",
-  //       res.locals.userId,
-  //       res.locals.emailAddress,
-  //       res.locals.companyUID,
-  //       res.locals.locationUID,
-  //       "/api/transactions/chart/revenue/",
-  //       req.session.userInfo.ipAddress,
-  //       "",
-  //       ""
-  //     );
-  //   } catch (errors) {
-  //     await logThis(
-  //       "ERROR",
-  //       res.locals.userId,
-  //       res.locals.emailAddress,
-  //       res.locals.companyUID,
-  //       res.locals.locationUID,
-  //       "/api/transactions/chart/revenue",
-  //       "",
-  //       "Api call failed",
-  //       errors.message
-  //     );
-  //     res.json(errors);
-  //   }
-  // });
-
   app.get(
     "/api/transaction/getTransactions/:locationUID/:transactionFilter",
     authenticate,
@@ -1529,13 +1500,11 @@ module.exports = (app) => {
             .messages(message.sid)
             .fetch()
             .then((message) => {
-              console.log(`Message Status: ${message.status}`);
               if (message.status === "delivered") {
                 task.stop();
-                console.log("Task stopped at " + new Date());
               }
             });
-          console.log("Task is running every 2 seconds " + new Date());
+          //console.log("Task is running every 2 seconds " + new Date());
         });
         res.json(message);
       });

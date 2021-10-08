@@ -359,16 +359,17 @@ exports.signin = async (req, res, next) => {
         `${req.user.name} signed in at ${new Date().toLocaleString()}`
       );
 
-      let emailBody = `${
-        req.user.name
-      } signed in at ${new Date().toLocaleString()}`;
-
-      sendEmail(
-        "TrKB Financials",
-        emailBody,
-        "New Login Notification",
-        "theycallmeflowz@yahoo.com"
-      );
+      if (process.env.NODE_ENV !== "development") {
+        let emailBody = `${
+          req.user.name
+        } signed in at ${new Date().toLocaleString()}`;
+        sendEmail(
+          "TrKB Financials",
+          emailBody,
+          "New Login Notification",
+          "theycallmeflowz@yahoo.com"
+        );
+      }
 
       const companyInfo = await getCompanyByUID(user.companyUID);
 
