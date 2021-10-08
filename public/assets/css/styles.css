@@ -171,6 +171,10 @@ thead tr th {
   border-color: #b1b5b9;
 }
 
+.bg-progress {
+  background-color: #d8dcdf;
+}
+
 @media (max-width: 800px) {
   .main-panel > .partial-content {
     padding: 70px 10px 0px 20px;

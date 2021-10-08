@@ -1,11 +1,8 @@
 const nodemailer = require("nodemailer");
 
-const sendEmail = function (companyName, emailBody, subject, recipients) {
+const sendEmail = (companyName, emailBody, subject, recipients) => {
   const transporter = nodemailer.createTransport({
-    //host: "smtp.aol.com",
-    //port: 465,
-    //secure: false, // true for 465, false for other ports
-    service: 'AOL',
+    service: "AOL",
     auth: {
       user: process.env.EMAIL_ADDRESS, // user email
       pass: process.env.EMAIL_PASSWORD, // password
@@ -15,14 +12,12 @@ const sendEmail = function (companyName, emailBody, subject, recipients) {
     },
   });
 
-  // transporter.use('compile', eht({
-  //     viewEngine: 'express-handlebars',
-  //     viewPath: `${appRoot}/views`,
-  // }));
-
   const mailOptions = {
     from:
-      (companyName == null ? "TrKb Inc" : companyName) + "<" + process.env.EMAIL_ADDRESS + ">", // sender address
+      (companyName == null ? "TrKb Inc" : companyName) +
+      "<" +
+      process.env.EMAIL_ADDRESS +
+      ">", // sender address
     to: recipients, // list of receivers
     subject: subject, // Subject line
     // text: 'Hello world?', // plain text body

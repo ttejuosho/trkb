@@ -2,6 +2,7 @@ const db = require("../models");
 const moment = require("moment");
 const Sequelize = require("sequelize");
 const sequelize = require("sequelize");
+const cron = require("node-cron");
 const Op = Sequelize.Op;
 const {
   authenticate,
@@ -17,6 +18,10 @@ const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
 const crypto = require("crypto");
 const { logThis } = require("../services/log/log.js");
+const { sendSMS } = require("../services/sms/sms.js");
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require("twilio")(accountSid, authToken);
 
 module.exports = (app) => {
   app.get("/api/getTransactions", (req, res) => {
@@ -1507,5 +1512,43 @@ module.exports = (app) => {
       });
       return;
     }
+  });
+
+  //TWILIO ENDPOINTS
+  app.post("/api/sendSms", (req, res) => {
+    const body = req.body.body;
+    client.messages
+      .create({
+        messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
+        body: body,
+        to: process.env.TO_SMS_NUMBER,
+      })
+      .then((message) => {
+        const task = cron.schedule("2 * * * * *", () => {
+          client
+            .messages(message.sid)
+            .fetch()
+            .then((message) => {
+              console.log(`Message Status: ${message.status}`);
+              if (message.status === "delivered") {
+                task.stop();
+                console.log("Task stopped at " + new Date());
+              }
+            });
+          console.log("Task is running every 2 seconds " + new Date());
+        });
+        res.json(message);
+      });
+  });
+
+  app.get("/api/getMessages", (req, res) => {
+    client.messages.list({ limit: 20 }).then((messages) => res.json(messages));
+  });
+
+  app.get("/api/getMessage/:messageId", (req, res) => {
+    client
+      .messages(req.params.messageId)
+      .fetch()
+      .then((message) => res.json(message));
   });
 };

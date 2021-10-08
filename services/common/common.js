@@ -95,7 +95,9 @@ exports.getStartDate = async (time) => {
   time = time.toLowerCase();
 
   if (time === "day") {
-    startDate = new Date(new Date().setUTCHours(0, 0, 0, 0)).toISOString();
+    startDate = new Date(
+      new Date() - new Date().getTimezoneOffset()
+    ).toLocaleDateString();
   }
 
   if (time === "week") {
@@ -163,7 +165,7 @@ exports.getStartDate = async (time) => {
       )
     ).toISOString();
   }
-
+  console.log(startDate);
   return startDate;
 };
 
