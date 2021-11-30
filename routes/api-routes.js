@@ -1,4 +1,5 @@
 const db = require("../models");
+const https = require("https");
 const moment = require("moment");
 const Sequelize = require("sequelize");
 const sequelize = require("sequelize");
@@ -13,12 +14,18 @@ const {
   getCompanyLocations,
   sendNewAccountPasswordResetEmail,
   getStartDate,
+  isDateWithinRange,
+  makeHTTPRequest,
+  getUserRole,
+  getLastWeekDays,
+  harvestTimeEntryData,
 } = require("../services/common/common.js");
 const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
 const crypto = require("crypto");
 const { logThis } = require("../services/log/log.js");
 const { sendSMS } = require("../services/sms/sms.js");
+const { parse } = require("path/posix");
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
@@ -1519,5 +1526,212 @@ module.exports = (app) => {
       .messages(req.params.messageId)
       .fetch()
       .then((message) => res.json(message));
+  });
+
+  app.get("/api/harvestData0", async (req, resp) => {
+    const options = {
+      protocol: "https:",
+      hostname: "api.harvestapp.com",
+      path: `/v2/time_entries?page=1`,
+      headers: {
+        "User-Agent": "Node.js Harvest API Sample",
+        Authorization: "Bearer " + process.env.HARVEST_ACCESS_TOKEN,
+        "Harvest-Account-ID": process.env.HARVEST_ACCOUNT_ID,
+      },
+    };
+
+    https
+      .get(options, (res) => {
+        const { statusCode } = res;
+
+        if (statusCode !== 200) {
+          console.error(`Request failed with status: ${statusCode}`);
+          return;
+        }
+
+        res.setEncoding("utf8");
+        let rawData = "";
+        res.on("data", (chunk) => {
+          rawData += chunk;
+        });
+
+        res.on("end", () => {
+          try {
+            let data = [{ response: {} }];
+            let clientNames = new Set();
+            const parsedData = JSON.parse(rawData);
+
+            for (var j = 0; j < parsedData.time_entries.length; j++) {
+              let employeeData = {};
+
+              if (clientNames.has(parsedData.time_entries[j].client.name)) {
+                data[0].response[
+                  parsedData.time_entries[j].client.name
+                ].clientBillableHours += parsedData.time_entries[j].hours;
+
+                data[0].response[
+                  parsedData.time_entries[j].client.name
+                ].billableAmount +=
+                  parsedData.time_entries[j].hours *
+                  parsedData.time_entries[j].billable_rate;
+              }
+
+              if (
+                clientNames.has(parsedData.time_entries[j].client.name) &&
+                data[0].response[
+                  parsedData.time_entries[j].client.name
+                ].hasOwnProperty(parsedData.time_entries[j].user.id)
+              ) {
+                data[0].response[parsedData.time_entries[j].client.name][
+                  parsedData.time_entries[j].user.id
+                ].hours += parsedData.time_entries[j].hours;
+
+                if (employeeData.billableRate == null) {
+                  employeeData.billableRate =
+                    parsedData.time_entries[j].billable_rate;
+                }
+              } else {
+                employeeData.hours = parsedData.time_entries[j].hours;
+
+                employeeData.name = parsedData.time_entries[j].user.name;
+
+                employeeData.userId = parsedData.time_entries[j].user.id;
+
+                clientNames.add(parsedData.time_entries[j].client.name);
+
+                data[0].response[parsedData.time_entries[j].client.name] = {
+                  clientBillableHours: parsedData.time_entries[j].hours,
+                  billableAmount:
+                    parsedData.time_entries[j].hours *
+                    parsedData.time_entries[j].billable_rate,
+                };
+                data[0].response[parsedData.time_entries[j].client.name][
+                  parsedData.time_entries[j].user.id
+                ] = employeeData;
+              }
+            }
+
+            resp.json(data);
+          } catch (e) {
+            console.error(e.message);
+          }
+        });
+      })
+      .on("error", (e) => {
+        console.error(`Got error: ${e.message}`);
+      });
+  });
+
+  app.get("/api/harvestData", async (req, resp) => {
+    const options = {
+      protocol: "https:",
+      hostname: "api.harvestapp.com",
+      headers: {
+        "User-Agent": "Node.js Harvest API Sample",
+        Authorization: "Bearer " + process.env.HARVEST_ACCESS_TOKEN,
+        "Harvest-Account-ID": process.env.HARVEST_ACCOUNT_ID,
+      },
+    };
+    var data = [];
+    var completed_requests = 0;
+
+    for (var i = 1; i < 5; i++) {
+      options.path = "/v2/time_entries?page=" + i;
+      https.get(options, function (res) {
+        res.setEncoding("utf8");
+        let rawData = "";
+        res.on("data", (chunk) => {
+          rawData += chunk;
+        });
+
+        res.on("end", () => {
+          let parsedData = JSON.parse(rawData);
+
+          for (var j = 0; j < parsedData.time_entries.length; j++) {
+            db.TimeEntry.create({
+              id: parsedData.time_entries[j].id,
+              spent_date: parsedData.time_entries[j].spent_date,
+              hours: parsedData.time_entries[j].hours,
+              rounded_hours: parsedData.time_entries[j].rounded_hours,
+              billable: parsedData.time_entries[j].billable,
+              cost_rate: parsedData.time_entries[j].cost_rate,
+              billable_rate: parsedData.time_entries[j].billable_rate,
+              started_time: parsedData.time_entries[j].started_time,
+              ended_time: parsedData.time_entries[j].ended_time,
+              userId: parsedData.time_entries[j].user.id,
+              user_name: parsedData.time_entries[j].user.name,
+              clientId: parsedData.time_entries[j].client.id,
+              client_name: parsedData.time_entries[j].client.name,
+              project_id: parsedData.time_entries[j].project.id,
+              project_name: parsedData.time_entries[j].project.name,
+              notes: parsedData.time_entries[j].notes,
+              created_at: parsedData.time_entries[j].created_at,
+              updated_at: parsedData.time_entries[j].updated_at,
+            });
+          }
+
+          completed_requests++;
+
+          if (completed_requests == 4) {
+            console.log(data.length);
+            resp.json(data.length);
+          }
+        });
+      });
+    }
+  });
+
+  app.get("/api/harvest", async (req, resp) => {
+    const options = {
+      protocol: "https:",
+      hostname: "api.harvestapp.com",
+      headers: {
+        "User-Agent": "Node.js Harvest API Sample",
+        Authorization: "Bearer " + process.env.HARVEST_ACCESS_TOKEN,
+        "Harvest-Account-ID": process.env.HARVEST_ACCOUNT_ID,
+      },
+    };
+
+    var urls = [
+      "/v2/time_entries?page=1",
+      "/v2/time_entries?page=2",
+      "/v2/time_entries?page=3",
+      "/v2/time_entries?page=4",
+      "/v2/time_entries?page=5",
+    ];
+    var data = [];
+    var completed_requests = 0;
+
+    for (var i = 1; i < 101; i++) {
+      options.path = "/v2/time_entries?page=" + i;
+      https.get(options, function (res) {
+        res.setEncoding("utf8");
+        let rawData = "";
+        res.on("data", (chunk) => {
+          rawData += chunk;
+        });
+
+        res.on("end", () => {
+          let parsedData = JSON.parse(rawData);
+
+          let k = 0;
+          while (k < parsedData.time_entries.length) {
+            if (isDateWithinRange(parsedData.time_entries[k].spent_date)) {
+              console.log(parsedData.time_entries[k].spent_date.split("-")[1]);
+              data.push(parsedData.time_entries[k]);
+            }
+
+            k++;
+          }
+
+          completed_requests++;
+
+          if (completed_requests == 100) {
+            console.log(data.length);
+            resp.json(data);
+          }
+        });
+      });
+    }
   });
 };

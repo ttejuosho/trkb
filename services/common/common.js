@@ -1,6 +1,8 @@
 const db = require("../../models");
+const https = require("https");
 const sendEmail = require("../email/email");
 const { lookup } = require("geoip-lite");
+const { stream } = require("winston");
 
 exports.validateEmail = (email) => {
   if (
@@ -183,4 +185,117 @@ exports.getUserLocationData = async (ipAddress) => {
   };
 
   return locationData;
+};
+
+exports.getLastWeekDays = async (target) => {
+  //target 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thurday, 5 = Friday
+  // Returns ISOString Format 2021-10-20T14:12:39.779Z'
+  let date = new Date();
+  return new Date(
+    date.setDate(
+      date.getDate() -
+        (date.getDay() == target ? 7 : (date.getDay() + (7 - target)) % 7)
+    )
+  ).toISOString();
+};
+
+exports.harvestTimeEntryData = async (pageNumber) => {
+  var responses = [];
+  var completed_requests = 0;
+
+  const options = {
+    protocol: "https:",
+    hostname: "api.harvestapp.com",
+    //path: "/v2/time_entries?page=" + pageNumber,
+    headers: {
+      "User-Agent": "Node.js Harvest API Sample",
+      Authorization: "Bearer " + process.env.HARVEST_ACCESS_TOKEN,
+      "Harvest-Account-ID": process.env.HARVEST_ACCOUNT_ID,
+    },
+  };
+
+  for (var i = 1; i <= pageNumber; i++) {
+    options.path = "/v2/time_entries?page=" + i;
+    https.get(options, function (res) {
+      res.on("data", function (chunk) {
+        responses.push(chunk);
+      });
+      completed_requests++;
+      res.on("end", function () {
+        if (i == pageNumber) {
+          // All downloads are completed
+          let rawData = responses.join();
+          let parsedData = JSON.parse(rawData);
+          console.log("body:", parsedData);
+          return parsedData;
+        }
+      });
+    });
+  }
+};
+
+exports.getUserRole = async (userId) => {
+  const options = {
+    protocol: "https:",
+    hostname: "api.harvestapp.com",
+    path: "/v2/users/" + userId,
+    headers: {
+      "User-Agent": "Node.js Harvest API Sample",
+      Authorization: "Bearer " + process.env.HARVEST_ACCESS_TOKEN,
+      "Harvest-Account-ID": process.env.HARVEST_ACCOUNT_ID,
+    },
+  };
+
+  https
+    .get(options, function (res) {
+      const { statusCode } = res;
+
+      if (statusCode !== 200) {
+        console.error(`Request failed with status: ${statusCode}`);
+        return;
+      }
+
+      res.setEncoding("utf8");
+      let rawData = "";
+      res.on("data", function (chunk) {
+        rawData += chunk;
+      });
+
+      res.on("end", function () {
+        let parsedData = JSON.parse(rawData);
+        return parsedData;
+      });
+    })
+    .on("error", (e) => {
+      console.error(`Got error: ${e.message}`);
+    });
+};
+
+exports.makeHTTPRequest = (options) => {
+  https.get(options, function (res) {
+    res.setEncoding("utf8");
+    let rawData = "";
+    res.on("data", (chunk) => {
+      rawData += chunk;
+    });
+
+    res.on("end", () => {
+      let parsedData = JSON.parse(rawData);
+      return parsedData;
+    });
+  });
+};
+
+exports.isDateWithinRange = (value) => {
+  // format: YYYY-MM-DD
+  if (value === undefined) {
+    return true;
+  }
+  value = value.split("-");
+  var date = new Date();
+  var lastDayOfTheMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0),
+    firstDayOfTheMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+  date = new Date(value[0], value[1] - 1, value[2]);
+
+  return firstDayOfTheMonth <= date && date <= lastDayOfTheMonth;
 };
