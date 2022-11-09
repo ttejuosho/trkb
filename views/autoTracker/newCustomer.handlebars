@@ -1,0 +1,330 @@
+<main role="main">
+  <div class="jumbotron">
+    <div class="container">
+      {{#if customerCreated}}
+        <h3 class="display-4 text-center text-success mt-4">Success !!</h3>
+        <p class="text-success text-center">Customer Information has been {{#if edit}}updated {{else}}saved {{/if}} !!</p>
+        <p class="text-center"><a
+            class="btn btn-outline-secondary"
+            href="/autoTracker/customer/{{customerId}}"
+          >
+            View Customer details</a></p>
+                <p class="text-center"><a
+            class="btn btn-outline-secondary"
+            href="/autoTracker/customer/edit/{{customerId}}"
+          >
+            Edit Customer Information</a></p>
+        <p class="text-center"><a
+            class="btn btn-outline-primary"
+            href="/autoTracker/customer/new"
+          >New Customer</a></p>
+        
+        <p class="text-center"><a
+            class="btn btn-outline-primary"
+            href="/autoTracker/tracker/new/{{customerId}}"
+          >Add New Tracker for the Customer</a></p>
+      {{else}}
+        <h4 class="display-4 text-center mt-4">{{#if edit}}Edit {{else}}New {{/if}} Customer</h4>
+        <div class="messages text-danger mb-2">{{message}}</div>
+        <form id="newCustomerForm" {{#if edit}} action="/autoTracker/customer/edit/{{customerId}}" {{else}} action="/autoTracker/customer/new" {{/if}}  method="POST">
+          <div class="form-row justify-content-center">
+            <div class="col-12 col-md-6 mb-2 mb-md-0">
+              <legend class="col-form-label pt-0 font-weight-bold required">Customer Information</legend>
+                <input
+                    type="hidden"
+                    value="{{customerId}}"
+                    id="customerId"
+                    name="customerId"
+                  />
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customerExternalId"
+                  name="customerExternalId"
+                  placeholder="Customer Id"
+                  value="{{customerExternalId}}"
+                />
+              </div>
+              {{#if errors}}
+                {{#each errors}}
+                  {{#ifEquals param "customerExternalId"}}
+                    <div class="messages text-danger mb-2">{{msg}}</div>
+                  {{/ifEquals}}
+                {{/each}}
+              {{/if}}
+
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customerName"
+                  name="customerName"
+                  placeholder="Customer Name"
+                  value="{{customerName}}"
+                />
+              </div>
+              {{#if errors}}
+                {{#each errors}}
+                  {{#ifEquals param "customerName"}}
+                    <div class="messages text-danger mb-2">{{msg}}</div>
+                  {{/ifEquals}}
+                {{/each}}
+              {{/if}}
+
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customerEmail"
+                  name="customerEmail"
+                  placeholder="Email Address"
+                  value="{{customerEmail}}"
+                />
+              </div>
+              {{#if errors}}
+                {{#each errors}}
+                  {{#ifEquals param "customerEmail"}}
+                    <div class="messages text-danger mb-2">{{msg}}</div>
+                  {{/ifEquals}}
+                {{/each}}
+              {{/if}}
+
+              <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customerPhone"
+                  name="customerPhone"
+                  placeholder="Phone Number"
+                  value="{{customerPhone}}"
+                />
+              </div>
+              {{#if errors}}
+                {{#each errors}}
+                  {{#ifEquals param "customerPhone"}}
+                    <div class="messages text-danger mb-2">{{msg}}</div>
+                  {{/ifEquals}}
+                {{/each}}
+              {{/if}}
+
+              
+
+<div class="row">
+  <div class="mb-2 col-md-6">
+                <label class="font-weight-bold mb-0 required" for="ipAddress">IP Address</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">0.0.0.0</div>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="ipAddress"
+                    name="ipAddress"
+                    placeholder="IP Address"
+                    value="{{ipAddress}}"
+                  />
+                </div>
+                {{#if errors}}
+                  {{#each errors}}
+                    {{#ifEquals param "ipAddress"}}
+                      <div class="messages text-danger mb-2">{{msg}}</div>
+                    {{/ifEquals}}
+                  {{/each}}
+                {{/if}}
+              </div>
+<div class="mb-2 col-md-6">
+                    <label
+                      class="font-weight-bold mb-0 required"
+                      for="expiresOn"
+                    >Expires On</label>
+                    <div class="form-group">
+                      <div
+                        class="input-group date"
+                        id="expiresOn"
+                        data-target-input="nearest"
+                      >
+                        <input
+                          type="hidden"
+                          name="expiresOn"
+                          id="expiresOnValue"
+                          value="{{#formatLocalDate expiresOn}}{{/formatLocalDate}}"
+                          class="form-control"
+                        />
+                        <input
+                          type="text"
+                          class="form-control datetimepicker-input"
+                          data-target="#expiresOn"
+                        />
+                        <div
+                          class="input-group-append"
+                          data-target="#expiresOn"
+                          data-toggle="datetimepicker"
+                        >
+                          <div class="input-group-text"><i
+                              class="fa fa-calendar"
+                            ></i></div>
+                        </div>
+                      </div>
+                    </div>
+              {{#if errors}}
+                {{#each errors}}
+                  {{#ifEquals param "expiresOn"}}
+                    <div class="messages text-danger mb-2">{{msg}}</div>
+                  {{/ifEquals}}
+                {{/each}}
+              {{/if}}
+                    </div>
+                  
+                
+</div>
+
+                <div class="row">
+<div class="mb-2 col-md-6">
+                    <label
+                      class="font-weight-bold mb-0 required"
+                      for="registeredOn"
+                    >Registered On</label>
+                    <div class="form-group">
+                      <div
+                        class="input-group date"
+                        id="registeredOn"
+                        data-target-input="nearest"
+                      >
+                        <input
+                          type="hidden"
+                          name="registeredOn"
+                          id="registeredOnValue"
+                          value="{{#formatLocalDate registeredOn}}{{/formatLocalDate}}"
+                          class="form-control"
+                        />
+                        <input
+                          type="text"
+                          class="form-control datetimepicker-input"
+                          data-target="#registeredOn"
+                        />
+                        <div
+                          class="input-group-append"
+                          data-target="#registeredOn"
+                          data-toggle="datetimepicker"
+                        >
+                          <div class="input-group-text"><i
+                              class="fa fa-calendar"
+                            ></i></div>
+                        </div>
+                      </div>
+                    </div>
+              {{#if errors}}
+                {{#each errors}}
+                  {{#ifEquals param "registeredOn"}}
+                    <div class="messages text-danger mb-2">{{msg}}</div>
+                  {{/ifEquals}}
+                {{/each}}
+              {{/if}}
+                    </div>
+
+<div class="mb-2 col-md-6">
+                    <label
+                      class="font-weight-bold mb-0 required"
+                      for="lastLoginDate"
+                    >Last Login Date</label>
+                    <div class="form-group">
+                      <div
+                        class="input-group date"
+                        id="lastLoginDate"
+                        data-target-input="nearest"
+                      >
+                        <input
+                          type="hidden"
+                          name="lastLoginDate"
+                          id="lastLoginDateValue"
+                          value="{{#formatLocalDate lastLoginDate}}{{/formatLocalDate}}"
+                          class="form-control"
+                        />
+                        <input
+                          type="text"
+                          class="form-control datetimepicker-input"
+                          data-target="#lastLoginDate"
+                        />
+                        <div
+                          class="input-group-append"
+                          data-target="#lastLoginDate"
+                          data-toggle="datetimepicker"
+                        >
+                          <div class="input-group-text"><i
+                              class="fa fa-calendar"
+                            ></i></div>
+                        </div>
+                      </div>
+                    </div>
+            {{#if errors}}
+                {{#each errors}}
+                  {{#ifEquals param "lastLoginDate"}}
+                    <div class="messages text-danger mb-2">{{msg}}</div>
+                  {{/ifEquals}}
+                {{/each}}
+              {{/if}}
+                    </div>
+                </div>       
+
+              <div class="row">
+                
+                <div class="col-md-6 ml-0">
+                  <label class="font-weight-bold mb-0" for="privilege">Privilege</label>
+                    <select
+                      id="privilege"
+                      class="form-control mb-2"
+                      name="privilege"
+                    >
+                      {{#if privilege}}
+                        <option
+                          value="{{privilege}}"
+                        >{{privilege}}</option>
+                      {{else}}
+                        <option value="">Choose Privilege</option>
+                      {{/if}}
+                      <option value="Basic">Basic</option>
+                      <option value="Admin">Admin</option>
+                      <option value="Super Admin">Super Admin</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  {{#if errors}}
+                    {{#each errors}}
+                      {{#ifEquals param "privilege"}}
+                        <div class="messages text-danger">{{msg}}</div>
+                      {{/ifEquals}}
+                    {{/each}}
+                  {{/if}}
+                </div>
+
+                <div class="col-md-6 ml-0">
+                    <label
+                      class="font-weight-bold mb-0"
+                      for="active"
+                    >Active</label>
+                 
+                    <select id="active" class="form-control mb-2" name="active">
+                      <option value={{#ifEquals active 1}} "Yes" {{else}} "No" {{/ifEquals}}>{{#ifEquals active 1}} Yes {{else}} No {{/ifEquals}}</option>
+                      <option value={{#ifEquals active 1}} "No" {{else}} "Yes" {{/ifEquals}}>{{#ifEquals active 1}} No {{else}} Yes {{/ifEquals}}</option>
+                    </select>
+                 
+                </div>
+         
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-block btn-lg btn-dark"
+                id="saveCustomer"
+              >{{#if edit}}Update {{else}}Save {{/if}}</button>
+            </div>
+
+          </div>
+        </form>
+      {{/if}}
+    </div>
+  </div>
+</main>
+
+<script type="text/javascript" src="/assets/js/autoTracker.js"></script>

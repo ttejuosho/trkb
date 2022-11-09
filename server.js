@@ -132,6 +132,7 @@ app.use((req, res, next) => {
 require(path.join(__dirname, "./routes/api-routes.js"))(app);
 require(path.join(__dirname, "./routes/finrec-routes.js"))(app);
 require(path.join(__dirname, "./routes/auth-routes.js"))(app);
+require(path.join(__dirname, "./routes/autoTracker-routes.js"))(app);
 
 // load passport strategies
 require(path.join(__dirname, "./services/passport/passport.js"))(

@@ -216,15 +216,13 @@ $(document).ready(function () {
         if (res.errors.length < 1) {
           if ($("#saveNewAgent").attr("action") === "update") {
             agentData.userId = $("#userId").val();
-            $("#agentsTable")
-              .DataTable()
+            agentsTable
               .row("#" + agentData.userId)
               .data(agentData)
               .draw();
           } else {
-            $("#agentsTable")
-              .DataTable()
-              .row.add({
+            agentsTable.row
+              .add({
                 name: agentData.name,
                 locationName: agentData.locationName,
                 locationUID: agentData.locationUID,
@@ -253,7 +251,9 @@ $(document).ready(function () {
   });
 
   $("#saveNewLocation").on("click", () => {
+    var locationId = $("#locationId").val();
     var locationData = {
+      locationUID: $("#locationUID").val(),
       locationName: $("#locationName").val(),
       locationEmail: $("#locationEmail").val(),
       locationAddress: $("#locationAddress").val(),
@@ -282,24 +282,31 @@ $(document).ready(function () {
       .then((res) => {
         $(".errorMessage").text("");
         if (res.errors.length < 1) {
+          if ($("#saveNewLocation").attr("action") == "update") {
+            // Update data in table
+            locationsTable
+              .row("#" + locationId)
+              .data(locationData)
+              .draw();
+          } else {
+            $("#locationsTable")
+              .DataTable()
+              .row.add({
+                locationId: res.response.locationId,
+                locationUID: res.response.locationUID,
+                locationName: locationData.locationName,
+                locationAddress: locationData.locationAddress,
+                locationCity: locationData.locationCity,
+                locationState: locationData.locationState,
+                locationEmail: locationData.locationEmail,
+                locationPhone: locationData.locationPhone,
+                locationContactName: locationData.locationContactName,
+                locationContactPhone: locationData.locationContactPhone,
+                locationContactEmail: locationData.locationContactEmail,
+              })
+              .draw(false);
+          }
           $("#newLocationForm")[0].reset();
-
-          $("#locationsTable")
-            .DataTable()
-            .row.add({
-              locationId: res.response.locationId,
-              locationUID: res.response.locationUID,
-              locationName: locationData.locationName,
-              locationAddress: locationData.locationAddress,
-              locationCity: locationData.locationCity,
-              locationState: locationData.locationState,
-              locationEmail: locationData.locationEmail,
-              locationPhone: locationData.locationPhone,
-              locationContactName: locationData.locationContactName,
-              locationContactPhone: locationData.locationContactPhone,
-              locationContactEmail: locationData.locationContactEmail,
-            })
-            .draw(false);
           $("#newLocationModal").modal("hide");
         } else {
           res.errors.forEach((error) => {
@@ -340,6 +347,8 @@ $(document).ready(function () {
     $("#saveNewLocation").text("Update");
     $("#saveNewLocation").attr("action", "update");
 
+    $("#locationId").val(data.locationId);
+    $("#locationUID").val(data.locationUID);
     $("#locationName").val(data.locationName);
     $("#locationAddress").val(data.locationAddress);
     $("#locationCity").val(data.locationCity);
@@ -407,13 +416,13 @@ $(document).ready(function () {
           $("#deleteSuccessConfirmationModalLabel").removeClass("d-none");
           $("#continueDelete").addClass("d-none");
           $("#deleteConfirmationModalLabel").addClass("d-none");
-          $("#actionMessage").text("");
+          $("#actionMessage").text("All Done");
           $(".message").text("");
           if (tableName === "User") {
-            $("#agentsTable").DataTable().row().remove(apiParamId).draw();
+            agentsTable.row(apiParamId).remove().draw();
           }
           if (tableName === "Location") {
-            $("#locationsTable").DataTable().row().remove(apiParamId).draw();
+            locationsTable.row().remove(apiParamId).draw();
           }
         }
       });

@@ -236,6 +236,9 @@ exports.signup = (req, res, next) => {
         newCompany: false,
       });
     } else {
+      req.session.userInfo = {};
+      req.session.userInfo.companyUID = dbCompany.dataValues.companyUID;
+      req.session.userInfo.companyName = req.body.companyName;
       //Check Password
       if (
         req.body.password.trim().length < 3 ||
@@ -253,9 +256,6 @@ exports.signup = (req, res, next) => {
           newCompany: req.body.newCompany,
         });
       } else {
-        req.session.userInfo = {};
-        req.session.userInfo.companyUID = dbCompany.dataValues.companyUID;
-        req.session.userInfo.companyName = req.body.companyName;
         // check if Email address exists
         db.User.findOne({
           where: {
@@ -297,7 +297,9 @@ exports.signup = (req, res, next) => {
                   };
                   return res.render("auth/auth", msg);
                 }
-
+                req.session.userInfo = {};
+                req.session.userInfo.companyId = req.body.companyUID;
+                req.session.userInfo.companyName = req.body.companyName;
                 res.redirect("/");
               });
             })(req, res, next);

@@ -1235,6 +1235,298 @@ module.exports = (app) => {
     }
   );
 
+  app.get(
+    "/api/autoTracker/tracker/getByCustomerId/:customerId",
+    authenticate,
+    async (req, res) => {
+      try {
+        db.Tracker.findAll({
+          where: {
+            customerId: req.params.customerId,
+          },
+        }).then((dbTracker) => {
+          res.json(dbTracker);
+        });
+      } catch (errors) {
+        res.json(errors);
+      }
+    }
+  );
+
+  app.get(
+    "/api/autoTracker/tracker/getById/:trackerId",
+    authenticate,
+    async (req, res) => {
+      try {
+        db.Tracker.findByPk(req.params.trackerId).then((dbTracker) => {
+          res.json(dbTracker);
+        });
+      } catch (errors) {
+        res.json(errors);
+      }
+    }
+  );
+
+  app.get("/api/autoTracker/customers", authenticate, async (req, res) => {
+    try {
+      db.Customer.findAll({}).then((dbCustomer) => {
+        res.json(dbCustomer);
+      });
+    } catch (errors) {
+      res.json(errors);
+    }
+  });
+
+  app.delete(
+    "/api/autoTracker/customer/:customerId",
+    authenticate,
+    async (req, res) => {
+      db.Customer.destroy({
+        where: { customerId: req.params.customerId },
+      }).then((dbCustomer) => {
+        res.json(dbCustomer);
+      });
+    }
+  );
+
+  app.delete(
+    "/api/autoTracker/tracker/:customerId/:trackerId",
+    authenticate,
+    async (req, res) => {
+      db.Tracker.destroy({ where: { trackerId: req.params.trackerId } }).then(
+        (dbTracker) => {
+          console.log(dbTracker);
+          res.json(dbTracker);
+        }
+      );
+    }
+  );
+
+  app.post(
+    "/api/autoTracker/customer/new",
+    authenticate,
+    [
+      check("customerName")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Customer name is required"),
+      check("customerExternalId")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Customer Id is required"),
+      check("customerEmail")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Email Address is required"),
+      check("customerPhone")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Phone Number is required"),
+      check("ipAddress")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("IP Address is required"),
+    ],
+    async (req, res) => {
+      try {
+        db.Customer.create({
+          customerName: req.body.customerName,
+          customerExternalId: req.body.customerExternalId,
+          customerEmail: req.body.customerEmail,
+          customerPhone: req.body.customerPhone,
+          ipAddress: req.body.ipAddress,
+          expiresOn: new Date(req.body.expiresOn).toLocaleDateString(),
+          registeredOn: new Date(req.body.registeredOn).toLocaleDateString(),
+          lastLoginDate: new Date(req.body.lastLoginDate).toLocaleDateString(),
+        }).then((dbCustomer) => {
+          res.json(dbCustomer);
+        });
+      } catch (errors) {
+        res.json(errors);
+      }
+    }
+  );
+
+  app.put(
+    "/api/autoTracker/tracker/update/:trackerId",
+    authenticate,
+    [
+      check("imei").not().isEmpty().escape().withMessage("IMEI is required"),
+      check("gpsDevice")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("GPS Device is required"),
+      check("simCardNumber")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Sim Card Number is required"),
+      check("ipAddress")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("IP Address is required"),
+      check("port").not().isEmpty().escape().withMessage("Port is required"),
+      check("protocol")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Protocol is required"),
+      check("netProtocol")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Net Protocol is required"),
+      check("expiresOn")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Expiration Date is required"),
+      check("lastConnectionDate")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Last Connection Date is required"),
+    ],
+    async (req, res) => {
+      try {
+        let trackerPayLoad = {
+          customerId: req.body.customerId,
+          vehicleYear: req.body.vehicleYear,
+          vehicleMake: req.body.vehicleMake,
+          vehicleModel: req.body.vehicleModel,
+          imei: req.body.imei,
+          simCardnumber: req.body.simCardnumber,
+          gpsDevice: req.body.gpsDevice,
+          protocol: req.body.protocol,
+          netProtocol: req.body.netProtocol,
+          ipAddress: req.body.ipAddress,
+          port: req.body.port,
+          expiresOn: new Date(req.body.expiresOn).toLocaleDateString(),
+          lastConnectionDate: new Date(
+            req.body.lastConnectionDate
+          ).toLocaleDateString(),
+        };
+
+        await logThis(
+          "INFO",
+          res.locals.userId,
+          res.locals.emailAddress,
+          res.locals.companyUID,
+          res.locals.locationUID,
+          "POST /api/autoTracker/update",
+          req.session.userInfo.ipAddress,
+          "",
+          JSON.stringify(trackerPayLoad)
+        );
+
+        db.Tracker.update(trackerPayLoad, {
+          where: {
+            trackerId: req.params.trackerId,
+          },
+        }).then((dbTracker) => {
+          res.json(dbTracker);
+        });
+      } catch (errors) {
+        res.json(errors);
+      }
+    }
+  );
+
+  app.post(
+    "/api/autoTracker/:customerId",
+    authenticate,
+    [
+      check("imei").not().isEmpty().escape().withMessage("IMEI is required"),
+      check("gpsDevice")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("GPS Device is required"),
+      check("simCardNumber")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Sim Card Number is required"),
+      check("licensePlateNumber")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("License Plate Number is required"),
+      check("ipAddress")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("IP Address is required"),
+      check("port").not().isEmpty().escape().withMessage("Port is required"),
+      check("protocol")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Protocol is required"),
+      check("netProtocol")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Net Protocol is required"),
+      check("expiresOn")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Expiration Date is required"),
+      check("lastConnectionDate")
+        .not()
+        .isEmpty()
+        .escape()
+        .withMessage("Last Connection Date is required"),
+    ],
+    async (req, res) => {
+      try {
+        let trackerPayLoad = {
+          customerId: req.body.customerId,
+          vehicleYear: req.body.vehicleYear,
+          vehicleMake: req.body.vehicleMake,
+          vehicleModel: req.body.vehicleModel,
+          licensePlateNumber: req.body.licensePlateNumber,
+          imei: req.body.imei,
+          simCardNumber: req.body.simCardNumber,
+          gpsDevice: req.body.gpsDevice,
+          protocol: req.body.protocol,
+          netProtocol: req.body.netProtocol,
+          ipAddress: req.body.ipAddress,
+          port: req.body.port,
+          expiresOn: new Date(req.body.expiresOn).toLocaleDateString(),
+          lastConnectionDate: new Date(
+            req.body.lastConnectionDate
+          ).toLocaleDateString(),
+        };
+
+        db.Tracker.create(trackerPayLoad).then((dbTracker) => {
+          res.json(dbTracker);
+        });
+      } catch (errors) {
+        await logThis(
+          "ERROR",
+          res.locals.userId,
+          res.locals.emailAddress,
+          res.locals.companyUID,
+          res.locals.locationUID,
+          "/api/autoTracker/newAutoTracker POST",
+          "",
+          "Api call failed",
+          errors.message
+        );
+        res.json(errors);
+      }
+    }
+  );
+
   app.post(
     "/api/expense",
     authenticate,

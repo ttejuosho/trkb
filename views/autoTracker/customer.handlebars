@@ -1,0 +1,297 @@
+<main role="main">
+  <div class="jumbotron">
+    <div class="container-fluid">
+      <div class="alert  {{#ifEquals active 1}} alert-success activeCustomer {{else}} alert-danger inactiveCustomer{{/ifEquals}}" role="alert">
+  <div class="row">
+    <div class="col-md-2 font-weight-bold">Customer Id: </div>
+    <div class="col-md-10">{{customerExternalId}}</div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 font-weight-bold">Customer Name: </div>
+    <div class="col-md-10">{{customerName}}</div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 font-weight-bold">Email Address: </div>
+    <div class="col-md-10">{{customerEmail}}</div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 font-weight-bold">Phone Number: </div>
+    <div class="col-md-10">{{customerPhone}}</div>
+  </div>
+</div>
+
+    <div class="mt-4">
+        <p>
+        <a
+          type="button"
+          href="/autoTracker/tracker/new/{{customerId}}"
+          class="btn btn-md btn-outline-success"
+        >New Tracker</a></p>
+        <table id="autoTrackerTable" class="table table-striped" style="width: 100%;">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Vehicle</th>
+            <th scope="col">IMEI</th>
+            <th scope="col">Sim Card #</th>
+            <th scope="col">GPS Device</th>
+            <th scope="col">Protocol</th>
+            <th scope="col">Net Protocol</th>
+            <th scope="col">IP Address</th>
+            <th scope="col">Port</th>
+            <th scope="col">Expires On</th>
+            <th scope="col">Last Connection</th>
+            <th scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      {{! New Tracker Modal }}
+      <div
+        class="modal"
+        id="newTrackerModal"
+        data-backdrop="static"
+        data-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="newTrackerModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title"><i
+                  class="fas fa-location-arrow text-primary pl-3 mr-2"
+                ></i>
+                <span id="newTrackerModalLabel"> New Tracker</span>
+              </h5>
+            </div>
+
+            <form id="newTrackerForm" action="/autoTracker/newTracker/{{customerId}}" method="POST">
+              <div class="modal-body pt-0">
+                <div class="col-12 justify-content-center">
+                  <p class="text-success mb-0 mb-2 message"></p>
+                  <p class="text-danger mb-0 mb-2 errorMessage"></p>
+                  <input type="hidden" value="{{trackerId}}" id="trackerId" name="trackerId"/>
+                  <input type="hidden" value="{{customerId}}" id="customerId" name="customerId"/>
+
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="vehicleYear">Vehicle Year</label>
+                    <select id="vehicleYear" class="form-control mb-2" name="vehicleYear">
+                      {{#if vehicleYear}}
+                        <option value="{{vehicleYear}}">{{vehicleYear}}</option>
+                      {{else}}
+                        <option value="">Choose Vehicle Year</option>
+                      {{/if}}
+                    </select>
+                    <div class="newTrackerServerMessages text-danger vehicleYearError mb-2"></div>
+                  </div>
+
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="vehicleMake">Vehicle Make</label>
+                    <select id="vehicleMake" class="form-control mb-2" name="vehicleMake">
+                      {{#if vehicleMake}}
+                        <option
+                          value="{{vehicleMake}}"
+                        >{{vehicleMake}}</option>
+                      {{else}}
+                        <option value="">Choose Category</option>
+                      {{/if}}
+                      {{#unless vehicleMake}}
+                        <option value="Acura">Acura</option>
+                        <option value="Aston Martin">Aston Martin</option>
+                        <option value="Audi">Audi</option>
+                        <option value="Bentley">Bentley</option>
+                        <option value="BMW">BMW</option>
+                        <option value="Brabus">Brabus</option>
+                        <option value="Bugatti">Bugatti</option>
+                        <option value="Buick">Buick</option>
+                        <option value="Cadillac">Cadillac</option>
+                        <option value="Chevrolet">Chevrolet</option>
+                        <option value="Chrysler">Chrysler</option>
+                        <option value="Dodge">Dodge</option>
+                        <option value="Ferrari">Ferrari</option>
+                        <option value="Ford">Ford</option>
+                        <option value="Genesis">Genesis</option>
+                        <option value="GMC">GMC</option>
+                        <option value="Hyundai">Hyundai</option>
+                        <option value="Infiniti">Infiniti</option>
+                        <option value="Jaguar">Jaguar</option>
+                        <option value="Kia">Kia</option>
+                        <option value="Lexus">Lexus</option>
+                        <option value="Lincoln">Lincoln</option>
+                        <option value="Lucid">Lucid</option>
+                        <option value="Maserati">Maserati</option>
+                        <option value="Maybach">Maybach</option>
+                        <option value="Mazda">Mazda</option>
+                        <option value="Mercedes Benz">Mercedes Benz</option>
+                        <option value="Mini">Mini</option>
+                        <option value="Nissan">Nissan</option>
+                        <option value="Porsche">Porsche</option>
+                        <option value="RAM">RAM</option>
+                        <option value="Rolls Royce">Rolls Royce</option>
+                        <option value="Rover">Rover</option>
+                        <option value="Scion">Scion</option>
+                        <option value="Subaru">Subaru</option>
+                        <option value="Tesla">Tesla</option>
+                        <option value="Toyota">Toyota</option>
+                        <option value="Volkswagen">Volkswagen</option>
+                        <option value="Volvo">Volvo</option>
+                      {{/unless}}
+                    </select>
+                    <div class="newTrackerServerMessages text-danger vehicleMakeError mb-2"></div>
+                  </div>
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="vehicleModel">Vehicle Model</label>
+                    <input type="text" class="form-control" id="vehicleModel" name="vehicleModel" value="{{vehicleModel}}"/>
+                    <div class="newTrackerServerMessages text-danger itemError mb-2"></div>
+                  </div>
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="licensePlateNumber">License Plate Number</label>
+                    <input type="text" class="form-control" id="licensePlateNumber" name="licensePlateNumber" value="{{licensePlateNumber}}"/>
+                    <div class="newTrackerServerMessages text-danger itemError mb-2"></div>
+                  </div>
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="imei">IMEI</label>
+                    <input type="text" class="form-control" id="imei" name="imei" value="{{imei}}"/>
+                    <div class="newTrackerServerMessages text-danger itemError mb-2"></div>
+                  </div>
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="simCardNumber">Sim Card #</label>
+                    <input type="text" class="form-control" id="simCardNumber" name="simCardNumber" value="{{simCardNumber}}"/>
+                    <div class="newTrackerServerMessages text-danger itemError mb-2"></div>
+                  </div>
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="gpsDevice">GPS Device</label>
+                    <input type="text" class="form-control" id="gpsDevice" name="gpsDevice" value="{{gpsDevice}}"/>
+                    <div class="newTrackerServerMessages text-danger itemError mb-2"></div>
+                  </div>
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="protocol">Protocol</label>
+                    <input type="text" class="form-control" id="protocol" name="protocol" value="{{protocol}}"/>
+                    <div class="newTrackerServerMessages text-danger itemError mb-2"></div>
+                  </div>
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="netProtocol">Net Protocol</label>
+                    <input type="text" class="form-control" id="netProtocol" name="netProtocol" value="{{netProtocol}}"/>
+                    <div class="newTrackerServerMessages text-danger itemError mb-2"></div>
+                  </div>
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="ipAddress">IP Address</label>
+                    <input type="text" class="form-control" id="ipAddress" name="ipAddress" value="{{ipAddress}}"/>
+                    <div class="newTrackerServerMessages text-danger itemError mb-2"></div>
+                  </div>
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="port">Port</label>
+                    <input type="text" class="form-control" id="port" name="port" value="{{port}}"/>
+                    <div class="newTrackerServerMessages text-danger itemError mb-2"></div>
+                  </div>
+
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="expiresOn">Expires On</label>
+                    <div class="form-group">
+                      <div class="input-group date" id="expiresOn" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#expiresOn"/>
+                        <div class="input-group-append" data-target="#expiresOn" data-toggle="datetimepicker">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="newTrackerServerMessages text-danger expiresOnError mb-2"></div>
+                  </div>
+
+                  <div class="mb-2">
+                    <label class="font-weight-bold mb-0 required" for="lastConnectionDate">Last Connection Date</label>
+                    <div class="form-group">
+                      <div class="input-group date" id="lastConnectionDate" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" value="{{#formatLocalDate lastConnectionDate}}{{/formatLocalDate}}" data-target="#lastConnectionDate"/>
+                        <div class="input-group-append" data-target="#lastConnectionDate" data-toggle="datetimepicker">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="newTrackerServerMessages text-danger lastConnectionDateError mb-2"></div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  id="closeNewTrackerModal"
+                >Cancel</button>
+                <button
+                  type="submit"
+                  class="btn btn-sm btn-outline-dark"
+                  id="saveNewTracker"
+                >Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      {{! New Tracker Modal End }}
+
+      {{! Delete Confirmation Modal }}
+      <div
+        class="modal"
+        id="deleteConfirmationModal"
+        tabindex="-1"
+        aria-labelledby="deleteConfirmationModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5
+                class="modal-title text-danger mb-2"
+                id="deleteConfirmationModalLabel"
+              ><i class="fas fa-exclamation-triangle"></i> Delete ke ??</h5>
+
+              <h5
+                class="modal-title text-success mb-2 d-none"
+                id="deleteSuccessConfirmationModalLabel"
+              >
+                <i class="fas fa-check-circle"></i>
+                Done !!
+              </h5>
+            </div>
+            <div class="modal-body pt-1">
+              <p id="confirmDeleteErrorMessage" class="text-danger"></p>
+              <p
+                id="confirmDeleteSuccessMessage"
+                class="text-success d-none"
+              ><span id="expenseItemSpan"></span>
+                deleted.</p>
+              <p id="deleteModalBody" class="">Delete na bad thing, think am
+                well well o. Click Delete if your head correct or click Cancel
+                if your head correct.</p>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                id="closeDeleteConfirmationModal"
+              >Close</button>
+              <button
+                type="button"
+                class="btn btn-outline-dark continueDelete"
+                data-option=""
+                data-trackerid=""
+                data-customerid=""
+                id="continueDelete"
+              >
+                Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{! Delete Confirmation Modal End }}
+
+
+    </div>
+    </div>
+  </div>
+</main>
+
+<script type="text/javascript" src="/assets/js/autoTracker.js"></script>

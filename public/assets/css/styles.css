@@ -175,6 +175,14 @@ thead tr th {
   background-color: #d8dcdf;
 }
 
+.activeCustomer {
+  border-left: 6px solid green;
+}
+
+.inactiveCustomer {
+  border-left: 6px solid red;
+}
+
 @media (max-width: 800px) {
   .main-panel > .partial-content {
     padding: 70px 10px 0px 20px;

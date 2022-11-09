@@ -10,7 +10,6 @@ module.exports = function (app) {
     Security.isLoggedIn,
     finRecController.GetTransactionLibrary
   );
-
   app.get(
     "/transaction/locations",
     Security.isLoggedIn,

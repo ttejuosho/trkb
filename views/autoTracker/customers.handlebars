@@ -1,0 +1,88 @@
+<main role="main">
+  <div class="jumbotron">
+    <div class="container-fluid">
+              <a
+          type="button"
+          href="/autoTracker/newCustomer"
+          class="btn btn-md btn-outline-secondary"
+        >New Customer</a></p>
+      <table
+        id="customersTable"
+        class="table table-striped"
+        style="width: 100%;"
+      >
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Customer Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">IP Address</th>
+            <th scope="col">Last Login</th>
+            <th scope="col">Expires</th>
+            <th scope="col">Registered</th>
+            <th scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {{! Delete Confirmation Modal }}
+  <div
+    class="modal"
+    id="deleteConfirmationModal"
+    tabindex="-1"
+    aria-labelledby="deleteConfirmationModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5
+            class="modal-title text-danger mb-2"
+            id="deleteConfirmationModalLabel"
+          ><i class="fas fa-exclamation-triangle"></i> Delete ke ??</h5>
+
+          <h5
+            class="modal-title text-success mb-2 d-none"
+            id="deleteSuccessConfirmationModalLabel"
+          >
+            <i class="fas fa-check-circle"></i>
+            Done !!
+          </h5>
+        </div>
+        <div class="modal-body pt-1">
+          <p id="confirmDeleteErrorMessage" class="text-danger"></p>
+          <p id="confirmDeleteSuccessMessage" class="text-success d-none"><span
+              id="customerNameSpan"
+            ></span>
+            deleted.</p>
+          <p id="deleteModalBody" class="">Delete na bad thing, think am well
+            well o. Click Delete if your head correct or click Cancel if your
+            head correct.</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-danger"
+            id="closeDeleteConfirmationModal"
+          >Close</button>
+          <button
+            type="button"
+            class="btn btn-outline-dark continueDelete"
+            data-option=""
+            data-id=""
+            id="continueDelete"
+          >
+            Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{! Delete Confirmation Modal End }}
+
+</main>
+<script type="text/javascript" src="/assets/js/customers.js"></script>
