@@ -2,14 +2,14 @@ const db = require("../models");
 const { validationResult } = require("express-validator");
 
 exports.GetNewCustomerForm = (req, res) => {
-  return res.render("autoTracker/newCustomer", {
+  return res.render("newCustomer", {
     companyName: req.session.userInfo.companyName,
     companyId: req.session.userInfo.companyId,
   });
 };
 
 exports.GetNewTrackerForm = (req, res) => {
-  return res.render("autoTracker/newTracker", {
+  return res.render("newTracker", {
     companyName: req.session.userInfo.companyName,
     companyId: req.session.userInfo.companyId,
     customerId: req.params.customerId,
@@ -24,12 +24,12 @@ exports.GetEditCustomerForm = (req, res) => {
     raw: true,
   }).then((dbCustomer) => {
     dbCustomer.edit = true;
-    return res.render("autoTracker/newCustomer", dbCustomer);
+    return res.render("newCustomer", dbCustomer);
   });
 };
 
 exports.GetCustomersPage = (req, res) => {
-  return res.render("autoTracker/customers");
+  return res.render("customers");
 };
 
 exports.GetCustomerPage = (req, res) => {
@@ -39,7 +39,7 @@ exports.GetCustomerPage = (req, res) => {
     },
     raw: true,
   }).then((dbCustomer) => {
-    return res.render("autoTracker/customer", dbCustomer);
+    return res.render("customer", dbCustomer);
   });
 };
 
@@ -56,7 +56,7 @@ exports.CreateNewCustomer = (req, res) => {
     errors.lastLoginDate = req.body.lastLoginDate;
     errors.privilege = req.body.privilege;
     errors.active = req.body.active;
-    return res.render("autoTracker/newCustomer", errors);
+    return res.render("newCustomer", errors);
   }
   db.Customer.create({
     customerName: req.body.customerName,
@@ -70,7 +70,7 @@ exports.CreateNewCustomer = (req, res) => {
     privilege: req.body.privilege,
     active: req.body.active === "Yes" ? 1 : 0,
   }).then((dbCustomer) => {
-    return res.render("autoTracker/newCustomer", {
+    return res.render("newCustomer", {
       customerCreated: true,
       customerId: dbCustomer.dataValues.customerId,
       companyName: req.session.userInfo.companyName,
@@ -87,7 +87,7 @@ exports.UpdateCustomerData = (req, res) => {
     errors.customerEmail = req.body.customerEmail;
     errors.customerPhone = req.body.customerPhone;
     errors.ipAddress = req.body.ipAddress;
-    return res.render("autoTracker/newCustomer", errors);
+    return res.render("newCustomer", errors);
   }
   db.Customer.update(
     {
@@ -129,7 +129,7 @@ exports.CreateNewTracker = (req, res) => {
     errors.lastConnectionDate = req.body.lastConnectionDateValue;
     errors.expiresOn = req.body.expiresOnValue;
     errors.customerId = req.params.customerId;
-    return res.render("autoTracker/newTracker", errors);
+    return res.render("newTracker", errors);
   }
   db.Tracker.create({
     customerId: req.body.customerId,
@@ -161,7 +161,7 @@ exports.GetEditTrackerForm = (req, res) => {
     raw: true,
   }).then((dbTracker) => {
     dbTracker.edit = true;
-    return res.render("autoTracker/newTracker", dbTracker);
+    return res.render("newTracker", dbTracker);
   });
 };
 
@@ -182,7 +182,7 @@ exports.UpdateTrackerData = (req, res) => {
     errors.lastConnectionDate = req.body.lastConnectionDateValue;
     errors.expiresOn = req.body.expiresOnValue;
     errors.customerId = req.body.customerId;
-    return res.render("autoTracker/newTracker", errors);
+    return res.render("newTracker", errors);
   }
   db.Tracker.update(
     {
