@@ -687,6 +687,7 @@ module.exports = (app) => {
         var checkLocation = await db.Location.findOne({
           where: {
             locationName: req.body.locationName,
+            companyUID: res.locals.companyUID,
           },
         });
 

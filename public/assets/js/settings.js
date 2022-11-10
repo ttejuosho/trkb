@@ -253,6 +253,7 @@ $(document).ready(function () {
   $("#saveNewLocation").on("click", () => {
     var locationId = $("#locationId").val();
     var locationData = {
+      locationId: $("#locationId").val(),
       locationUID: $("#locationUID").val(),
       locationName: $("#locationName").val(),
       locationEmail: $("#locationEmail").val(),
@@ -309,9 +310,13 @@ $(document).ready(function () {
           $("#newLocationForm")[0].reset();
           $("#newLocationModal").modal("hide");
         } else {
-          res.errors.forEach((error) => {
-            $("." + error.param + "Error").text(error.msg);
-          });
+          if (res.errors.length == 1) {
+            $(".errorMessage").text(res.errors[0].msg);
+          } else {
+            res.errors.forEach((error) => {
+              $("." + error.param + "Error").text(error.msg);
+            });
+          }
         }
       });
   });
@@ -419,7 +424,7 @@ $(document).ready(function () {
           $("#actionMessage").text("All Done");
           $(".message").text("");
           if (tableName === "User") {
-            agentsTable.row(apiParamId).remove().draw();
+            agentsTable.row().remove(apiParamId).draw();
           }
           if (tableName === "Location") {
             locationsTable.row().remove(apiParamId).draw();
